@@ -1,25 +1,23 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import {Inter} from 'next/font/google';
+import { Inter } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 
 const inter = Inter({
-    subsets: ['latin']
+    subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
     title: {
-        template: '%s | Flashcard App',
-        default: "Flashcard App"
+        template: "%s | Flashcard App",
+        default: "Flashcard App",
     },
     description: "Create your own flashcards and share them with friends!",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
-        <html
-            lang="en"
-            className={inter.className}
-        >
+        <html lang="en" className={inter.className} suppressHydrationWarning>
             <head>
                 <link
                     rel="icon"
@@ -28,7 +26,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                     sizes="<generated>"
                 />
             </head>
-            <body>{children}</body>
+            <body>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                    enableColorScheme={false}
+                >
+                    {children}
+                </ThemeProvider>
+            </body>
         </html>
     );
 }
