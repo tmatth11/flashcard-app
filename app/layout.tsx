@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "",
-    description: "",
+    title: {
+        template: '%s | Flashcard App',
+        default: "Flashcard App"
+    },
+    description: "Create your own flashcards and share them with friends!",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
