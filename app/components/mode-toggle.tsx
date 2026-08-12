@@ -16,7 +16,10 @@ export default function ModeToggle() {
 
     if (!mounted) {
         return (
-            <button className="h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all">
+            <button
+                aria-label="Loading dark mode toggle"
+                className="h-[1.2rem] w-[1.2rem] scale-0 rotate-90 cursor-pointer"
+            >
                 <CircleQuestionMark />
             </button>
         );
@@ -33,7 +36,7 @@ export default function ModeToggle() {
         <button
             aria-label={isDark ? "Light mode" : "Dark mode"}
             onClick={toggleTheme}
-            className="rounded-md border bg-white p-2 text-black dark:bg-black dark:text-white"
+            className="cursor-pointer rounded-md border bg-white p-2 text-black dark:bg-black dark:text-white"
         >
             {isDark ? (
                 <Sun className="h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ModeToggle from "./components/mode-toggle";
+import ModeToggle from "@/app/components/mode-toggle";
 
 export default function Home() {
     return (
