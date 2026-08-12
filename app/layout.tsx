@@ -34,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                     disableTransitionOnChange
                     enableColorScheme={false}
                 >
-                    {children}
+                    <div className="min-h-dvh">{children}</div>
                 </ThemeProvider>
             </body>
         </html>

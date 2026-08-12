@@ -4,8 +4,8 @@ import ModeToggle from "@/app/components/mode-toggle";
 export default function Home() {
     return (
         <>
-            <header>
-                <nav className="sticky inset-s-0 top-0 flex w-full items-center justify-between border-b bg-neutral-200 p-2 dark:bg-black">
+            <header className="sticky inset-s-0 top-0 w-full border-b bg-neutral-200 p-2 dark:bg-black">
+                <nav className="flex items-center justify-between">
                     <Link
                         href="/"
                         className="text-xl font-semibold md:text-2xl dark:text-white"
