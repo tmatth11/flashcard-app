@@ -4,13 +4,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import ModeToggle from "@/app/components/mode-toggle";
-import {
-    ClerkProvider,
-    Show,
-    SignInButton,
-    SignUpButton,
-    UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider, Show, UserButton } from "@clerk/nextjs";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -44,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                         disableTransitionOnChange
                         enableColorScheme={false}
                     >
-                        <header className="sticky inset-s-0 top-0 w-full border-b bg-neutral-200 p-4 dark:bg-black">
+                        <header className="sticky inset-s-0 top-0 z-50 w-full border-b bg-neutral-200 p-4 dark:bg-black">
                             <nav className="flex items-center justify-between">
                                 <Link
                                     href="/"
@@ -55,16 +49,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                                 <div className="flex items-center gap-4">
                                     <ModeToggle />
                                     <Show when="signed-out">
-                                        <SignInButton>
-                                            <span className="cursor-pointer text-center dark:text-white">
-                                                Log In
-                                            </span>
-                                        </SignInButton>
-                                        <SignUpButton>
-                                            <button className="nav-button bg-blue-700">
-                                                Sign Up
-                                            </button>
-                                        </SignUpButton>
+                                        <Link
+                                            href="/sign-in"
+                                            className="cursor-pointer text-center dark:text-white"
+                                        >
+                                            Sign In
+                                        </Link>
+                                        <Link
+                                            href="/sign-up"
+                                            className="nav-button bg-blue-700"
+                                        >
+                                            Sign Up
+                                        </Link>
                                     </Show>
                                     <Show when="signed-in">
                                         <UserButton />
@@ -72,7 +68,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                                 </div>
                             </nav>
                         </header>
-                        <main className="min-h-dvh">{children}</main>
+                        <main className="min-h-dvh dark:bg-neutral-900 dark:text-white">
+                            {children}
+                        </main>
                     </ThemeProvider>
                 </ClerkProvider>
             </body>

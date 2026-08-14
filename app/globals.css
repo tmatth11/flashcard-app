@@ -5,3 +5,11 @@
 .nav-button {
     @apply p-2 rounded-md font-semibold cursor-pointer text-white;
 }
+
+:root {
+    color-scheme: light;
+}
+
+.dark {
+    color-scheme: dark;
+}
