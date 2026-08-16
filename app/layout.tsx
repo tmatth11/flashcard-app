@@ -38,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                         disableTransitionOnChange
                         enableColorScheme={false}
                     >
-                        <header className="sticky inset-s-0 top-0 z-50 w-full border-b bg-neutral-200 p-4 dark:bg-black">
+                        <header className="sticky inset-s-0 top-0 z-50 w-full bg-neutral-200 p-4 dark:bg-black">
                             <nav className="flex items-center justify-between">
                                 <Link
                                     href="/"
