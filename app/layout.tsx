@@ -3,7 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
-import ModeToggle from "@/app/components/mode-toggle";
+import ModeToggle from "@/app/_components/mode-toggle";
 import { ClerkProvider, Show, UserButton } from "@clerk/nextjs";
 
 const inter = Inter({
