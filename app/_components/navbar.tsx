@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ModeToggle from "./mode-toggle";
 import { Show, UserButton } from "@clerk/nextjs";
-import { FileStack, FileUser, Plus } from "lucide-react";
+import { FileStack, FileUser, Menu, Plus } from "lucide-react";
 
 export default function Navbar() {
     return (
@@ -13,28 +13,31 @@ export default function Navbar() {
                 >
                     Flashcard App
                 </Link>
-                <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
+                <button className="mb-2 md:hidden" aria-label="Expand menu">
+                    <Menu />
+                </button>
+                <div className="flex flex-col items-start gap-5 md:flex-row md:items-center">
                     <Show when="signed-in">
                         <Link href="#">
-                            <div className="flex items-center gap-2">
+                            <div className="nav-link">
                                 <Plus aria-label="Create set" />
-                                <span className="md:hidden">Create set</span>
+                                <span>Create set</span>
+                            </div>
+                        </Link>
+                        <Link href="/my-sets">
+                            <div className="nav-link">
+                                <FileUser aria-label="My sets" />
+                                <span>My sets</span>
                             </div>
                         </Link>
                         <Link href="#">
-                            <div className="flex items-center gap-2">
-                                <FileUser aria-label="Your sets" />
-                                <span className="md:hidden">Your sets</span>
-                            </div>
-                        </Link>
-                        <Link href="#">
-                            <div className="flex items-center gap-2">
+                            <div className="nav-link">
                                 <FileStack aria-label="All sets" />
-                                <span className="md:hidden">All sets</span>
+                                <span>All sets</span>
                             </div>
                         </Link>
                     </Show>
-                    <div className="flex items-center gap-2">
+                    <div className="nav-link">
                         <ModeToggle />
                         <span className="md:hidden">Toggle mode</span>
                     </div>
