@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import ModeToggle from "./mode-toggle";
 import { Show, UserButton } from "@clerk/nextjs";
 import { FileStack, FileUser, Menu, Plus } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar() {
+    const [linksDisplay, setLinksDisplay] = useState("hidden");
+
     return (
         <header className="sticky inset-s-0 top-0 z-50 w-full bg-neutral-200 p-4 dark:bg-black">
             <nav className="flex flex-col items-center justify-between md:flex-row">
@@ -13,12 +18,22 @@ export default function Navbar() {
                 >
                     Flashcard App
                 </Link>
-                <button className="mb-2 md:hidden" aria-label="Expand menu">
+                <button
+                    className="mb-2 cursor-pointer md:hidden"
+                    aria-label="Expand menu"
+                    onClick={() =>
+                        linksDisplay == "hidden"
+                            ? setLinksDisplay("flex")
+                            : setLinksDisplay("hidden")
+                    }
+                >
                     <Menu />
                 </button>
-                <div className="flex flex-col items-start gap-5 md:flex-row md:items-center">
+                <div
+                    className={`${linksDisplay} flex-col items-start gap-5 md:flex md:flex-row md:items-center`}
+                >
                     <Show when="signed-in">
-                        <Link href="#">
+                        <Link href="/create-set">
                             <div className="nav-link">
                                 <Plus aria-label="Create set" />
                                 <span>Create set</span>
@@ -30,7 +45,7 @@ export default function Navbar() {
                                 <span>My sets</span>
                             </div>
                         </Link>
-                        <Link href="#">
+                        <Link href="/all-sets">
                             <div className="nav-link">
                                 <FileStack aria-label="All sets" />
                                 <span>All sets</span>

@@ -1,5 +1,5 @@
 export default function Page() {
     return (
-        <p>/my-sets works!</p>
+        <p>/all-sets works!</p>
     );
 }
