@@ -2,7 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-.nav-button {
+.button {
     @apply p-2 rounded-md font-semibold cursor-pointer text-white;
 }
 

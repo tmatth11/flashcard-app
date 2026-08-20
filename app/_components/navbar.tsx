@@ -65,7 +65,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                             href="/sign-up"
-                            className="nav-button bg-blue-700 text-center"
+                            className="button bg-blue-700 text-center"
                         >
                             Sign Up
                         </Link>
