@@ -1,5 +1,5 @@
 export default function Page() {
     return (
-        <p>/create-sets works!</p>
+        <p>/create-set works!</p>
     );
 }
