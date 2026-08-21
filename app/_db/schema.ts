@@ -1,10 +1,10 @@
-import { text, pgTable, serial, timestamp, integer, boolean, uniqueIndex } from "drizzle-orm/pg-core";
+import { text, pgTable, serial, timestamp, integer, boolean, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
 export const flashcardSet = pgTable("flashcard_set", {
     id: serial("id").primaryKey(),
     userId: text("user_id").notNull(),
-    title: text("title").notNull(),
-    description: text("description"),
+    title: varchar("title", { length: 100 }).notNull(),
+    description: varchar("description", { length: 200 }),
     public: boolean("public").default(true).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -15,8 +15,8 @@ export const flashcard = pgTable("flashcard", {
     setId: integer("set_id")
         .references(() => flashcardSet.id, { onDelete: "cascade" })
         .notNull(),
-    term: text("term").notNull(),
-    definition: text("definition").notNull(),
+    term: varchar("term", { length: 300 }).notNull(),
+    definition: varchar("definition", { length: 500 }).notNull(),
     order: integer("order").notNull()
 });
 
