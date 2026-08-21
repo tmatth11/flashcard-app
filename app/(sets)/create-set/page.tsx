@@ -6,7 +6,7 @@ export default async function Page() {
 
     return (
         <div className="flex flex-col items-center p-2">
-            <div className="md:w-2xl lg:w-3xl">
+            <div className="md:w-2xl lg:w-3xl flex flex-col justify-center">
                 {/* Create Set header */}
                 <div className="mt-5 flex flex-col items-center justify-between gap-2 md:flex-row md:gap-0">
                     <h1 className="text-center text-xl font-semibold">
@@ -102,6 +102,7 @@ export default async function Page() {
                         </div>
                     </div>
                 </div>
+                <button className="button bg-blue-500 mt-4" aria-label="Add card">Add card</button>
             </div>
         </div>
     );
