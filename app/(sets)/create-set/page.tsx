@@ -102,6 +102,7 @@ export default async function Page() {
                         </div>
                     </div>
                 </div>
+                {/* Add Card button */}
                 <button className="button bg-blue-500 mt-4" aria-label="Add card">Add card</button>
             </div>
         </div>
