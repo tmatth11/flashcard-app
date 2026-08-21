@@ -27,8 +27,8 @@ export default async function Page() {
                         Private
                     </option>
                 </select>
-                {/* Title and Description input */}
                 <div className="mt-4 flex w-full flex-col gap-4">
+                    {/* Title input */}
                     <div className="flex flex-col">
                         <textarea
                             name="title"
@@ -36,8 +36,11 @@ export default async function Page() {
                             className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                             placeholder="Enter title"
                         ></textarea>
-                        <label htmlFor="title" className="mt-1">Title</label>
+                        <label htmlFor="title" className="mt-1">
+                            Title
+                        </label>
                     </div>
+                    {/* Description input */}
                     <div className="flex flex-col">
                         <textarea
                             name="description"
@@ -45,23 +48,29 @@ export default async function Page() {
                             className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                             placeholder="Enter description"
                         ></textarea>
-                        <label htmlFor="description" className="mt-1">Description</label>
+                        <label htmlFor="description" className="mt-1">
+                            Description
+                        </label>
                     </div>
                 </div>
                 {/* Flashcard input */}
                 <div className="mt-4 rounded-md bg-neutral-200 p-2 dark:bg-slate-700">
                     <div className="flex items-center justify-between p-2 dark:text-white">
+                        {/* Flashcard number */}
                         <span className="break-all">1</span>
                         <div className="flex items-center gap-4">
+                            {/* Move button */}
                             <button aria-label="Move card">
                                 <Move />
                             </button>
+                            {/* Delete button */}
                             <button aria-label="Delete card">
                                 <Trash2 />
                             </button>
                         </div>
                     </div>
                     <div className="mt-2 flex flex-col justify-between gap-4 md:flex-row">
+                        {/* Term */}
                         <div className="flex w-full flex-col">
                             <textarea
                                 name="term"
@@ -76,6 +85,7 @@ export default async function Page() {
                                 Term
                             </label>
                         </div>
+                        {/* Definition */}
                         <div className="flex w-full flex-col">
                             <textarea
                                 name="definition"
