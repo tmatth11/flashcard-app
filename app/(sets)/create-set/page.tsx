@@ -37,14 +37,31 @@ export default async function Page() {
                             </button>
                         </div>
                     </div>
-                    <div className="mt-2 flex flex-col gap-4 md:flex-row justify-between">
-                        <div className="flex flex-col w-full">
-                            <textarea name="term" id="term" className="bg-slate-800 rounded-md p-1 text-white"></textarea>
-                            <label htmlFor="term" className="text-white">Term</label>
+                    <div className="mt-2 flex flex-col justify-between gap-4 md:flex-row">
+                        <div className="flex w-full flex-col">
+                            <textarea
+                                name="term"
+                                id="term"
+                                className="rounded-md bg-slate-800 p-1 text-white"
+                                placeholder="Enter term"
+                            ></textarea>
+                            <label htmlFor="term" className="mt-1 text-white">
+                                Term
+                            </label>
                         </div>
-                        <div className="flex flex-col w-full">
-                            <textarea name="definition" id="definition" className="bg-slate-800 rounded-md p-1 text-white"></textarea>
-                            <label htmlFor="definition" className="text-white">Definition</label>
+                        <div className="flex w-full flex-col">
+                            <textarea
+                                name="definition"
+                                id="definition"
+                                className="rounded-md bg-slate-800 p-1 text-white"
+                                placeholder="Enter definition"
+                            ></textarea>
+                            <label
+                                htmlFor="definition"
+                                className="mt-1 text-white"
+                            >
+                                Definition
+                            </label>
                         </div>
                     </div>
                 </div>
