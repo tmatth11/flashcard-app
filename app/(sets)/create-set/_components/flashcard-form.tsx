@@ -15,14 +15,16 @@ export default function FlashcardSetForm() {
     };
 
     const insertCard = (index: number) => {
-        setFlashcards((prev) => prev.toSpliced(index + 1, 0, {id: crypto.randomUUID()}));
+        setFlashcards((prev) =>
+            prev.toSpliced(index + 1, 0, { id: crypto.randomUUID() }),
+        );
     };
 
     const canRemoveCard = () => flashcards.length > 1;
 
     const removeCard = (id: string) => {
         if (!canRemoveCard) return;
-        setFlashcards((prev) => prev.filter((c) => c.id !== c.id));
+        setFlashcards((prev) => prev.filter((c) => c.id !== id));
     };
 
     return (
@@ -60,7 +62,7 @@ export default function FlashcardSetForm() {
                     </label>
                 </div>
                 {/* Description input */}
-                <div className="flex flex-col mb-4">
+                <div className="mb-4 flex flex-col">
                     <textarea
                         name="description"
                         id={`${baseId}-description`}
@@ -77,6 +79,7 @@ export default function FlashcardSetForm() {
                 const termId = `${baseId}-card-${index}-term`;
                 const definitionId = `${baseId}-card-${index}-definition`;
                 const isLastCard = index == flashcards.length - 1;
+                const isRemovable = flashcards.length > 1;
 
                 return (
                     <div key={flashcard.id}>
@@ -95,7 +98,10 @@ export default function FlashcardSetForm() {
                                     {/* Delete button */}
                                     <button
                                         type="button"
+                                        className="cursor-pointer enabled:hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50"
                                         aria-label="Delete card"
+                                        disabled={!isRemovable}
+                                        onClick={() => removeCard(flashcard.id)}
                                     >
                                         <Trash2 />
                                     </button>
@@ -139,7 +145,7 @@ export default function FlashcardSetForm() {
                             <div className="my-2 flex justify-center">
                                 <button
                                     type="button"
-                                    className="rounded-full bg-blue-500 p-2 font-semibold cursor-pointer hover:bg-blue-400"
+                                    className="cursor-pointer rounded-full bg-blue-500 p-2 font-semibold hover:bg-blue-400"
                                     onClick={() => insertCard(index)}
                                 >
                                     <Plus />
