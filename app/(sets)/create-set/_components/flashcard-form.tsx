@@ -94,13 +94,13 @@ export default function FlashcardSetForm() {
                                 {/* Flashcard number */}
                                 <span className="break-all">{index + 1}</span>
                                 <div className="flex items-center gap-4">
-                                    {/* Move button */}
-                                    <button
+                                    {/* Move button - Maybe some day */}
+                                    {/* <button
                                         type="button"
                                         aria-label="Move card"
                                     >
                                         <Move />
-                                    </button>
+                                    </button> */}
                                     {/* Delete button */}
                                     <button
                                         type="button"
