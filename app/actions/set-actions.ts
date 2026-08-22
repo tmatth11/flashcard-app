@@ -13,7 +13,6 @@ const FlashcardSetSchema = z.object({
         z.object({
             term: z.string().min(1, "Term is required").max(300, "Term is too long"),
             definition: z.string().min(1, "Definition is required").max(500, "Definition is too long"),
-            order: z.number().int().nonnegative(),
         })
     ).min(1, "At least one flashcard is required")
 });
