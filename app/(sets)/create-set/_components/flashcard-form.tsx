@@ -1,6 +1,6 @@
 "use client";
 
-import { Move, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useId, useState } from "react";
 
 export default function FlashcardSetForm() {
@@ -42,7 +42,7 @@ export default function FlashcardSetForm() {
                 </button>
             </div>
             {/* Visibility toggle */}
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex cursor-pointer items-center gap-2">
                 <span>Public:</span>
                 <input
                     className="cursor-pointer"
@@ -153,7 +153,7 @@ export default function FlashcardSetForm() {
                             <div className="my-2 flex justify-center">
                                 <button
                                     type="button"
-                                    className="cursor-pointer rounded-full bg-blue-500 p-2 font-semibold hover:bg-blue-400"
+                                    className="cursor-pointer rounded-full bg-blue-500 p-2 font-semibold text-white hover:bg-blue-400"
                                     onClick={() => insertCard(index)}
                                 >
                                     <Plus />
