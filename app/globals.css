@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 .button {
-    @apply p-2 rounded-md font-semibold cursor-pointer text-white;
+    @apply p-2 rounded-md font-semibold enabled:cursor-pointer text-white;
 }
 
 :root {

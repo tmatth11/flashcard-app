@@ -34,14 +34,18 @@ export default function FlashcardSetForm() {
                 <h1 className="text-center text-xl font-semibold">
                     Create a new flashcard set
                 </h1>
-                <button type="submit" className="button bg-blue-500">
+                <button
+                    type="submit"
+                    className="button bg-blue-500 hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                >
                     Create
                 </button>
             </div>
             {/* Visibility toggle */}
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
                 <span>Public:</span>
                 <input
+                    className="cursor-pointer"
                     type="checkbox"
                     name="public"
                     id={`${baseId}-public`}
@@ -56,6 +60,7 @@ export default function FlashcardSetForm() {
                         id={`${baseId}-title`}
                         className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                         placeholder="Enter title"
+                        required
                     ></textarea>
                     <label htmlFor={`${baseId}-title`} className="mt-1">
                         Title
@@ -68,6 +73,7 @@ export default function FlashcardSetForm() {
                         id={`${baseId}-description`}
                         className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                         placeholder="Enter description"
+                        required
                     ></textarea>
                     <label htmlFor={`${baseId}-description`} className="mt-1">
                         Description
@@ -115,6 +121,7 @@ export default function FlashcardSetForm() {
                                         id={termId}
                                         className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
                                         placeholder="Enter term"
+                                        required
                                     ></textarea>
                                     <label
                                         htmlFor={termId}
@@ -130,6 +137,7 @@ export default function FlashcardSetForm() {
                                         id={definitionId}
                                         className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
                                         placeholder="Enter definition"
+                                        required
                                     ></textarea>
                                     <label
                                         htmlFor={definitionId}
