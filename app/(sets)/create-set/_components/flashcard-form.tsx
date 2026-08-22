@@ -1,6 +1,6 @@
 "use client";
 
-import { Move, Trash2 } from "lucide-react";
+import { Move, Plus, Trash2 } from "lucide-react";
 import { useId, useState } from "react";
 
 export default function FlashcardSetForm() {
@@ -10,7 +10,11 @@ export default function FlashcardSetForm() {
         { id: crypto.randomUUID() },
     ]);
 
-    const addCard = () => {
+    const appendCard = () => {
+        setFlashcards((prev) => [...prev, { id: crypto.randomUUID() }]);
+    };
+
+    const insertCard = (index: number) => {
         setFlashcards((prev) => [...prev, { id: crypto.randomUUID() }]);
     };
 
@@ -56,7 +60,7 @@ export default function FlashcardSetForm() {
                     </label>
                 </div>
                 {/* Description input */}
-                <div className="flex flex-col">
+                <div className="flex flex-col mb-4">
                     <textarea
                         name="description"
                         id={`${baseId}-description`}
@@ -72,65 +76,83 @@ export default function FlashcardSetForm() {
             {flashcards.map((flashcard, index) => {
                 const termId = `${baseId}-card-${index}-term`;
                 const definitionId = `${baseId}-card-${index}-definition`;
+                const isLastCard = index == flashcards.length - 1;
 
                 return (
-                    <div
-                        key={flashcard.id}
-                        className="mt-4 rounded-md bg-neutral-200 p-2 dark:bg-slate-700"
-                    >
-                        <div className="flex items-center justify-between p-2 dark:text-white">
-                            {/* Flashcard number */}
-                            <span className="break-all">{index + 1}</span>
-                            <div className="flex items-center gap-4">
-                                {/* Move button */}
-                                <button type="button" aria-label="Move card">
-                                    <Move />
-                                </button>
-                                {/* Delete button */}
-                                <button type="button" aria-label="Delete card">
-                                    <Trash2 />
-                                </button>
+                    <div key={flashcard.id}>
+                        <div className="rounded-md bg-neutral-200 p-2 dark:bg-slate-700">
+                            <div className="flex items-center justify-between p-2 dark:text-white">
+                                {/* Flashcard number */}
+                                <span className="break-all">{index + 1}</span>
+                                <div className="flex items-center gap-4">
+                                    {/* Move button */}
+                                    <button
+                                        type="button"
+                                        aria-label="Move card"
+                                    >
+                                        <Move />
+                                    </button>
+                                    {/* Delete button */}
+                                    <button
+                                        type="button"
+                                        aria-label="Delete card"
+                                    >
+                                        <Trash2 />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="mt-2 flex flex-col justify-between gap-4 md:flex-row">
+                                {/* Term */}
+                                <div className="flex w-full flex-col">
+                                    <textarea
+                                        name="term"
+                                        id={termId}
+                                        className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
+                                        placeholder="Enter term"
+                                    ></textarea>
+                                    <label
+                                        htmlFor={termId}
+                                        className="mt-1 dark:text-white"
+                                    >
+                                        Term
+                                    </label>
+                                </div>
+                                {/* Definition */}
+                                <div className="flex w-full flex-col">
+                                    <textarea
+                                        name="definition"
+                                        id={definitionId}
+                                        className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
+                                        placeholder="Enter definition"
+                                    ></textarea>
+                                    <label
+                                        htmlFor={definitionId}
+                                        className="mt-1 dark:text-white"
+                                    >
+                                        Definition
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div className="mt-2 flex flex-col justify-between gap-4 md:flex-row">
-                            {/* Term */}
-                            <div className="flex w-full flex-col">
-                                <textarea
-                                    name="term"
-                                    id={termId}
-                                    className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
-                                    placeholder="Enter term"
-                                ></textarea>
-                                <label
-                                    htmlFor={termId}
-                                    className="mt-1 dark:text-white"
+
+                        {!isLastCard && (
+                            <div className="my-2 flex justify-center">
+                                <button
+                                    type="button"
+                                    className="rounded-full bg-blue-500 p-2 font-semibold cursor-pointer"
+                                    onClick={() => insertCard(index)}
                                 >
-                                    Term
-                                </label>
+                                    <Plus />
+                                </button>
                             </div>
-                            {/* Definition */}
-                            <div className="flex w-full flex-col">
-                                <textarea
-                                    name="definition"
-                                    id={definitionId}
-                                    className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
-                                    placeholder="Enter definition"
-                                ></textarea>
-                                <label
-                                    htmlFor={definitionId}
-                                    className="mt-1 dark:text-white"
-                                >
-                                    Definition
-                                </label>
-                            </div>
-                        </div>
+                        )}
                     </div>
                 );
             })}
             {/* Add Card button */}
             <button
                 type="button"
-                onClick={addCard}
+                onClick={appendCard}
                 className="button mt-4 bg-blue-500"
                 aria-label="Add card"
             >
