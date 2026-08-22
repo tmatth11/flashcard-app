@@ -139,7 +139,7 @@ export default function FlashcardSetForm() {
                             <div className="my-2 flex justify-center">
                                 <button
                                     type="button"
-                                    className="rounded-full bg-blue-500 p-2 font-semibold cursor-pointer"
+                                    className="rounded-full bg-blue-500 p-2 font-semibold cursor-pointer hover:bg-blue-400"
                                     onClick={() => insertCard(index)}
                                 >
                                     <Plus />
@@ -153,7 +153,7 @@ export default function FlashcardSetForm() {
             <button
                 type="button"
                 onClick={appendCard}
-                className="button mt-4 bg-blue-500"
+                className="button mt-4 bg-blue-500 hover:bg-blue-400"
                 aria-label="Add card"
             >
                 Add card
