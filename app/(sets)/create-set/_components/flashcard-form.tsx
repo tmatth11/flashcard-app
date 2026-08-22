@@ -15,7 +15,7 @@ export default function FlashcardSetForm() {
     };
 
     const insertCard = (index: number) => {
-        setFlashcards((prev) => [...prev, { id: crypto.randomUUID() }]);
+        setFlashcards((prev) => prev.toSpliced(index + 1, 0, {id: crypto.randomUUID()}));
     };
 
     const canRemoveCard = () => flashcards.length > 1;
