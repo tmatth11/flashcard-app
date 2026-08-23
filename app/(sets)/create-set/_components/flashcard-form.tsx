@@ -59,7 +59,6 @@ export default function FlashcardSetForm() {
     const isFormInvalid =
         flashcards.length === 0 ||
         !title.trim() ||
-        !description.trim() ||
         flashcards.some((c) => !c.term.trim() || !c.definition.trim());
 
     return (
@@ -88,7 +87,7 @@ export default function FlashcardSetForm() {
                 </button>
             </div>
             {/* Visibility toggle */}
-            <label className="flex cursor-pointer items-center gap-2">
+            <label className="mt-4 flex cursor-pointer items-center gap-2">
                 <span>Public:</span>
                 <input
                     className="cursor-pointer"
@@ -133,7 +132,6 @@ export default function FlashcardSetForm() {
                         onChange={(e) => setDescription(e.target.value)}
                         className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                         placeholder="Enter description"
-                        required
                     ></textarea>
                     <label htmlFor={`${baseId}-description`} className="mt-1">
                         Description
@@ -270,6 +268,15 @@ export default function FlashcardSetForm() {
             >
                 Add card
             </button>
+            <div className="flex justify-center">
+                <button
+                    type="submit"
+                    disabled={isPending || isFormInvalid}
+                    className="mt-4 w-1/2 button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                >
+                    Create
+                </button>
+            </div>
         </form>
     );
 }
