@@ -1,34 +1,79 @@
 "use client";
 
+import {
+    createFlashcardSet,
+    FlashcardSetState,
+} from "@/app/actions/set-actions";
 import { Plus, Trash2 } from "lucide-react";
-import { useId, useState } from "react";
+import { useActionState, useId, useState } from "react";
+
+const initialState: FlashcardSetState = {};
 
 export default function FlashcardSetForm() {
     const baseId = useId();
+    const [state, formAction, isPending] = useActionState(
+        createFlashcardSet,
+        initialState,
+    );
 
     const [flashcards, setFlashcards] = useState(() => [
-        { id: crypto.randomUUID() },
+        { id: crypto.randomUUID(), term: "", definition: "" },
     ]);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
 
     const appendCard = () => {
-        setFlashcards((prev) => [...prev, { id: crypto.randomUUID() }]);
+        setFlashcards((prev) => [
+            ...prev,
+            { id: crypto.randomUUID(), term: "", definition: "" },
+        ]);
     };
 
     const insertCard = (index: number) => {
         setFlashcards((prev) =>
-            prev.toSpliced(index + 1, 0, { id: crypto.randomUUID() }),
+            prev.toSpliced(index + 1, 0, {
+                id: crypto.randomUUID(),
+                term: "",
+                definition: "",
+            }),
         );
     };
 
-    const canRemoveCard = () => flashcards.length > 1;
-
     const removeCard = (id: string) => {
-        if (!canRemoveCard) return;
+        if (flashcards.length <= 1) return;
         setFlashcards((prev) => prev.filter((c) => c.id !== id));
     };
 
+    const updateCard = (
+        id: string,
+        field: "term" | "definition",
+        value: string,
+    ) => {
+        setFlashcards((prev) =>
+            prev.map((card) =>
+                card.id === id ? { ...card, [field]: value } : card,
+            ),
+        );
+    };
+
+    const isFormInvalid =
+        flashcards.length === 0 ||
+        !title.trim() ||
+        !description.trim() ||
+        flashcards.some((c) => !c.term.trim() || !c.definition.trim());
+
     return (
-        <form className="flex flex-col justify-center md:w-2xl lg:w-3xl">
+        <form
+            action={formAction}
+            className="flex flex-col justify-center md:w-2xl lg:w-3xl"
+        >
+            {/* Error message banner */}
+            {state?.message && (
+                <div className="rounded-md border-4 border-red-700 bg-red-500 p-2 text-center break-all text-white">
+                    {state.message}
+                </div>
+            )}
+
             {/* Create Set header */}
             <div className="mt-5 flex flex-col items-center justify-between gap-2 md:flex-row md:gap-0">
                 <h1 className="text-center text-xl font-semibold">
@@ -36,7 +81,8 @@ export default function FlashcardSetForm() {
                 </h1>
                 <button
                     type="submit"
-                    className="button bg-blue-500 hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                    disabled={isPending || isFormInvalid}
+                    className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
                 >
                     Create
                 </button>
@@ -58,6 +104,8 @@ export default function FlashcardSetForm() {
                     <textarea
                         name="title"
                         id={`${baseId}-title`}
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                         placeholder="Enter title"
                         required
@@ -65,12 +113,24 @@ export default function FlashcardSetForm() {
                     <label htmlFor={`${baseId}-title`} className="mt-1">
                         Title
                     </label>
+                    {state?.errors?.title && (
+                        <div className="mt-1 text-sm text-red-500">
+                            Errors:
+                            <ul className="break-all">
+                                {state.errors.title.map((error, i) => (
+                                    <li key={i}>- {error}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
                 {/* Description input */}
                 <div className="mb-4 flex flex-col">
                     <textarea
                         name="description"
                         id={`${baseId}-description`}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                         className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                         placeholder="Enter description"
                         required
@@ -78,13 +138,35 @@ export default function FlashcardSetForm() {
                     <label htmlFor={`${baseId}-description`} className="mt-1">
                         Description
                     </label>
+                    {state?.errors?.description && (
+                        <div className="mt-1 text-sm text-red-500">
+                            Errors:
+                            <ul className="break-all">
+                                {state.errors.description.map((error, i) => (
+                                    <li key={i}>- {error}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </div>
+
+            {state?.errors?.cards && (
+                <div className="mb-2 text-sm text-red-500">
+                    Errors:
+                    <ul className="break-all">
+                        {state.errors.cards.map((error, i) => (
+                            <li key={i}>- {error}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
             {/* Flashcard list */}
             {flashcards.map((flashcard, index) => {
                 const termId = `${baseId}-card-${index}-term`;
                 const definitionId = `${baseId}-card-${index}-definition`;
-                const isLastCard = index == flashcards.length - 1;
+                const isLastCard = index === flashcards.length - 1;
                 const isRemovable = flashcards.length > 1;
 
                 return (
@@ -119,6 +201,14 @@ export default function FlashcardSetForm() {
                                     <textarea
                                         name="term"
                                         id={termId}
+                                        value={flashcard.term}
+                                        onChange={(e) =>
+                                            updateCard(
+                                                flashcard.id,
+                                                "term",
+                                                e.target.value,
+                                            )
+                                        }
                                         className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
                                         placeholder="Enter term"
                                         required
@@ -135,6 +225,14 @@ export default function FlashcardSetForm() {
                                     <textarea
                                         name="definition"
                                         id={definitionId}
+                                        value={flashcard.definition}
+                                        onChange={(e) =>
+                                            updateCard(
+                                                flashcard.id,
+                                                "definition",
+                                                e.target.value,
+                                            )
+                                        }
                                         className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
                                         placeholder="Enter definition"
                                         required
