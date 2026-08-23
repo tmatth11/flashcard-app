@@ -10,7 +10,7 @@ export default function Navbar() {
     const [linksDisplay, setLinksDisplay] = useState("hidden");
 
     return (
-        <header className="sticky inset-s-0 top-0 z-50 w-full bg-neutral-200 p-4 dark:bg-black">
+        <header className="sticky top-0 z-50 w-full bg-neutral-200 p-4 dark:bg-black">
             <nav className="flex flex-col items-center justify-between md:flex-row">
                 <Link
                     href="/"
@@ -33,19 +33,28 @@ export default function Navbar() {
                     className={`${linksDisplay} flex-col items-start gap-5 md:flex md:flex-row md:items-center`}
                 >
                     <Show when="signed-in">
-                        <Link href="/create-set">
+                        <Link
+                            href="/create-set"
+                            onClick={() => setLinksDisplay("hidden")}
+                        >
                             <div className="nav-link">
                                 <Plus aria-label="Create set" />
                                 <span>Create set</span>
                             </div>
                         </Link>
-                        <Link href="/my-sets">
+                        <Link
+                            href="/my-sets"
+                            onClick={() => setLinksDisplay("hidden")}
+                        >
                             <div className="nav-link">
                                 <FileUser aria-label="My sets" />
                                 <span>My sets</span>
                             </div>
                         </Link>
-                        <Link href="/all-sets">
+                        <Link
+                            href="/all-sets"
+                            onClick={() => setLinksDisplay("hidden")}
+                        >
                             <div className="nav-link">
                                 <FileStack aria-label="All sets" />
                                 <span>All sets</span>
@@ -60,12 +69,14 @@ export default function Navbar() {
                         <Link
                             href="/sign-in"
                             className="cursor-pointer text-center dark:text-white"
+                            onClick={() => setLinksDisplay("hidden")}
                         >
                             Sign In
                         </Link>
                         <Link
                             href="/sign-up"
-                            className="nav-button bg-blue-700 text-center"
+                            className="button bg-blue-700 text-center"
+                            onClick={() => setLinksDisplay("hidden")}
                         >
                             Sign Up
                         </Link>
