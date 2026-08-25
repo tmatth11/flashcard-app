@@ -6,7 +6,7 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
     const flashcardSets = await getAllFlashcardSets(props);
 
     return (
-        <div className="mt-4 flex flex-col justify-center gap-4 w-3xs md:w-xl lg:w-3xl">
+        <div className="mt-4 flex flex-col justify-center gap-4">
             {flashcardSets.map((flashcardSet) => {
                 return (
                     <div

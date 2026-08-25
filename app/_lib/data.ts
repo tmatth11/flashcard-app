@@ -1,12 +1,13 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { flashcard, flashcardSet } from '../_db/schema';
-import { count, eq, getTableColumns, and, or } from "drizzle-orm";
+import { count, eq, getTableColumns, or } from "drizzle-orm";
 import { clerkClient } from '@clerk/nextjs/server';
 import { FlashcardSetProps } from '../(sets)/types';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
-export async function getAllFlashcardSets(filters: FlashcardSetProps) {
+const ITEMS_PER_PAGE = 5;
+export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
     const visibilityConditions = [];
     
     if (filters.isPublic) {
@@ -61,4 +62,23 @@ export async function getAllFlashcardSets(filters: FlashcardSetProps) {
     }
 
     return flashcardSetsAndUsers;
+}
+
+export async function getAllFlashcardSets(filters: FlashcardSetProps) {
+    const page = Math.max(1, Number(filters.currentPage) || 1);
+    const offset = (page - 1) * ITEMS_PER_PAGE;
+    const allFilteredSets = await getFilteredFlashcardSets(filters);
+
+    return allFilteredSets.slice(offset, offset + ITEMS_PER_PAGE);
+}
+
+export async function fetchFlashcardSetsPages(filters: FlashcardSetProps) {
+    try {
+        const allFilteredSets = await getFilteredFlashcardSets(filters);
+
+        return Math.ceil(Number(allFilteredSets.length) / ITEMS_PER_PAGE);
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch total number of pages.");
+    }
 }
