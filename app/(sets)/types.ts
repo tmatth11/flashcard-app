@@ -3,4 +3,5 @@ export interface FlashcardSetProps {
     isPrivate: boolean;
     query: string;
     currentPage: number;
+    sortBy: string;
 }

@@ -4,11 +4,13 @@ export default async function Page(props: {
     searchParams?: Promise<{
         query?: string;
         page?: string;
+        sort?: string;
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
+    const sortBy = searchParams?.sort || "created-descending";
 
     return (
         <div className="flex flex-col items-center p-2">
@@ -20,6 +22,7 @@ export default async function Page(props: {
                 isPrivate={false}
                 query={query}
                 currentPage={currentPage}
+                sortBy={sortBy}
                 placeholder="Search all sets"
             />
         </div>

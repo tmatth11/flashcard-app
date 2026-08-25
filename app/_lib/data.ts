@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { flashcard, flashcardSet } from '../_db/schema';
-import { count, eq, getTableColumns, or } from "drizzle-orm";
+import { asc, count, desc, eq, getTableColumns, or } from "drizzle-orm";
 import { clerkClient } from '@clerk/nextjs/server';
 import { FlashcardSetProps } from '../(sets)/types';
 
@@ -9,13 +9,32 @@ const db = drizzle(process.env.DATABASE_URL!);
 const ITEMS_PER_PAGE = 5;
 export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
     const visibilityConditions = [];
-    
+
     if (filters.isPublic) {
         visibilityConditions.push(eq(flashcardSet.public, true));
     }
-    if (filters.isPrivate){
+    if (filters.isPrivate) {
         visibilityConditions.push(eq(flashcardSet.public, false));
     }
+
+    let orderByClause;
+    switch (filters.sortBy) {
+        case "created-ascending":
+            orderByClause = asc(flashcardSet.createdAt);
+            break;
+        case "modified-descending":
+            orderByClause = desc(flashcardSet.updatedAt);
+            break;
+        case "modified-ascending":
+            orderByClause = asc(flashcardSet.updatedAt);
+            break;
+        case "created-descending":
+        default:
+            orderByClause = desc(flashcardSet.createdAt);
+            break;
+    }
+
+    console.log(filters.sortBy);
 
     const flashcardSets = await db
         .select({
@@ -25,7 +44,8 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
         .from(flashcardSet)
         .leftJoin(flashcard, eq(flashcardSet.id, flashcard.setId))
         .where(visibilityConditions.length > 0 ? or(...visibilityConditions) : undefined)
-        .groupBy(flashcardSet.id);
+        .groupBy(flashcardSet.id)
+        .orderBy(orderByClause);
 
     const client = await clerkClient();
 
@@ -38,7 +58,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
                     username: user.username || "Unknown User",
                     imageUrl: user.imageUrl,
                 };
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
                 return {
                     ...set,
