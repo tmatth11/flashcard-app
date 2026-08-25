@@ -1,12 +1,21 @@
-import FlashcardSetList from "../_component/flashcard-set-list";
+import FlashcardSetView from "../_component/flashcard-set-view";
 
-export default function Page() {
+export default async function Page(props: {
+    searchParams?: Promise<{
+        query?: string;
+        page?: string;
+    }>;
+}) {
+    const searchParams = await props.searchParams;
+    const query = searchParams?.query || '';
+    const currentPage = Number(searchParams?.page) || 1;
+
     return (
         <div className="flex flex-col items-center p-2">
             <h1 className="text-center text-2xl font-semibold">
                 All Flashcard Sets
             </h1>
-            <FlashcardSetList isPublic={true} isPrivate={false} />
+            <FlashcardSetView isPublic={true} isPrivate={false} query={query} placeholder="Search all sets" />
         </div>
     );
 }
