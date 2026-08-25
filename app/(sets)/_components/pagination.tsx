@@ -28,7 +28,9 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
                 </button>
             </Link>
             {/* Current page/Total pages */}
-            <p>{currentPage} of {totalPages}</p>
+            <p>
+                {currentPage} of {totalPages}
+            </p>
             {/* Next arrow */}
             <Link href={createPageURL(currentPage + 1)}>
                 <button

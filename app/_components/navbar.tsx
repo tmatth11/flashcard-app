@@ -15,6 +15,7 @@ export default function Navbar() {
                 <Link
                     href="/"
                     className="mb-2 text-2xl font-semibold md:mb-0 dark:text-white"
+                    onClick={() => window.scrollTo(0, 0)}
                 >
                     Flashcard App
                 </Link>
@@ -35,7 +36,10 @@ export default function Navbar() {
                     <Show when="signed-in">
                         <Link
                             href="/create-set"
-                            onClick={() => setLinksDisplay("hidden")}
+                            onClick={() => {
+                                setLinksDisplay("hidden");
+                                window.scrollTo(0, 0);
+                            }}
                         >
                             <div className="nav-link">
                                 <Plus aria-label="Create set" />
@@ -44,7 +48,10 @@ export default function Navbar() {
                         </Link>
                         <Link
                             href="/my-sets"
-                            onClick={() => setLinksDisplay("hidden")}
+                            onClick={() => {
+                                setLinksDisplay("hidden");
+                                window.scrollTo(0, 0);
+                            }}
                         >
                             <div className="nav-link">
                                 <FileUser aria-label="My sets" />
@@ -53,7 +60,10 @@ export default function Navbar() {
                         </Link>
                         <Link
                             href="/all-sets"
-                            onClick={() => setLinksDisplay("hidden")}
+                            onClick={() => {
+                                setLinksDisplay("hidden");
+                                window.scrollTo(0, 0);
+                            }}
                         >
                             <div className="nav-link">
                                 <FileStack aria-label="All sets" />
@@ -69,14 +79,20 @@ export default function Navbar() {
                         <Link
                             href="/sign-in"
                             className="cursor-pointer text-center dark:text-white"
-                            onClick={() => setLinksDisplay("hidden")}
+                            onClick={() => {
+                                setLinksDisplay("hidden");
+                                window.scrollTo(0, 0);
+                            }}
                         >
                             Sign In
                         </Link>
                         <Link
                             href="/sign-up"
                             className="button bg-blue-700 text-center"
-                            onClick={() => setLinksDisplay("hidden")}
+                            onClick={() => {
+                                setLinksDisplay("hidden");
+                                window.scrollTo(0, 0);
+                            }}
                         >
                             Sign Up
                         </Link>
