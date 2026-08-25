@@ -1,4 +1,4 @@
-import FlashcardSetView from "../_component/flashcard-set-view";
+import FlashcardSetView from "../_components/flashcard-set-view";
 
 export default async function Page(props: {
     searchParams?: Promise<{
