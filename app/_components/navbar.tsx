@@ -58,19 +58,19 @@ export default function Navbar() {
                                 <span>My sets</span>
                             </div>
                         </Link>
-                        <Link
-                            href="/all-sets"
-                            onClick={() => {
-                                setLinksDisplay("hidden");
-                                window.scrollTo(0, 0);
-                            }}
-                        >
-                            <div className="nav-link">
-                                <FileStack aria-label="All sets" />
-                                <span>All sets</span>
-                            </div>
-                        </Link>
                     </Show>
+                    <Link
+                        href="/all-sets"
+                        onClick={() => {
+                            setLinksDisplay("hidden");
+                            window.scrollTo(0, 0);
+                        }}
+                    >
+                        <div className="nav-link">
+                            <FileStack aria-label="All sets" />
+                            <span>All sets</span>
+                        </div>
+                    </Link>
                     <div className="nav-link">
                         <ModeToggle />
                         <span className="md:hidden">Toggle mode</span>
