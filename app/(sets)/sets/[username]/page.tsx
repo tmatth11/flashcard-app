@@ -1,6 +1,7 @@
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import FlashcardSetView from "../../_components/flashcard-set-view";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 export default async function Page(props: {
     params: Promise<{
@@ -27,6 +28,7 @@ export default async function Page(props: {
     }
 
     const loggedInUser = await currentUser();
+    const userImageUrl = loggedInUser?.imageUrl || '/blank-user.png';
     const isOwner = loggedInUser?.username === username;
 
     const query = searchParams?.query || "";
@@ -34,15 +36,23 @@ export default async function Page(props: {
     const sortBy = searchParams?.sort || "created-descending";
     const rawVisibility = searchParams?.visibility || "all";
     const visibility = isOwner ? rawVisibility : "public";
-    
 
     const pageTitle = isOwner ? "Your sets" : `${username}'s sets`;
 
     return (
         <div className="flex flex-col items-center p-2">
-            <h1 className="text-center text-2xl font-semibold">
-                {pageTitle}
-            </h1>
+            <div className="flex flex-col items-center">
+                <Image
+                    width="50"
+                    height="50"
+                    className="mt-4"
+                    src={userImageUrl}
+                    alt={username}
+                />
+                <h1 className="text-center text-2xl font-semibold mt-2">
+                    {pageTitle}
+                </h1>
+            </div>
             <FlashcardSetView
                 query={query}
                 currentPage={currentPage}
@@ -50,7 +60,9 @@ export default async function Page(props: {
                 targetUsername={username}
                 isOwner={isOwner}
                 visibility={visibility}
-                placeholder={isOwner ? "Search your sets" : `Search ${username}'s sets`}
+                placeholder={
+                    isOwner ? "Search your sets" : `Search ${username}'s sets`
+                }
             />
         </div>
     );

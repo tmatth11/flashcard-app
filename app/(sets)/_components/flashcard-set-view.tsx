@@ -23,7 +23,7 @@ export default async function FlashcardSetView({
         targetUsername: targetUsername,
         visibility: visibility,
     };
-
+    
     const totalPages = await fetchFlashcardSetsPages(filters);
 
     return (
