@@ -40,6 +40,7 @@ export default async function FlashcardSetView({
                     targetUsername={targetUsername}
                     visibility={visibility}
                     isUserPage={isUserPage}
+                    isOwner={isOwner}
                 />
             </Suspense>
             <Pagination totalPages={totalPages} />

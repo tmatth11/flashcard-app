@@ -5,16 +5,11 @@ export interface FlashcardSetFilters {
     targetUsername?: string;
     visibility?: "all" | "private" | "public";
 }
-export interface FlashcardSetProps {
-    query: string;
-    currentPage: number;
-    sortBy: string;
-    targetUsername?: string;
-    visibility?: "all" | "private" | "public";
+export interface FlashcardSetProps extends FlashcardSetFilters {
     isUserPage: boolean;
+    isOwner?: boolean;
 }
 
 export interface FlashcardSetViewProps extends FlashcardSetProps {
     placeholder: string;
-    isOwner?: boolean;
 }

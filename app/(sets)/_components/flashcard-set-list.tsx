@@ -2,8 +2,11 @@ import { getAllFlashcardSets } from "@/app/_lib/data";
 import Image from "next/image";
 import { FlashcardSetProps } from "../types";
 import Link from "next/link";
+import { Lock } from "lucide-react";
 
 export default async function FlashcardSetList(props: FlashcardSetProps) {
+    const { isOwner } = props;
+
     const filters = {
         query: props.query,
         currentPage: props.currentPage,
@@ -49,7 +52,10 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                         </div>
 
                         <span className="line-clamp-2 text-lg font-semibold break-all">
-                            {flashcardSet.title}
+                            {flashcardSet.title}{" "}
+                            {isOwner && !flashcardSet.public && (
+                                <span className="inline-block"><Lock size={16} /></span>
+                            )}
                         </span>
                         <span className="line-clamp-2 text-sm break-all">
                             {flashcardSet.description}
