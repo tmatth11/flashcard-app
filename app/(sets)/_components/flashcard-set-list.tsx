@@ -1,6 +1,7 @@
 import { getAllFlashcardSets } from "@/app/_lib/data";
 import Image from "next/image";
 import { FlashcardSetProps } from "../types";
+import Link from "next/link";
 
 export default async function FlashcardSetList(props: FlashcardSetProps) {
     const flashcardSets = await getAllFlashcardSets(props);
@@ -25,7 +26,8 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                                 alt={flashcardSet.username}
                                 className="inline-block rounded-full"
                             />
-                            <span> {flashcardSet.username}</span>
+                            <span>{" "}</span>
+                            <Link href={`/sets/${flashcardSet.username}`} className="hover:underline">{flashcardSet.username}</Link>
                         </div>
                         <span className="line-clamp-2 text-lg font-semibold break-all">
                             {flashcardSet.title}

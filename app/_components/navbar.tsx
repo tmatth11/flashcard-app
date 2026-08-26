@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import ModeToggle from "./mode-toggle";
-import { Show, UserButton } from "@clerk/nextjs";
+import { Show, UserButton, useUser } from "@clerk/nextjs";
 import { FileStack, FileUser, Menu, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function Navbar() {
+    const {user} = useUser();
+
     const [linksDisplay, setLinksDisplay] = useState("hidden");
 
     return (
@@ -47,7 +49,7 @@ export default function Navbar() {
                             </div>
                         </Link>
                         <Link
-                            href="/my-sets"
+                            href={`/sets/${user?.username}`}
                             onClick={() => {
                                 setLinksDisplay("hidden");
                                 window.scrollTo(0, 0);

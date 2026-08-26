@@ -28,7 +28,7 @@ export default async function Page(props: {
     }
 
     const loggedInUser = await currentUser();
-    const userImageUrl = loggedInUser?.imageUrl || '/blank-user.png';
+    const userImageUrl = users.data[0].imageUrl || '/blank-user.png';
     const isOwner = loggedInUser?.username === username;
 
     const query = searchParams?.query || "";
