@@ -2,12 +2,12 @@ import { drizzle } from 'drizzle-orm/neon-http';
 import { flashcard, flashcardSet } from '../_db/schema';
 import { asc, count, desc, eq, getTableColumns, or } from "drizzle-orm";
 import { clerkClient } from '@clerk/nextjs/server';
-import { FlashcardSetProps } from '../(sets)/types';
+import { FlashcardSetFilters } from '../(sets)/types';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
 const ITEMS_PER_PAGE = 5;
-export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
+export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
     const visibilityConditions = [];
 
     if (filters.visibility === "public") {
@@ -91,7 +91,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
     return results;
 }
 
-export async function getAllFlashcardSets(filters: FlashcardSetProps) {
+export async function getAllFlashcardSets(filters: FlashcardSetFilters) {
     const page = Math.max(1, Number(filters.currentPage) || 1);
     const offset = (page - 1) * ITEMS_PER_PAGE;
     const allFilteredSets = await getFilteredFlashcardSets(filters);
@@ -99,7 +99,7 @@ export async function getAllFlashcardSets(filters: FlashcardSetProps) {
     return allFilteredSets.slice(offset, offset + ITEMS_PER_PAGE);
 }
 
-export async function fetchFlashcardSetsPages(filters: FlashcardSetProps) {
+export async function fetchFlashcardSetsPages(filters: FlashcardSetFilters) {
     try {
         const allFilteredSets = await getFilteredFlashcardSets(filters);
 

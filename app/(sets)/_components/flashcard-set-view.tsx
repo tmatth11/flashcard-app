@@ -14,7 +14,8 @@ export default async function FlashcardSetView({
     sortBy,
     targetUsername,
     isOwner = false,
-    visibility = "all"
+    visibility = "all",
+    isUserPage
 }: FlashcardSetViewProps) {
     const filters = {
         query: query,
@@ -38,6 +39,7 @@ export default async function FlashcardSetView({
                     sortBy={sortBy}
                     targetUsername={targetUsername}
                     visibility={visibility}
+                    isUserPage={isUserPage}
                 />
             </Suspense>
             <Pagination totalPages={totalPages} />

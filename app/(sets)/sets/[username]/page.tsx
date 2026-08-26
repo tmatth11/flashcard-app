@@ -60,6 +60,7 @@ export default async function Page(props: {
                 targetUsername={username}
                 isOwner={isOwner}
                 visibility={visibility}
+                isUserPage={true}
                 placeholder={
                     isOwner ? "Search your sets" : `Search ${username}'s sets`
                 }
