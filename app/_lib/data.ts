@@ -10,10 +10,10 @@ const ITEMS_PER_PAGE = 5;
 export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
     const visibilityConditions = [];
 
-    if (filters.isPublic) {
+    if (filters.visibility === "public") {
         visibilityConditions.push(eq(flashcardSet.public, true));
     }
-    if (filters.isPrivate) {
+    if (filters.visibility === "private") {
         visibilityConditions.push(eq(flashcardSet.public, false));
     }
 

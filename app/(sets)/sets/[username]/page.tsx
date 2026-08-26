@@ -1,4 +1,4 @@
-import { clerkClient } from "@clerk/nextjs/server";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import FlashcardSetView from "../../_components/flashcard-set-view";
 import { redirect } from "next/navigation";
 
@@ -10,6 +10,7 @@ export default async function Page(props: {
         query?: string;
         page?: string;
         sort?: string;
+        visibility?: "all" | "private" | "public";
     }>;
 }) {
     const params = await props.params;
@@ -25,23 +26,31 @@ export default async function Page(props: {
         redirect("/all-sets");
     }
 
+    const loggedInUser = await currentUser();
+    const isOwner = loggedInUser?.username === username;
+
     const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
     const sortBy = searchParams?.sort || "created-descending";
+    const rawVisibility = searchParams?.visibility || "all";
+    const visibility = isOwner ? rawVisibility : "public";
+    
+
+    const pageTitle = isOwner ? "Your sets" : `${username}'s sets`;
 
     return (
         <div className="flex flex-col items-center p-2">
             <h1 className="text-center text-2xl font-semibold">
-                {username}&apos;s sets
+                {pageTitle}
             </h1>
             <FlashcardSetView
-                isPublic={true}
-                isPrivate={false}
                 query={query}
                 currentPage={currentPage}
                 sortBy={sortBy}
                 targetUsername={username}
-                placeholder={`Search ${username}'s sets`}
+                isOwner={isOwner}
+                visibility={visibility}
+                placeholder={isOwner ? "Search your sets" : `Search ${username}'s sets`}
             />
         </div>
     );

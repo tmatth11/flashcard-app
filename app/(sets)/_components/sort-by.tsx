@@ -15,7 +15,7 @@ export default function SortBy({ defaultValue }: { defaultValue: string }) {
         else {
             params.delete("sort");
         }
-
+        params.set("page", "1");
         replace(`${pathname}?${params.toString()}`);
     };
 

@@ -18,8 +18,7 @@ export default async function Page(props: {
                 All Flashcard Sets
             </h1>
             <FlashcardSetView
-                isPublic={true}
-                isPrivate={false}
+                visibility="public"
                 query={query}
                 currentPage={currentPage}
                 sortBy={sortBy}
