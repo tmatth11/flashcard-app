@@ -11,7 +11,8 @@ export default async function FlashcardSetView({
     isPrivate,
     query,
     currentPage,
-    sortBy
+    sortBy,
+    targetUsername
 }: {
     placeholder: string;
     isPublic: boolean;
@@ -19,13 +20,15 @@ export default async function FlashcardSetView({
     query: string;
     currentPage: number;
     sortBy: string;
+    targetUsername?: string;
 }) {
     const filters = {
         isPublic: isPublic,
         isPrivate: isPrivate,
         query: query,
         currentPage: currentPage,
-        sortBy: sortBy
+        sortBy: sortBy,
+        targetUsername: targetUsername,
     };
 
     const totalPages = await fetchFlashcardSetsPages(filters);
@@ -41,6 +44,7 @@ export default async function FlashcardSetView({
                     query={query}
                     currentPage={currentPage}
                     sortBy={sortBy}
+                    targetUsername={targetUsername}
                 />
             </Suspense>
             <Pagination totalPages={totalPages} />

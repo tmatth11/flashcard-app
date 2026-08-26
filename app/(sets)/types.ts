@@ -4,4 +4,5 @@ export interface FlashcardSetProps {
     query: string;
     currentPage: number;
     sortBy: string;
+    targetUsername?: string;
 }

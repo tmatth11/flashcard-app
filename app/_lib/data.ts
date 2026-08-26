@@ -69,19 +69,26 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetProps) {
         })
     );
 
+    let results = flashcardSetsAndUsers;
+    if (filters.targetUsername) {
+        results = results.filter(
+            (set) => set.username.toLowerCase() === filters.targetUsername?.toLowerCase()
+        )
+    }
+
     if (filters.query) {
         const lowerQuery = filters.query.toLowerCase();
 
-        return flashcardSetsAndUsers.filter((set) => {
+        results = flashcardSetsAndUsers.filter((set) => {
             const matchesTitle = set.title.toLowerCase().includes(lowerQuery);
             const matchesDescription = set.description?.toLowerCase().includes(lowerQuery);
-            const matchesUsername = set.username.toLowerCase().includes(lowerQuery);
+            const matchesUsername = filters.targetUsername ? false : set.username.toLowerCase().includes(lowerQuery);
 
             return matchesTitle || matchesDescription || matchesUsername;
         });
     }
 
-    return flashcardSetsAndUsers;
+    return results;
 }
 
 export async function getAllFlashcardSets(filters: FlashcardSetProps) {
