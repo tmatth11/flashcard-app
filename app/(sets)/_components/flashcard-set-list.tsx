@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Lock } from "lucide-react";
 
 export default async function FlashcardSetList(props: FlashcardSetProps) {
-    const { isOwner } = props;
+    const { isOwner, isUserPage } = props;
 
     const filters = {
         query: props.query,
@@ -30,7 +30,7 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                             <span>
                                 {flashcardSet.termCount > 1 ? "s" : ""}{" "}
                             </span>
-                            {props.isUserPage ?? (
+                            {isUserPage ?? (
                                 <span>
                                     <span>| </span>
                                     <Image
@@ -54,12 +54,22 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                         <span className="line-clamp-2 text-lg font-semibold break-all">
                             {flashcardSet.title}{" "}
                             {isOwner && !flashcardSet.public && (
-                                <span className="inline-block"><Lock size={16} /></span>
+                                <span className="inline-block">
+                                    <Lock size={16} />
+                                </span>
                             )}
                         </span>
                         <span className="line-clamp-2 text-sm break-all">
                             {flashcardSet.description}
                         </span>
+                        {isOwner && (
+                            <div className="flex justify-end gap-2">
+                                <button className="button bg-yellow-600 hover:bg-yellow-500">
+                                    Edit
+                                </button>
+                                <button className="button bg-red-600 hover:bg-red-500">Delete</button>
+                            </div>
+                        )}
                     </div>
                 );
             })}
