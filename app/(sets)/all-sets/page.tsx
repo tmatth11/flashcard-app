@@ -23,6 +23,7 @@ export default async function Page(props: {
                 currentPage={currentPage}
                 sortBy={sortBy}
                 placeholder="Search all sets"
+                isUserPage={false}
             />
         </div>
     );
