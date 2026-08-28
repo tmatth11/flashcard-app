@@ -87,7 +87,7 @@ export default function FlashcardSetForm({
             {/* Create Set header */}
             <div className="mt-5 flex flex-col items-center justify-between gap-2 md:flex-row md:gap-0">
                 <h1 className="text-center text-xl font-semibold">
-                    Create a new flashcard set
+                    {isEditMode ? "Edit your flashcard set" : "Create a new flashcard set"}
                 </h1>
                 <button
                     type="submit"
