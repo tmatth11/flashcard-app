@@ -1,16 +1,14 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
-import { drizzle } from 'drizzle-orm/neon-http';
 import z from 'zod';
 import { flashcard, flashcardSet } from '../_db/schema';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { FlashcardSetFilters } from '../(sets)/types';
 import { fetchFlashcardSetsPages } from '../_lib/data';
-
-const db = drizzle(process.env.DATABASE_URL!);
+import { db } from '../_db/drizzle';
 
 const FlashcardSetSchema = z.object({
     title: z.string().min(1, "Title is required").max(100, "Title is too long"),
@@ -36,7 +34,7 @@ export type FlashcardSetState = {
 };
 
 export async function createFlashcardSet(prevState: FlashcardSetState, formData: FormData) {
-    const {userId} = await auth();
+    const { userId } = await auth();
 
     if (!userId) {
         return {
@@ -123,4 +121,77 @@ export async function deleteFlashcardSet(id: number, username: string, filters: 
 
         redirect(`/sets/${username}?${params.toString()}`);
     }
+}
+
+export async function updateFlashcardSet(prevState: FlashcardSetState, formData: FormData) {
+    const { userId } = await auth();
+
+    if (!userId) {
+        return {
+            message: "Unauthorized. Please sign in to edit flashcards sets.",
+            success: false,
+        };
+    }
+
+    const rawSetId = formData.get("setId");
+    const setId = Number(rawSetId);
+    const title = (formData.get("title") as string)?.trim();
+    const description = (formData.get("description") as string)?.trim() || null;
+    const isPublic = formData.get("public") === "on";
+
+    if (!setId || isNaN(setId)) {
+        return { message: "Invalid flashcard set ID.", success: false };
+    }
+
+    if (!title) {
+        return { message: "Title is required.", success: false };
+    }
+
+    const terms = formData.getAll("term") as string[];
+    const definitions = formData.getAll("definition") as string[];
+
+    if (terms.length === 0 || terms.some((t) => !t.trim()) || definitions.some((d) => !d.trim())) {
+        return { message: "All flashcards must have both a term and a definition.", success: false };
+    }
+
+    try {
+        await db.transaction(async (tx) => {
+            const updatedSets = await tx
+                .update(flashcardSet)
+                .set({
+                    title,
+                    description,
+                    public: isPublic,
+                    updatedAt: new Date(),
+                })
+                .where(and(eq(flashcardSet.id, setId), eq(flashcardSet.userId, userId)))
+                .returning({ id: flashcardSet.id });
+
+            if (updatedSets.length === 0) {
+                throw new Error("Set not found or unauthorized.");
+            }
+
+            await tx.delete(flashcard).where(eq(flashcard.setId, setId));
+
+            const cardsToInsert = terms.map((term, index) => ({
+                setId,
+                term: term.trim(),
+                definition: definitions[index].trim(),
+                order: index
+            }));
+
+            await tx.insert(flashcard).values(cardsToInsert);
+        });
+    }
+    catch (error) {
+        console.error("Failed to update flashcard set:", error);
+        return {
+            message: "An error occured while updating the set. Please try again",
+            success: false,
+        };
+    }
+
+    revalidatePath(`/edit-set/${setId}`);
+    revalidatePath(`/set/${setId}`);
+    redirect(`/set/${setId}`)
 }

@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import FlashcardSetForm from "./_components/flashcard-form";
+import FlashcardSetForm from "../_components/flashcard-form";
 
 export default async function Page() {
     await auth.protect();

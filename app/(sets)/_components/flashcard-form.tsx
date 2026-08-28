@@ -3,49 +3,59 @@
 import {
     createFlashcardSet,
     FlashcardSetState,
+    updateFlashcardSet,
 } from "@/app/actions/set-actions";
 import { Plus, Trash2 } from "lucide-react";
 import { useActionState, useId, useState } from "react";
+import { Flashcard, FlashcardSetFormProps } from "../types";
 
 const initialState: FlashcardSetState = {};
 
-export default function FlashcardSetForm() {
+export default function FlashcardSetForm({
+    setId,
+    initialData,
+}: FlashcardSetFormProps) {
+    const isEditMode = Boolean(setId);
+    const actionToUse = isEditMode ? updateFlashcardSet : createFlashcardSet;
+
     const baseId = useId();
-    const [state, formAction, isPending] = useActionState(
-        createFlashcardSet,
+    const [state, formAction, isPending] = useActionState<FlashcardSetState, FormData>(
+        actionToUse,
         initialState,
     );
 
-    const [flashcards, setFlashcards] = useState(() => [
-        { id: crypto.randomUUID(), term: "", definition: "" },
-    ]);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [flashcards, setFlashcards] = useState<Flashcard[]>(() =>
+        initialData?.flashcards.length
+            ? initialData.flashcards
+            : [{ id: Date.now(), term: "", definition: "" }],
+    );
+    const [title, setTitle] = useState(initialData?.title ?? "");
+    const [description, setDescription] = useState(initialData?.description ?? "");
 
     const appendCard = () => {
         setFlashcards((prev) => [
             ...prev,
-            { id: crypto.randomUUID(), term: "", definition: "" },
+            { id: Date.now(), term: "", definition: "" },
         ]);
     };
 
     const insertCard = (index: number) => {
         setFlashcards((prev) =>
             prev.toSpliced(index + 1, 0, {
-                id: crypto.randomUUID(),
+                id: Date.now(),
                 term: "",
                 definition: "",
             }),
         );
     };
 
-    const removeCard = (id: string) => {
+    const removeCard = (id: number) => {
         if (flashcards.length <= 1) return;
         setFlashcards((prev) => prev.filter((c) => c.id !== id));
     };
 
     const updateCard = (
-        id: string,
+        id: number,
         field: "term" | "definition",
         value: string,
     ) => {
@@ -66,6 +76,7 @@ export default function FlashcardSetForm() {
             action={formAction}
             className="flex flex-col justify-center md:w-2xl lg:w-3xl"
         >
+            {setId && <input type="hidden" name="setId" value={setId} />}
             {/* Error message banner */}
             {state?.message && (
                 <div className="rounded-md border-4 border-red-700 bg-red-500 p-2 text-center break-all text-white">
@@ -76,14 +87,14 @@ export default function FlashcardSetForm() {
             {/* Create Set header */}
             <div className="mt-5 flex flex-col items-center justify-between gap-2 md:flex-row md:gap-0">
                 <h1 className="text-center text-xl font-semibold">
-                    Create a new flashcard set
+                    {isEditMode ? "Edit your flashcard set" : "Create a new flashcard set"}
                 </h1>
                 <button
                     type="submit"
                     disabled={isPending || isFormInvalid}
                     className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
                 >
-                    Create
+                    {isEditMode ? "Save" : "Create"}
                 </button>
             </div>
             {/* Visibility toggle */}
@@ -94,7 +105,7 @@ export default function FlashcardSetForm() {
                     type="checkbox"
                     name="public"
                     id={`${baseId}-public`}
-                    defaultChecked
+                    defaultChecked={initialData?.isPublic ?? true}
                 />
             </label>
             <div className="mt-4 flex w-full flex-col gap-4">
@@ -272,9 +283,9 @@ export default function FlashcardSetForm() {
                 <button
                     type="submit"
                     disabled={isPending || isFormInvalid}
-                    className="mt-4 w-1/2 button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                    className="button mt-4 w-1/2 bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
                 >
-                    Create
+                    {isEditMode ? "Save" : "Create"}
                 </button>
             </div>
         </form>
