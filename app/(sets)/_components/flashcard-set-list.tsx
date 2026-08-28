@@ -66,9 +66,9 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                             </span>
                             {isOwner && (
                                 <div className="flex justify-end gap-2">
-                                    <button className="button bg-yellow-600 hover:bg-yellow-500">
+                                    <Link href={`/edit-set/${flashcardSet.id}`} className="button bg-yellow-600 hover:bg-yellow-500">
                                         Edit
-                                    </button>
+                                    </Link>
                                     <DeleteFlashcardSetButton
                                         id={flashcardSet.id}
                                         username={flashcardSet.username}
