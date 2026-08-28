@@ -32,7 +32,7 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                                 <span>
                                     {flashcardSet.termCount > 1 ? "s" : ""}{" "}
                                 </span>
-                                {isUserPage ?? (
+                                {!isUserPage && (
                                     <span>
                                         <span>| </span>
                                         <Image
