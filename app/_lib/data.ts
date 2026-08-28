@@ -34,8 +34,6 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
             break;
     }
 
-    console.log(filters.sortBy);
-
     const flashcardSets = await db
         .select({
             ...getTableColumns(flashcardSet),

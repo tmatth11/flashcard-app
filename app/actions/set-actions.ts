@@ -6,6 +6,9 @@ import z from 'zod';
 import { flashcard, flashcardSet } from '../_db/schema';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { eq } from 'drizzle-orm';
+import { FlashcardSetFilters } from '../(sets)/types';
+import { fetchFlashcardSetsPages } from '../_lib/data';
 
 const db = drizzle(process.env.DATABASE_URL!);
 
@@ -103,3 +106,21 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
     revalidatePath(redirectPath);
     redirect(redirectPath);
 };
+
+export async function deleteFlashcardSet(id: number, username: string, filters: FlashcardSetFilters) {
+    await db.delete(flashcardSet).where(eq(flashcardSet.id, id));
+
+    const totalPages = await fetchFlashcardSetsPages(filters);
+    const currentPage = filters.currentPage || 1;
+    revalidatePath(`/sets/${username}`);
+
+    if (currentPage > totalPages && totalPages > 0) {
+        const params = new URLSearchParams();
+        if (filters.query) params.set("query", filters.query);
+        if (filters.sortBy) params.set("sort", filters.sortBy);
+        if (filters.visibility) params.set("visibility", filters.visibility);
+        params.set("page", totalPages.toString());
+
+        redirect(`/sets/${username}?${params.toString()}`);
+    }
+}

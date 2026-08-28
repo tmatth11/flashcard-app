@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FlashcardSetProps } from "../types";
 import Link from "next/link";
 import { Lock } from "lucide-react";
+import { DeleteFlashcardSetButton } from "./delete-flashcard-set-button";
 
 export default async function FlashcardSetList(props: FlashcardSetProps) {
     const { isOwner, isUserPage } = props;
@@ -67,7 +68,11 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                                 <button className="button bg-yellow-600 hover:bg-yellow-500">
                                     Edit
                                 </button>
-                                <button className="button bg-red-600 hover:bg-red-500">Delete</button>
+                                <DeleteFlashcardSetButton
+                                    id={flashcardSet.id}
+                                    username={flashcardSet.username}
+                                    filters={filters}
+                                />
                             </div>
                         )}
                     </div>
