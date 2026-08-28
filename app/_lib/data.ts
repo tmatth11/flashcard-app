@@ -3,8 +3,7 @@ import { flashcard, flashcardSet } from '../_db/schema';
 import { asc, count, desc, eq, getTableColumns, or } from "drizzle-orm";
 import { clerkClient } from '@clerk/nextjs/server';
 import { FlashcardSetFilters } from '../(sets)/types';
-
-const db = drizzle(process.env.DATABASE_URL!);
+import { db } from '../_db/drizzle';
 
 const ITEMS_PER_PAGE = 5;
 export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
@@ -106,4 +105,13 @@ export async function fetchFlashcardSetsPages(filters: FlashcardSetFilters) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch total number of pages.");
     }
+}
+
+export async function getFlashcardSetById(id: number) {
+    return await db.query.flashcardSet.findFirst({
+        where: (set, {eq}) => eq(set.id, id),
+        with: {
+            flashcards: true,
+        }
+    });
 }

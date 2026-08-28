@@ -13,3 +13,25 @@ export interface FlashcardSetProps extends FlashcardSetFilters {
 export interface FlashcardSetViewProps extends FlashcardSetProps {
     placeholder: string;
 }
+
+export interface Flashcard {
+    id: number;
+    term: string;
+    definition: string;
+}
+
+export interface FlashcardSetFormProps {
+    setId?: number;
+    initialData?: {
+        title: string;
+        description: string | null;
+        isPublic: boolean;
+        flashcards: Flashcard[]
+    };
+}
+
+export interface EditSetPageProps {
+    params: Promise<{
+        "set-id": string;
+    }>;
+}

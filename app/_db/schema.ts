@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { text, pgTable, serial, timestamp, integer, boolean, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
 export const flashcardSet = pgTable("flashcard_set", {
@@ -30,3 +31,14 @@ export const flashcardStar = pgTable("flashcard_star", {
 }, (table) => [
     uniqueIndex("flashcard_star_idx").on(table.userId, table.flashcardId)
 ]);
+
+export const flashcardSetRelations = relations(flashcardSet, ({many}) => ({
+    flashcards: many(flashcard)
+}));
+
+export const flashcardRelations = relations(flashcard, ({one}) => ({
+    set: one(flashcardSet, {
+        fields: [flashcard.setId],
+        references: [flashcardSet.id],
+    }),
+}));
