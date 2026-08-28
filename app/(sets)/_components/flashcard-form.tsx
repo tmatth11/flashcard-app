@@ -94,7 +94,7 @@ export default function FlashcardSetForm({
                     disabled={isPending || isFormInvalid}
                     className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
                 >
-                    Create
+                    {isEditMode ? "Save" : "Create"}
                 </button>
             </div>
             {/* Visibility toggle */}
