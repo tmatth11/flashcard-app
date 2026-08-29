@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/app/_components/navbar";
+import { ThemeProvider } from "./_components/theme-provider";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -19,21 +19,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
-        <html lang="en" className={inter.className} suppressHydrationWarning>
-            <head>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0"
-                />
-                <link
-                    rel="icon"
-                    href="/icon?<generated>"
-                    type="image/<generated>"
-                    sizes="<generated>"
-                />
-            </head>
-            <body>
-                <ClerkProvider>
+        <ClerkProvider>
+            <html
+                lang="en"
+                className={inter.className}
+                suppressHydrationWarning
+            >
+                <body suppressHydrationWarning>
                     <ThemeProvider
                         attribute="class"
                         defaultTheme="system"
@@ -46,8 +38,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                             {children}
                         </main>
                     </ThemeProvider>
-                </ClerkProvider>
-            </body>
-        </html>
+                </body>
+            </html>
+        </ClerkProvider>
     );
 }

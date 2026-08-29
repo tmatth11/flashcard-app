@@ -30,7 +30,7 @@ export interface FlashcardSetFormProps {
     };
 }
 
-export interface EditSetPageProps {
+export interface ViewAndEditSetPageProps {
     params: Promise<{
         "set-id": string;
     }>;
