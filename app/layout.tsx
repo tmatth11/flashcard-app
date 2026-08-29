@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 className={inter.className}
                 suppressHydrationWarning
             >
-                <body suppressHydrationWarning>
+                <body className="flex min-h-screen flex-col" suppressHydrationWarning>
                     <ThemeProvider
                         attribute="class"
                         defaultTheme="system"
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                         enableColorScheme={false}
                     >
                         <Navbar />
-                        <main className="min-h-dvh dark:bg-neutral-900 dark:text-white">
+                        <main className="flex-1 dark:bg-neutral-900 dark:text-white">
                             {children}
                         </main>
                     </ThemeProvider>

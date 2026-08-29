@@ -55,14 +55,17 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                                 )}
                             </div>
 
-                            <span className="line-clamp-2 text-lg font-semibold break-all">
+                            <Link
+                                href={`/set/${flashcardSet.id}`}
+                                className="line-clamp-2 text-lg font-semibold break-all hover:underline"
+                            >
                                 {flashcardSet.title}{" "}
                                 {isOwner && !flashcardSet.public && (
                                     <span className="inline-block">
                                         <Lock size={16} />
                                     </span>
                                 )}
-                            </span>
+                            </Link>
                             <span className="line-clamp-2 text-sm break-all">
                                 {flashcardSet.description}
                             </span>
