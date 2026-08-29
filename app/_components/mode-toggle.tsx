@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { CircleQuestionMark, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme } from '@teispace/next-themes';
 
 export default function ModeToggle() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
