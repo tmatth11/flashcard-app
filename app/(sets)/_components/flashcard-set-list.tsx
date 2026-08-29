@@ -20,7 +20,9 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
 
     return (
         <div className="mt-4 flex flex-col justify-center gap-4">
-            {(flashcardSets.length == 0 && <p className="text-center">No flashcard sets were found.</p>) ||
+            {(flashcardSets.length == 0 && (
+                <p className="text-center">No flashcard sets were found.</p>
+            )) ||
                 flashcardSets.map((flashcardSet) => {
                     return (
                         <div
@@ -66,7 +68,10 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                             </span>
                             {isOwner && (
                                 <div className="flex justify-end gap-2">
-                                    <Link href={`/edit-set/${flashcardSet.id}`} className="button bg-yellow-600 hover:bg-yellow-500">
+                                    <Link
+                                        href={`/edit-set/${flashcardSet.id}`}
+                                        className="button bg-yellow-600 hover:bg-yellow-500"
+                                    >
                                         Edit
                                     </Link>
                                     <DeleteFlashcardSetButton
