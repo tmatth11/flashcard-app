@@ -18,6 +18,8 @@ export interface Flashcard {
     id: number;
     term: string;
     definition: string;
+    setId?: number;
+    order?: number;
 }
 
 export interface FlashcardSetFormProps {
