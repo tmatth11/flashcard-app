@@ -2,12 +2,11 @@
 
 import {
     createFlashcardSet,
-    FlashcardSetState,
     updateFlashcardSet,
 } from "@/app/actions/set-actions";
 import { Plus, Trash2 } from "lucide-react";
 import { useActionState, useId, useState } from "react";
-import { Flashcard, FlashcardSetFormProps } from "../types";
+import { Flashcard, FlashcardSetFormProps, FlashcardSetState } from "../types";
 
 const initialState: FlashcardSetState = {};
 

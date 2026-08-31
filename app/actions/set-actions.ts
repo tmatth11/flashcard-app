@@ -5,8 +5,8 @@ import z from 'zod';
 import { flashcard, flashcardSet } from '../_db/schema';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { and, eq } from 'drizzle-orm';
-import { FlashcardSetFilters } from '../(sets)/types';
+import { and, asc, count, eq } from 'drizzle-orm';
+import { FlashcardSetFilters, FlashcardSetState, FlashcardState } from '../(sets)/types';
 import { fetchFlashcardSetsPages } from '../_lib/data';
 import { db } from '../_db/drizzle';
 
@@ -21,17 +21,6 @@ const FlashcardSetSchema = z.object({
         })
     ).min(1, "At least one flashcard is required")
 });
-
-export type FlashcardSetState = {
-    message?: string;
-    success?: boolean;
-    errors?: {
-        title?: string[],
-        description?: string[];
-        public?: string[];
-        cards?: string[];
-    };
-};
 
 export async function createFlashcardSet(prevState: FlashcardSetState, formData: FormData) {
     const { userId } = await auth();
@@ -194,4 +183,89 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
     revalidatePath(`/edit-set/${setId}`);
     revalidatePath(`/set/${setId}`);
     redirect(`/set/${setId}`)
+}
+
+export async function deleteFlashcard(
+    cardId: number,
+    setId: number
+) {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const set = await db.query.flashcardSet.findFirst({
+        where: eq(flashcardSet.id, setId),
+        columns: { userId: true },
+    });
+
+    if (!set || set.userId !== userId) {
+        throw new Error("Forbidden: You do not own this flashcard set");
+    }
+
+    const [{ value: totalCards }] = await db
+        .select({ value: count() })
+        .from(flashcard)
+        .where(eq(flashcard.setId, setId));
+
+    if (totalCards <= 1) {
+        throw new Error("A set must have at least 1 card.");
+    }
+
+    await db.transaction(async (tx) => {
+        await tx.delete(flashcard).where(eq(flashcard.id, cardId));
+
+        const remainingCards = await tx.query.flashcard.findMany({
+            where: eq(flashcard.setId, setId),
+            orderBy: [asc(flashcard.order), asc(flashcard.id)],
+        });
+
+        for (let i = 0; i < remainingCards.length; i++) {
+            await tx
+                .update(flashcard)
+                .set({ order: i })
+                .where(eq(flashcard.id, remainingCards[i].id))
+        }
+    });
+
+    revalidatePath(`/sets/${setId}`);
+}
+
+export async function updateFlashcard(
+    prevState: FlashcardState,
+    formData: FormData
+) {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const cardId = Number(formData.get("cardId"));
+    const setId = Number(formData.get("setId"));
+    const term = (formData.get("term") as string)?.trim();
+    const definition = (formData.get("definition") as string)?.trim();
+
+    if (!term || !definition) {
+        return {
+            error: "Validation failed",
+            errors: {
+                term: !term ? ["Term is required."] : undefined,
+                definition: !definition ? ["Definition is required."] : undefined,
+            }
+        };
+    }
+
+    const set = await db.query.flashcardSet.findFirst({
+        where: eq(flashcardSet.id, setId),
+        columns: { userId: true }
+    });
+
+    if (!set || set.userId !== userId) {
+        return { error: "Forbidden: You do not own this flashcard set" };
+    }
+
+    await db
+        .update(flashcard)
+        .set({ term, definition })
+        .where(eq(flashcard.id, cardId));
+
+    revalidatePath(`/sets/${setId}`);
+
+    return { success: true };
 }

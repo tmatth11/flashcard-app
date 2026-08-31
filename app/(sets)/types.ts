@@ -37,3 +37,23 @@ export interface ViewAndEditSetPageProps {
         "set-id": string;
     }>;
 }
+
+export type FlashcardSetState = {
+    message?: string;
+    success?: boolean;
+    errors?: {
+        title?: string[],
+        description?: string[];
+        public?: string[];
+        cards?: string[];
+    };
+};
+
+export type FlashcardState = {
+    success?: boolean;
+    error?: string | null;
+    errors?: {
+        term?: string[];
+        definition?: string[];
+    }
+};

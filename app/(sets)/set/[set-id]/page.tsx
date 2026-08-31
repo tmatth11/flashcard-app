@@ -63,6 +63,7 @@ export default async function Page({ params }: ViewAndEditSetPageProps) {
                             key={flashcard.id}
                             flashcard={{ ...flashcard, setId }}
                             isOwner={isOwner}
+                            totalCards={setData.flashcards.length}
                         />
                     ))}
                 </div>
