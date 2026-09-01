@@ -8,7 +8,7 @@ export function DeleteFlashcardSetButton({
 }: {
     id: number;
     username: string;
-    filters: FlashcardSetFilters
+    filters?: FlashcardSetFilters
 }) {
     const deleteFlashcardSetWithId = deleteFlashcardSet.bind(
         null,

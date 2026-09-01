@@ -71,7 +71,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
                 userId: userId
             })
             .returning();
-        
+
         redirectPath = `/set/${newSet.id}`;
 
         const cardsToInsert = data.cards.map((card, index) => ({
@@ -95,9 +95,26 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
     redirect(redirectPath);
 };
 
-export async function deleteFlashcardSet(id: number, username: string, filters: FlashcardSetFilters) {
+export async function deleteFlashcardSet(id: number, username: string, filters?: FlashcardSetFilters) {
+    const {userId} = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const set = await db.query.flashcardSet.findFirst({
+        where: eq(flashcardSet.id, id),
+        columns: {userId: true}
+    });
+
+    if (!set || set.userId !== userId) {
+        throw new Error("Forbidden");
+    }
+
     await db.delete(flashcardSet).where(eq(flashcardSet.id, id));
 
+    if (filters === undefined) {
+        revalidatePath(`/sets/${username}`);
+        redirect(`/sets/${username}`);
+    }
+    
     const totalPages = await fetchFlashcardSetsPages(filters);
     const currentPage = filters.currentPage || 1;
     revalidatePath(`/sets/${username}`);

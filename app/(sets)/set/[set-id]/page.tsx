@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FlashcardDisplay from "../../_components/flashcard-display";
 import FlashcardItem from "../../_components/flashcard-item";
+import { DeleteFlashcardSetButton } from "../../_components/delete-flashcard-set-button";
 
 const IdParamSchema = z.coerce.number().int().positive();
 
@@ -57,6 +58,21 @@ export default async function Page({ params }: ViewAndEditSetPageProps) {
                 </h1>
                 <p className="mt-2 break-all">{setData.description}</p>
                 <FlashcardDisplay />
+                {isOwner && (
+                    <div className="mt-4 flex justify-end gap-2">
+                        <Link
+                            href={`/edit-set/${setId}`}
+                            className="button bg-yellow-600 hover:bg-yellow-500"
+                        >
+                            Edit
+                        </Link>
+                        <DeleteFlashcardSetButton
+                            id={setId}
+                            username={username}
+                            filters={undefined}
+                        />
+                    </div>
+                )}
                 <div className="mt-4">
                     {setData.flashcards.map((flashcard) => (
                         <FlashcardItem
