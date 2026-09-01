@@ -60,7 +60,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                     {setData.title}
                 </h1>
                 <p className="mt-2 break-all">{setData.description}</p>
-                <FlashcardDisplay currentCard={currentCard} flashcards={setData.flashcards} />
+                <FlashcardDisplay isOwner={isOwner} totalCards={setData.flashcards.length} currentCard={currentCard} flashcards={setData.flashcards} />
                 {isOwner && (
                     <div className="mt-4 flex justify-end gap-2">
                         <Link
