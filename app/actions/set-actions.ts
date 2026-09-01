@@ -59,6 +59,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
     }
 
     const data = validatedFields.data;
+    let redirectPath = "/my-sets";
 
     try {
         const [newSet] = await db
@@ -70,6 +71,8 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
                 userId: userId
             })
             .returning();
+        
+        redirectPath = `/set/${newSet.id}`;
 
         const cardsToInsert = data.cards.map((card, index) => ({
             setId: newSet.id,
@@ -87,8 +90,6 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
             success: false,
         };
     }
-
-    const redirectPath = "/my-sets";
 
     revalidatePath(redirectPath);
     redirect(redirectPath);
