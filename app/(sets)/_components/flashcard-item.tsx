@@ -10,10 +10,12 @@ export default function FlashcardItem({
     isOwner,
     flashcard,
     totalCards,
+    currentCard,
 }: {
     isOwner: boolean;
     flashcard: Flashcard;
     totalCards: number;
+    currentCard: number;
 }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -39,6 +41,7 @@ export default function FlashcardItem({
                                 totalCards={totalCards}
                                 cardId={flashcard.id}
                                 setId={flashcard.setId!}
+                                currentCard={currentCard}
                             />
                         </div>
                     )}

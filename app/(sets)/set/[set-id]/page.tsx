@@ -1,5 +1,5 @@
 import { getFlashcardSetById } from "@/app/_lib/data";
-import { ViewAndEditSetPageProps } from "../../types";
+import { SetPageProps } from "../../types";
 import { notFound } from "next/navigation";
 import z from "zod";
 import { auth, clerkClient } from "@clerk/nextjs/server";
@@ -11,10 +11,13 @@ import { DeleteFlashcardSetButton } from "../../_components/delete-flashcard-set
 
 const IdParamSchema = z.coerce.number().int().positive();
 
-export default async function Page({ params }: ViewAndEditSetPageProps) {
+export default async function Page({ params, searchParams }: SetPageProps) {
     const { userId } = await auth();
 
     const resolvedParams = await params;
+    const resolvedSearchParams = await searchParams;
+    const currentCard = Number(resolvedSearchParams?.page) || 1;
+
     const result = IdParamSchema.safeParse(resolvedParams["set-id"]);
     if (!result.success) {
         notFound();
@@ -57,7 +60,7 @@ export default async function Page({ params }: ViewAndEditSetPageProps) {
                     {setData.title}
                 </h1>
                 <p className="mt-2 break-all">{setData.description}</p>
-                <FlashcardDisplay />
+                <FlashcardDisplay currentCard={currentCard} flashcards={setData.flashcards} />
                 {isOwner && (
                     <div className="mt-4 flex justify-end gap-2">
                         <Link
@@ -80,6 +83,7 @@ export default async function Page({ params }: ViewAndEditSetPageProps) {
                             flashcard={{ ...flashcard, setId }}
                             isOwner={isOwner}
                             totalCards={setData.flashcards.length}
+                            currentCard={currentCard}
                         />
                     ))}
                 </div>

@@ -205,7 +205,8 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
 
 export async function deleteFlashcard(
     cardId: number,
-    setId: number
+    setId: number,
+    currentCard: number,
 ) {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
@@ -244,7 +245,13 @@ export async function deleteFlashcard(
         }
     });
 
-    revalidatePath(`/sets/${setId}`);
+    const newTotalCards = totalCards - 1;
+
+    if (currentCard && currentCard >= newTotalCards) {
+        redirect(`/set/${setId}?page=${newTotalCards}`)
+    }
+
+    revalidatePath(`/set/${setId}`);
 }
 
 export async function updateFlashcard(
