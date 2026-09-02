@@ -50,7 +50,7 @@ export default function Card({
                         />
                     </div>
                 )}
-                <p className="my-auto text-center text-xl break-all">
+                <p className="my-auto text-center text-xl break-normal">
                     {termSide ? flashcard.term : flashcard.definition}
                 </p>
             </div>
