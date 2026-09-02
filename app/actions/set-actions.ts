@@ -2,7 +2,7 @@
 
 import { auth } from '@clerk/nextjs/server';
 import z from 'zod';
-import { flashcard, flashcardSet } from '../_db/schema';
+import { flashcard, flashcardSet, flashcardStar } from '../_db/schema';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { and, asc, count, eq } from 'drizzle-orm';
@@ -96,12 +96,12 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
 };
 
 export async function deleteFlashcardSet(id: number, username: string, filters?: FlashcardSetFilters) {
-    const {userId} = await auth();
+    const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
 
     const set = await db.query.flashcardSet.findFirst({
         where: eq(flashcardSet.id, id),
-        columns: {userId: true}
+        columns: { userId: true }
     });
 
     if (!set || set.userId !== userId) {
@@ -114,7 +114,7 @@ export async function deleteFlashcardSet(id: number, username: string, filters?:
         revalidatePath(`/sets/${username}`);
         redirect(`/sets/${username}`);
     }
-    
+
     const totalPages = await fetchFlashcardSetsPages(filters);
     const currentPage = filters.currentPage || 1;
     revalidatePath(`/sets/${username}`);
@@ -293,4 +293,37 @@ export async function updateFlashcard(
     revalidatePath(`/sets/${setId}`);
 
     return { success: true };
+}
+
+export async function toggleStarFlashcard(flashcardId: number, setId: number) {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const existingStar = await db.query.flashcardStar.findFirst({
+        where: and(
+            eq(flashcardStar.userId, userId),
+            eq(flashcardStar.flashcardId, flashcardId)
+        ),
+    });
+
+    // User has flashcard already starred
+    if (existingStar) {
+        await db
+            .delete(flashcardStar)
+            .where(
+                and(
+                    eq(flashcardStar.userId, userId),
+                    eq(flashcardStar.flashcardId, flashcardId)
+                )
+            );
+    }
+    // User has not yet starred flashcard
+    else {
+        await db.insert(flashcardStar).values({
+            userId,
+            flashcardId
+        });
+    }
+
+    revalidatePath(`/set/${setId}`);
 }

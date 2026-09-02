@@ -24,7 +24,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
     }
 
     const setId: number = result.data;
-    const setData = await getFlashcardSetById(setId);
+    const setData = await getFlashcardSetById(setId, userId);
 
     if (!setData || (!setData.public && setData.userId !== userId)) {
         notFound();
@@ -60,7 +60,15 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                     {setData.title}
                 </h1>
                 <p className="mt-2 break-all">{setData.description}</p>
-                <FlashcardDisplay isOwner={isOwner} totalCards={setData.flashcards.length} currentCard={currentCard} flashcards={setData.flashcards} />
+                <FlashcardDisplay
+                    isOwner={isOwner}
+                    totalCards={setData.flashcards.length}
+                    currentCard={currentCard}
+                    flashcards={setData.flashcards.map((card) => ({
+                        ...card,
+                        isStarred: card.stars?.length > 0,
+                    }))}
+                />
                 {isOwner && (
                     <div className="mt-4 flex justify-end gap-2">
                         <Link
@@ -80,7 +88,11 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                     {setData.flashcards.map((flashcard) => (
                         <FlashcardItem
                             key={flashcard.id}
-                            flashcard={{ ...flashcard, setId }}
+                            flashcard={{
+                                ...flashcard,
+                                setId,
+                                isStarred: flashcard.stars?.length > 0,
+                            }}
                             isOwner={isOwner}
                             totalCards={setData.flashcards.length}
                             currentCard={currentCard}

@@ -20,6 +20,7 @@ export interface Flashcard {
     definition: string;
     setId?: number;
     order?: number;
+    isStarred?: boolean;
 }
 
 export interface FlashcardSetFormProps {

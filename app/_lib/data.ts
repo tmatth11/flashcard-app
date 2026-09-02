@@ -107,12 +107,18 @@ export async function fetchFlashcardSetsPages(filters: FlashcardSetFilters) {
     }
 }
 
-export async function getFlashcardSetById(id: number) {
+export async function getFlashcardSetById(id: number, currentUserId?: string | null) {
     return await db.query.flashcardSet.findFirst({
-        where: (set, {eq}) => eq(set.id, id),
+        where: (set, { eq }) => eq(set.id, id),
         with: {
             flashcards: {
                 orderBy: (cards, { asc }) => [asc(cards.order), asc(cards.id)],
+                with: {
+                    stars: currentUserId
+                        ? {
+                            where: (star, { eq }) => eq(star.userId, currentUserId),
+                        } : undefined,
+                },
             },
         }
     });
