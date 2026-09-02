@@ -1,6 +1,6 @@
 import { getFlashcardSetById } from "@/app/_lib/data";
 import { SetPageProps } from "../../types";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import z from "zod";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import Link from "next/link";
 import FlashcardDisplay from "../../_components/flashcard-display";
 import FlashcardItem from "../../_components/flashcard-item";
 import { DeleteFlashcardSetButton } from "../../_components/delete-flashcard-set-button";
+import FlashcardFilter from "../../_components/flashcard-filter";
 
 const IdParamSchema = z.coerce.number().int().positive();
 
@@ -16,7 +17,9 @@ export default async function Page({ params, searchParams }: SetPageProps) {
 
     const resolvedParams = await params;
     const resolvedSearchParams = await searchParams;
-    const currentCard = Number(resolvedSearchParams?.page) || 1;
+
+    const listFilter = resolvedSearchParams?.filter || "all";
+    const studyFilter = resolvedSearchParams?.study;
 
     const result = IdParamSchema.safeParse(resolvedParams["set-id"]);
     if (!result.success) {
@@ -31,6 +34,35 @@ export default async function Page({ params, searchParams }: SetPageProps) {
     }
 
     const isOwner = setData.userId === userId;
+    const allFlashcards = setData.flashcards.map((card) => ({
+        ...card,
+        isStarred: card.stars?.length > 0,
+    }));
+    const hasStarredCards = allFlashcards.some((card) => card.isStarred);
+
+    const displayFlashcards =
+        studyFilter === "starred"
+            ? allFlashcards.filter((card) => card.isStarred)
+            : allFlashcards;
+
+    if (studyFilter === "starred" && displayFlashcards.length === 0) {
+        const params = new URLSearchParams(resolvedSearchParams);
+        params.delete("study");
+        params.delete("page");
+        params.delete("filter");
+        redirect(`/set/${setId}?${params.toString()}`);
+    }
+
+    const itemListFlashcards =
+        listFilter === "starred"
+            ? allFlashcards.filter((card) => card.isStarred)
+            : allFlashcards;
+
+    const totalDisplayCards = displayFlashcards.length;
+    const currentCard = Math.min(
+        Math.max(1, Number(resolvedSearchParams?.page) || 1),
+        totalDisplayCards || 1,
+    );
 
     const client = await clerkClient();
     const setOwner = await client.users.getUser(setData.userId);
@@ -64,40 +96,49 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                     isOwner={isOwner}
                     totalCards={setData.flashcards.length}
                     currentCard={currentCard}
-                    flashcards={setData.flashcards.map((card) => ({
-                        ...card,
-                        isStarred: card.stars?.length > 0,
-                    }))}
+                    flashcards={displayFlashcards}
+                    hasStarredCards={hasStarredCards}
                 />
-                {isOwner && (
-                    <div className="mt-4 flex justify-end gap-2">
-                        <Link
-                            href={`/edit-set/${setId}`}
-                            className="button bg-yellow-600 hover:bg-yellow-500"
-                        >
-                            Edit
-                        </Link>
-                        <DeleteFlashcardSetButton
-                            id={setId}
-                            username={username}
-                            filters={undefined}
-                        />
-                    </div>
-                )}
+                <div className="mt-4 flex flex-col gap-2 md:flex-row md:justify-between">
+                    <p className="text-lg font-semibold">
+                        Terms in this set ({`${setData.flashcards.length}`})
+                    </p>
+                    {isOwner && (
+                        <div className="flex items-center gap-2">
+                            <Link
+                                href={`/edit-set/${setId}`}
+                                className="button bg-yellow-600 hover:bg-yellow-500"
+                            >
+                                Edit
+                            </Link>
+                            <DeleteFlashcardSetButton
+                                id={setId}
+                                username={username}
+                            />
+                        </div>
+                    )}
+                </div>
+                <FlashcardFilter />
                 <div className="mt-4">
-                    {setData.flashcards.map((flashcard) => (
-                        <FlashcardItem
-                            key={flashcard.id}
-                            flashcard={{
-                                ...flashcard,
-                                setId,
-                                isStarred: flashcard.stars?.length > 0,
-                            }}
-                            isOwner={isOwner}
-                            totalCards={setData.flashcards.length}
-                            currentCard={currentCard}
-                        />
-                    ))}
+                    {itemListFlashcards.length === 0 ? (
+                        <p className="text-center">
+                            There are no flashcards to display.
+                        </p>
+                    ) : (
+                        itemListFlashcards.map((flashcard, index) => (
+                            <FlashcardItem
+                                key={flashcard.id}
+                                index={index}
+                                flashcard={{
+                                    ...flashcard,
+                                    setId,
+                                }}
+                                isOwner={isOwner}
+                                totalCards={itemListFlashcards.length}
+                                currentCard={currentCard}
+                            />
+                        ))
+                    )}
                 </div>
             </div>
         </div>

@@ -23,10 +23,7 @@ export default function Card({
 
     return (
         <>
-            <div
-                onClick={() => setTermSide((prev) => !prev)}
-                className="mt-2 flex h-90 w-full cursor-pointer flex-col overflow-y-auto rounded-md bg-neutral-200 p-2 dark:bg-slate-700"
-            >
+            <div className="mt-2 flex h-90 w-full flex-col overflow-y-auto rounded-md bg-neutral-200 p-2 dark:bg-slate-700">
                 <div className="flex items-center justify-end">
                     <StarButton
                         flashcardId={flashcard.id}
@@ -36,10 +33,7 @@ export default function Card({
                     {isOwner && (
                         <div className="flex items-center">
                             <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setIsEditOpen(true);
-                                }}
+                                onClick={() => setIsEditOpen(true)}
                                 aria-label="edit"
                                 title="Edit"
                                 className="button"
@@ -58,9 +52,14 @@ export default function Card({
                         </div>
                     )}
                 </div>
-                <p className="my-auto text-center text-xl break-normal">
-                    {termSide ? flashcard.term : flashcard.definition}
-                </p>
+                <div
+                    onClick={() => setTermSide((prev) => !prev)}
+                    className="flex flex-1 cursor-pointer items-center justify-center"
+                >
+                    <p className="text-center text-xl break-all">
+                        {termSide ? flashcard.term : flashcard.definition}
+                    </p>
+                </div>
             </div>
 
             {isOwner && (

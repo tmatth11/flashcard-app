@@ -42,6 +42,8 @@ export interface ViewAndEditSetPageProps {
 export interface SetPageProps extends ViewAndEditSetPageProps {
     searchParams?: Promise<{
         page?: string;
+        filter?: string;
+        study?: string;
     }>;
 }
 

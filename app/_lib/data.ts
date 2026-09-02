@@ -1,4 +1,3 @@
-import { drizzle } from 'drizzle-orm/neon-http';
 import { flashcard, flashcardSet } from '../_db/schema';
 import { asc, count, desc, eq, getTableColumns, or } from "drizzle-orm";
 import { clerkClient } from '@clerk/nextjs/server';

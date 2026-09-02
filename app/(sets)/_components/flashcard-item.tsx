@@ -12,11 +12,13 @@ export default function FlashcardItem({
     flashcard,
     totalCards,
     currentCard,
+    index,
 }: {
     isOwner: boolean;
     flashcard: Flashcard;
     totalCards: number;
     currentCard: number;
+    index: number;
 }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -24,7 +26,7 @@ export default function FlashcardItem({
         <>
             <div className="mt-2 rounded-md bg-neutral-200 p-2 dark:bg-slate-700">
                 <div className="mb-2 flex items-center justify-between gap-2 p-1">
-                    <span>{flashcard.order! + 1}</span>
+                    <span>{index + 1}</span>
                     <div className="flex items-center">
                         <StarButton
                             flashcardId={flashcard.id}

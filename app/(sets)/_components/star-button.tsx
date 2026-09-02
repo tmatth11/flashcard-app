@@ -2,7 +2,7 @@
 
 import { toggleStarFlashcard } from "@/app/actions/set-actions";
 import { Star } from "lucide-react";
-import { useTransition } from "react";
+import React, { useTransition } from "react";
 
 export default function StarButton({
     flashcardId,
@@ -15,28 +15,28 @@ export default function StarButton({
 }) {
     const [isPending, startTransition] = useTransition();
 
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        startTransition(async () => {
+            await toggleStarFlashcard(flashcardId, setId);
+        });
+    };
+
     return (
-        <form
-            onSubmit={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                startTransition(async () => {
-                    await toggleStarFlashcard(flashcardId, setId);
-                });
-            }}
+        <button
+            onClick={handleClick}
+            className={`cursor-pointer disabled:opacity-75 ${
+                isStarred
+                    ? "text-yellow-400 enabled:hover:text-yellow-500"
+                    : "text-neutral-400 enabled:hover:text-yellow-400 dark:text-white"
+            }`}
+            disabled={isPending}
+            type="button"
+            title="Star"
+            aria-label={isStarred ? "Unstar flashcard" : "Star flashcard"}
         >
-            <button
-                className={`cursor-pointer disabled:opacity-75 ${
-                    isStarred
-                        ? "text-yellow-400 enabled:hover:text-yellow-500"
-                        : "dark:text-white text-neutral-400 enabled:hover:text-yellow-400"
-                }`}
-                disabled={isPending}
-                title="Star"
-                aria-label={isStarred ? "Unstar flashcard" : "Star flashcard"}
-            >
-                <Star fill="currentColor" color="currentColor" size={16} />
-            </button>
-        </form>
+            <Star fill="currentColor" color="currentColor" size={16} />
+        </button>
     );
 }
