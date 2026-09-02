@@ -32,13 +32,21 @@ export const flashcardStar = pgTable("flashcard_star", {
     uniqueIndex("flashcard_star_idx").on(table.userId, table.flashcardId)
 ]);
 
-export const flashcardSetRelations = relations(flashcardSet, ({many}) => ({
+export const flashcardSetRelations = relations(flashcardSet, ({ many }) => ({
     flashcards: many(flashcard)
 }));
 
-export const flashcardRelations = relations(flashcard, ({one}) => ({
+export const flashcardRelations = relations(flashcard, ({ one, many }) => ({
     set: one(flashcardSet, {
         fields: [flashcard.setId],
         references: [flashcardSet.id],
+    }),
+    stars: many(flashcardStar)
+}));
+
+export const flashcardStarRelations = relations(flashcardStar, ({ one }) => ({
+    flashcard: one(flashcard, {
+        fields: [flashcardStar.flashcardId],
+        references: [flashcard.id]
     }),
 }));
