@@ -111,7 +111,9 @@ export async function getFlashcardSetById(id: number) {
     return await db.query.flashcardSet.findFirst({
         where: (set, {eq}) => eq(set.id, id),
         with: {
-            flashcards: true,
+            flashcards: {
+                orderBy: (cards, { asc }) => [asc(cards.order), asc(cards.id)],
+            },
         }
     });
 }
