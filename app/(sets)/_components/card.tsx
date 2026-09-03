@@ -56,7 +56,7 @@ export default function Card({
                     onClick={() => setTermSide((prev) => !prev)}
                     className="flex flex-1 cursor-pointer items-center justify-center"
                 >
-                    <p className="text-center text-xl break-all">
+                    <p className="text-center text-xl wrap-break-word w-full">
                         {termSide ? flashcard.term : flashcard.definition}
                     </p>
                 </div>

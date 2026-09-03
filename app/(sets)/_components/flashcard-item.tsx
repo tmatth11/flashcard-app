@@ -57,12 +57,12 @@ export default function FlashcardItem({
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row md:justify-between">
-                    <p className="text-lg break-normal md:w-1/2">
+                    <p className="text-lg wrap-break-word md:w-1/2">
                         {flashcard.term}
                     </p>
                     <div className="mx-2 hidden min-h-[1em] w-0.5 self-stretch bg-neutral-100 md:inline-block dark:bg-white/10"></div>
                     <hr className="md:none my-2 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
-                    <p className="break-normal md:w-1/2">
+                    <p className="wrap-break-word md:w-1/2">
                         {flashcard.definition}
                     </p>
                 </div>
