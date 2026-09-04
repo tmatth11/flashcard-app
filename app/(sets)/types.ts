@@ -18,6 +18,9 @@ export interface Flashcard {
     id: number;
     term: string;
     definition: string;
+    setId?: number;
+    order?: number;
+    isStarred?: boolean;
 }
 
 export interface FlashcardSetFormProps {
@@ -30,8 +33,36 @@ export interface FlashcardSetFormProps {
     };
 }
 
-export interface EditSetPageProps {
+export interface ViewAndEditSetPageProps {
     params: Promise<{
         "set-id": string;
     }>;
 }
+
+export interface SetPageProps extends ViewAndEditSetPageProps {
+    searchParams?: Promise<{
+        page?: string;
+        filter?: string;
+        study?: string;
+    }>;
+}
+
+export type FlashcardSetState = {
+    message?: string;
+    success?: boolean;
+    errors?: {
+        title?: string[],
+        description?: string[];
+        public?: string[];
+        cards?: string[];
+    };
+};
+
+export type FlashcardState = {
+    success?: boolean;
+    error?: string | null;
+    errors?: {
+        term?: string[];
+        definition?: string[];
+    }
+};

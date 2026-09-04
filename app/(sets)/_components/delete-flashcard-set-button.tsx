@@ -8,7 +8,7 @@ export function DeleteFlashcardSetButton({
 }: {
     id: number;
     username: string;
-    filters: FlashcardSetFilters
+    filters?: FlashcardSetFilters
 }) {
     const deleteFlashcardSetWithId = deleteFlashcardSet.bind(
         null,
@@ -19,7 +19,7 @@ export function DeleteFlashcardSetButton({
 
     return (
         <form action={deleteFlashcardSetWithId}>
-            <button className="button bg-red-600 hover:bg-red-500">
+            <button type="submit" className="button bg-red-600 hover:bg-red-500">
                 Delete
             </button>
         </form>

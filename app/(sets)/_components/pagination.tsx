@@ -15,7 +15,14 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
 
     const createPageURL = (pageNumber: number | string) => {
         const params = new URLSearchParams(searchParams);
-        params.set("page", pageNumber.toString());
+
+        if (pageNumber == validTotalPages + 1) {
+            params.set("page", "1");
+        } else if (pageNumber == 0) {
+            params.set("page", validTotalPages.toString());
+        } else {
+            params.set("page", pageNumber.toString());
+        }
         return `${pathname}?${params.toString()}`;
     };
 
@@ -26,7 +33,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
                 <button
                     className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
                     aria-label="Previous page"
-                    disabled={currentPage <= 1}
+                    disabled={validTotalPages === 1}
                 >
                     <ArrowLeft />
                 </button>
@@ -40,7 +47,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
                 <button
                     className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
                     aria-label="Next page"
-                    disabled={currentPage >= validTotalPages}
+                    disabled={validTotalPages === 1}
                 >
                     <ArrowRight />
                 </button>
