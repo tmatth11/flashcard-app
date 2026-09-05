@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { ViewAndEditSetPageProps } from "../../types";
-import { notFound } from "next/navigation";
+import { notFound, unauthorized } from "next/navigation";
 import FlashcardSetForm from "../../_components/flashcard-form";
 import { getFlashcardSetById } from "@/app/_lib/data";
 import z from "zod";
@@ -18,8 +18,12 @@ export default async function Page({ params }: ViewAndEditSetPageProps) {
     const setId: number = result.data;
 
     const setData = await getFlashcardSetById(setId);
-    if (!setData || setData.userId !== userId) {
+    if (!setData) {
         notFound();
+    }
+    else if (setData.userId !== userId) {
+        console.log("Unauthorized");
+        unauthorized();
     }
 
     return (

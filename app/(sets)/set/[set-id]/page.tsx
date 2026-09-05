@@ -1,6 +1,6 @@
 import { getFlashcardSetById } from "@/app/_lib/data";
 import { SetPageProps } from "../../types";
-import { notFound, redirect } from "next/navigation";
+import { notFound, redirect, unauthorized } from "next/navigation";
 import z from "zod";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
@@ -29,8 +29,11 @@ export default async function Page({ params, searchParams }: SetPageProps) {
     const setId: number = result.data;
     const setData = await getFlashcardSetById(setId, userId);
 
-    if (!setData || (!setData.public && setData.userId !== userId)) {
+    if (!setData) {
         notFound();
+    }
+    else if (!setData.public && setData.userId !== userId) {
+        unauthorized();
     }
 
     const isOwner = setData.userId === userId;
