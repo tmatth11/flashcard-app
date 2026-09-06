@@ -2,9 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-.button {
-    @apply p-2 rounded-md font-semibold enabled:cursor-pointer text-white;
-}
+/* Color Scheme */
 
 :root {
     color-scheme: light;
@@ -14,8 +12,18 @@
     color-scheme: dark;
 }
 
+/* Mode Toggle */
+
+.mode-toggle {
+    @apply h-[1.2rem] w-[1.2rem];
+}
+
 .nav-link {
     @apply flex items-center gap-2 dark:text-white hover:text-gray-400;
+}
+
+.button {
+    @apply p-2 rounded-md font-semibold enabled:cursor-pointer text-white;
 }
 
 button:focus {
