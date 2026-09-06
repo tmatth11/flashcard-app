@@ -90,7 +90,7 @@ export default function Navbar() {
                         </Link>
                         <Link
                             href="/sign-up"
-                            className="button bg-blue-700 text-center"
+                            className="button blue-button"
                             onClick={() => {
                                 setLinksDisplay("hidden");
                                 window.scrollTo(0, 0);

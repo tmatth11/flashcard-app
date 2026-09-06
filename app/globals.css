@@ -18,12 +18,20 @@
     @apply h-[1.2rem] w-[1.2rem];
 }
 
+/* Links */
+
 .nav-link {
     @apply flex items-center gap-2 dark:text-white hover:text-gray-400;
 }
 
+/* Buttons */
+
 .button {
-    @apply p-2 rounded-md font-semibold enabled:cursor-pointer text-white;
+    @apply p-2 rounded-md text-center font-semibold enabled:cursor-pointer text-white;
+}
+
+.blue-button {
+    @apply bg-blue-700 hover:bg-blue-600;
 }
 
 button:focus {
