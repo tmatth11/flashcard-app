@@ -21,6 +21,13 @@ export default function Card({
     const [termSide, setTermSide] = useState(true);
     const [isEditOpen, setIsEditOpen] = useState(false);
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+        if (e.key === "Enter" || e.key == " ") {
+            e.preventDefault();
+            setTermSide((prev) => !prev);
+        }
+    };
+
     return (
         <>
             <div className="mt-2 flex h-90 w-full flex-col overflow-y-auto rounded-md bg-neutral-200 p-2 dark:bg-slate-700">
@@ -52,14 +59,17 @@ export default function Card({
                         </div>
                     )}
                 </div>
-                <div
+                <button
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={handleKeyDown}
                     onClick={() => setTermSide((prev) => !prev)}
-                    className="flex flex-1 cursor-pointer items-center justify-center"
+                    className="flex flex-1 cursor-pointer items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                 >
-                    <p className="text-center text-xl wrap-break-word w-full">
+                    <p className="w-full text-center text-xl wrap-break-word">
                         {termSide ? flashcard.term : flashcard.definition}
                     </p>
-                </div>
+                </button>
             </div>
 
             {isOwner && (
