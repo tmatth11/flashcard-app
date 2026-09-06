@@ -15,5 +15,5 @@
 }
 
 .nav-link {
-    @apply flex items-center gap-2;
+    @apply flex items-center gap-2 dark:text-white hover:text-gray-400 ;
 }
