@@ -15,5 +15,16 @@
 }
 
 .nav-link {
-    @apply flex items-center gap-2 dark:text-white hover:text-gray-400 ;
+    @apply flex items-center gap-2 dark:text-white hover:text-gray-400;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    @apply outline-2 dark:outline-white outline-black;
 }
