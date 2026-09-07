@@ -4,8 +4,7 @@ import { CircleQuestionMark, Moon, Sun } from "lucide-react";
 import { useTheme } from '@teispace/next-themes';
 
 export default function ModeToggle() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { theme, setTheme, resolvedTheme } = useTheme();
+    const { setTheme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = React.useState(false);
 
     // Wait until mounted on client to safely show the UI
@@ -18,7 +17,7 @@ export default function ModeToggle() {
         return (
             <button
                 aria-label="Loading dark mode toggle"
-                className="h-[1.2rem] w-[1.2rem] scale-0 rotate-90 cursor-pointer"
+                className="mode-toggle scale-0 rotate-90 cursor-pointer"
             >
                 <CircleQuestionMark />
             </button>

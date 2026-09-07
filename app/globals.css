@@ -5,7 +5,6 @@
 /* Color Scheme */
 
 :root {
-    color-scheme: light;
     --background: var(--color-white);
     --clr-btn-secondary: var(--color-neutral-700);
     --clr-btn-secondary-hover: var(--color-neutral-600);
@@ -13,7 +12,6 @@
 }
 
 .dark {
-    color-scheme: dark;
     --background: var(--color-neutral-900);
     --clr-btn-secondary: var(--color-slate-700);
     --clr-btn-secondary-hover: var(--color-slate-600);
