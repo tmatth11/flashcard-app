@@ -90,3 +90,10 @@
 *:focus-visible {
     @apply outline-2 dark:outline-white outline-yellow-700;
 }
+
+/* Text Color */
+:heading,
+span,
+p {
+    @apply dark:text-white;
+}

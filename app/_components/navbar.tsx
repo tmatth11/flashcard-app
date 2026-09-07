@@ -29,7 +29,7 @@ export default function Navbar() {
                     Flashcard App
                 </Link>
                 <button
-                    className="mb-2 cursor-pointer md:hidden"
+                    className="mb-2 cursor-pointer md:hidden dark:text-white"
                     aria-label="Expand menu"
                     onClick={() =>
                         linksDisplay == "hidden"
