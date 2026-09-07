@@ -4,7 +4,7 @@ import StarIcon from "./star-icon";
 export default function Features() {
     return (
         <section className="home-section">
-            <h1 className="text-2xl font-semibold lg:text-3xl">Features</h1>
+            <h2 className="text-2xl font-semibold lg:text-3xl">Features</h2>
             <div className="mt-2 flex flex-col gap-2 md:flex-row">
                 {/* Private/Public Sets */}
                 <div className="feature">
