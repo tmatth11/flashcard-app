@@ -20,13 +20,17 @@ export default function FlashcardFilter() {
     };
 
     return (
-        <select
-            value={currentFilter}
-            onChange={(e) => handleFilterChange(e.target.value)}
-            className="mt-4 cursor-pointer rounded-md bg-neutral-200 p-1 dark:bg-slate-700"
-        >
-            <option value="all">All terms</option>
-            <option value="starred">Starred terms</option>
-        </select>
+        <div className="flex flex-col">
+            <select
+                value={currentFilter}
+                id="study-filter"
+                onChange={(e) => handleFilterChange(e.target.value)}
+                className="mt-4 cursor-pointer rounded-md bg-neutral-200 p-1 dark:bg-slate-700"
+            >
+                <option value="all">All terms</option>
+                <option value="starred">Starred terms</option>
+            </select>
+            <label htmlFor="study-filter" className="mt-1">Study filter</label>
+        </div>
     );
 }

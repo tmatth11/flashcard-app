@@ -19,7 +19,7 @@ export function DeleteFlashcardSetButton({
 
     return (
         <form action={deleteFlashcardSetWithId}>
-            <button type="submit" className="button bg-red-600 hover:bg-red-500">
+            <button type="submit" className="btn btn-red">
                 Delete
             </button>
         </form>

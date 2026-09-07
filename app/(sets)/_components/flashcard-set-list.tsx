@@ -73,7 +73,7 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
                                 <div className="flex justify-end gap-2">
                                     <Link
                                         href={`/edit-set/${flashcardSet.id}`}
-                                        className="button bg-yellow-600 hover:bg-yellow-500"
+                                        className="btn btn-edit"
                                     >
                                         Edit
                                     </Link>

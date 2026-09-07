@@ -7,7 +7,7 @@ import { FileStack, FileUser, Menu, Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function Navbar() {
-    const {user} = useUser();
+    const { user } = useUser();
 
     const [linksDisplay, setLinksDisplay] = useState("hidden");
 
@@ -16,13 +16,16 @@ export default function Navbar() {
             <nav className="flex flex-col items-center justify-between md:flex-row">
                 <Link
                     href="/"
-                    className="mb-2 text-2xl font-semibold md:mb-0 dark:text-white"
-                    onClick={() => window.scrollTo(0, 0)}
+                    className="app-title mb-2 text-2xl font-semibold md:mb-0 dark:text-white"
+                    onClick={() => {
+                        window.scrollTo(0, 0);
+                        setLinksDisplay("hidden");
+                    }}
                 >
                     Flashcard App
                 </Link>
                 <button
-                    className="mb-2 cursor-pointer md:hidden"
+                    className="mb-2 cursor-pointer md:hidden dark:text-white"
                     aria-label="Expand menu"
                     onClick={() =>
                         linksDisplay == "hidden"
@@ -40,7 +43,6 @@ export default function Navbar() {
                             href="/create-set"
                             onClick={() => {
                                 setLinksDisplay("hidden");
-                                window.scrollTo(0, 0);
                             }}
                         >
                             <div className="nav-link">
@@ -52,7 +54,6 @@ export default function Navbar() {
                             href={`/sets/${user?.username}`}
                             onClick={() => {
                                 setLinksDisplay("hidden");
-                                window.scrollTo(0, 0);
                             }}
                         >
                             <div className="nav-link">
@@ -65,7 +66,6 @@ export default function Navbar() {
                         href="/all-sets"
                         onClick={() => {
                             setLinksDisplay("hidden");
-                            window.scrollTo(0, 0);
                         }}
                     >
                         <div className="nav-link">
@@ -83,26 +83,24 @@ export default function Navbar() {
                             className="cursor-pointer text-center dark:text-white"
                             onClick={() => {
                                 setLinksDisplay("hidden");
-                                window.scrollTo(0, 0);
                             }}
                         >
                             Sign In
                         </Link>
                         <Link
                             href="/sign-up"
-                            className="button bg-blue-700 text-center"
+                            className="btn btn-primary"
                             onClick={() => {
                                 setLinksDisplay("hidden");
-                                window.scrollTo(0, 0);
                             }}
                         >
                             Sign Up
                         </Link>
                     </Show>
                     <Show when="signed-in">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 user-btn">
                             <UserButton />
-                            <span className="md:hidden">My account</span>
+                            <span className="md:hidden dark:text-white">My account</span>
                         </div>
                     </Show>
                 </div>

@@ -33,10 +33,16 @@ export default function StarButton({
             }`}
             disabled={isPending}
             type="button"
-            title="Star"
+            title="Star flashcard"
             aria-label={isStarred ? "Unstar flashcard" : "Star flashcard"}
         >
-            <Star fill="currentColor" color="currentColor" size={16} />
+            <Star fill="currentColor" color="currentColor" />
+            <span className="sr-only">
+                Star flashcard{" "}
+                {isPending
+                    ? "(Disabled: Pending...)"
+                    : ""}
+            </span>
         </button>
     );
 }

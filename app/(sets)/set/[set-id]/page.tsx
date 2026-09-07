@@ -81,7 +81,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                         width="20"
                         height="20"
                         src={imageUrl}
-                        alt={username}
+                        alt={`${username}'s profile picture`}
                         className="inline-block rounded-full"
                     />{" "}
                     <Link
@@ -110,7 +110,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                         <div className="flex items-center gap-2">
                             <Link
                                 href={`/edit-set/${setId}`}
-                                className="button bg-yellow-600 hover:bg-yellow-500"
+                                className="btn btn-edit"
                             >
                                 Edit
                             </Link>
