@@ -47,7 +47,7 @@ export default async function Page(props: {
                     height="50"
                     className="mt-4"
                     src={userImageUrl}
-                    alt={username}
+                    alt={`${username}'s profile picture`}
                 />
                 <h1 className="text-center text-2xl font-semibold mt-2">
                     {pageTitle}

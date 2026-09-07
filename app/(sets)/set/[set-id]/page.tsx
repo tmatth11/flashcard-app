@@ -81,7 +81,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                         width="20"
                         height="20"
                         src={imageUrl}
-                        alt={username}
+                        alt={`${username}'s profile picture`}
                         className="inline-block rounded-full"
                     />{" "}
                     <Link

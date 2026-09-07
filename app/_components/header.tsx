@@ -27,6 +27,8 @@ export default function Header() {
                 width="500"
                 height="100"
                 src="/header-image.png"
+                fetchPriority="high"
+                priority
                 alt="Screenshot of flashcard set page"
             />
         </section>
