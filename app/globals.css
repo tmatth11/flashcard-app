@@ -114,8 +114,6 @@ form input {
 }
 
 /* Text Color */
-::heading,
-span,
-p {
+::heading {
     @apply dark:text-white;
 }

@@ -100,7 +100,7 @@ export default function Navbar() {
                     <Show when="signed-in">
                         <div className="flex items-center gap-2 user-btn">
                             <UserButton />
-                            <span className="md:hidden">My account</span>
+                            <span className="md:hidden dark:text-white">My account</span>
                         </div>
                     </Show>
                 </div>
