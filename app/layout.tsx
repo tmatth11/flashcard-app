@@ -34,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                         enableColorScheme={false}
                     >
                         <Navbar />
-                        <main className="flex-1 dark:bg-neutral-900 dark:text-white">
+                        <main className="flex-1 bg-main dark:text-white">
                             {children}
                         </main>
                     </ThemeProvider>

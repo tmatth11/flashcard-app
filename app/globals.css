@@ -6,10 +6,27 @@
 
 :root {
     color-scheme: light;
+    --background: var(--color-white);
+    --clr-btn-secondary: var(--color-neutral-700);
+    --clr-btn-secondary-hover: var(--color-neutral-600);
+    --clr-star: #ffff00;
 }
 
 .dark {
     color-scheme: dark;
+    --background: var(--color-neutral-900);
+    --clr-btn-secondary: var(--color-slate-700);
+    --clr-btn-secondary-hover: var(--color-slate-600);
+}
+
+/* Theme */
+
+@theme {
+    --color-main: var(--background);
+    --color-btn-primary: var(--color-blue-700);
+    --color-btn-primary-hover: var(--color-blue-600);
+    --color-btn-secondary: var(--clr-btn-secondary);
+    --color-btn-secondary-hover: var(--clr-btn-secondary-hover);
 }
 
 /* Mode Toggle */
@@ -27,14 +44,49 @@
 /* Buttons */
 
 .button {
-    @apply p-2 rounded-md text-center font-semibold enabled:cursor-pointer text-white;
+    @apply p-2 rounded-md text-center font-semibold enabled:cursor-pointer text-white disabled:cursor-not-allowed;
 }
 
-.blue-button {
-    @apply bg-blue-700 hover:bg-blue-600;
+.btn {
+    @apply p-2 rounded-md text-center font-semibold enabled:cursor-pointer text-white disabled:cursor-not-allowed;
 }
 
-button:focus {
+.btn-primary {
+    @apply bg-btn-primary hover:bg-btn-primary-hover disabled:hover:bg-btn-primary;
+}
+
+.btn-secondary {
+    @apply bg-btn-secondary hover:bg-btn-secondary-hover disabled:hover:bg-btn-secondary;
+}
+
+/* Section */
+
+section {
+    @apply mt-5 flex flex-col items-center gap-4;
+}
+
+/* Home Page */
+
+.feature {
+    @apply flex flex-1 flex-col items-center gap-1 text-center;
+}
+
+.feature-icon {
+    @apply w-fit rounded-md bg-neutral-300 p-2 text-center dark:bg-slate-700;
+}
+
+.testimonial {
+    @apply flex flex-1 flex-col rounded-md bg-neutral-300 p-2 dark:bg-slate-700;
+}
+
+.star-container {
+    @apply flex items-center gap-1;
+}
+
+button:focus,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
     outline: none;
 }
 
@@ -42,5 +94,5 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-    @apply outline-2 dark:outline-white outline-black;
+    @apply outline-2 dark:outline-white outline-yellow-700;
 }
