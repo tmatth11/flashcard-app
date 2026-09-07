@@ -9,7 +9,7 @@
     --background: var(--color-white);
     --clr-btn-secondary: var(--color-neutral-700);
     --clr-btn-secondary-hover: var(--color-neutral-600);
-    --clr-star: #ffff00;
+    --clr-container-primary: var(--color-neutral-300);
 }
 
 .dark {
@@ -17,6 +17,7 @@
     --background: var(--color-neutral-900);
     --clr-btn-secondary: var(--color-slate-700);
     --clr-btn-secondary-hover: var(--color-slate-600);
+    --clr-container-primary: var(--color-slate-700);
 }
 
 /* Theme */
@@ -27,6 +28,7 @@
     --color-btn-primary-hover: var(--color-blue-600);
     --color-btn-secondary: var(--clr-btn-secondary);
     --color-btn-secondary-hover: var(--clr-btn-secondary-hover);
+    --color-container-primary: var(--clr-container-primary);
 }
 
 /* Mode Toggle */
@@ -70,11 +72,11 @@
 }
 
 .feature-icon {
-    @apply w-fit rounded-md bg-neutral-300 p-2 text-center dark:bg-slate-700;
+    @apply w-fit rounded-md bg-container-primary p-2 text-center;
 }
 
 .testimonial {
-    @apply flex flex-1 flex-col rounded-md bg-neutral-300 p-2 dark:bg-slate-700;
+    @apply flex flex-1 flex-col rounded-md bg-container-primary p-2;
 }
 
 .star-container {
