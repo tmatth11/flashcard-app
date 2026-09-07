@@ -42,7 +42,7 @@ export default function Card({
                             <button
                                 onClick={() => setIsEditOpen(true)}
                                 aria-label="edit"
-                                title="Edit"
+                                title="Edit flashcard"
                                 className="button"
                             >
                                 <Pencil

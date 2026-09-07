@@ -36,6 +36,12 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
                     disabled={validTotalPages === 1}
                 >
                     <ArrowLeft />
+                    <span className="sr-only">
+                        Previous page{" "}
+                        {validTotalPages === 1
+                            ? "(Disabled: There is only 1 page)"
+                            : ""}
+                    </span>
                 </button>
             </Link>
             {/* Current page/Total pages */}
@@ -50,6 +56,12 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
                     disabled={validTotalPages === 1}
                 >
                     <ArrowRight />
+                    <span className="sr-only">
+                        Previous page{" "}
+                        {validTotalPages === 1
+                            ? "(Disabled: There is only 1 page)"
+                            : ""}
+                    </span>
                 </button>
             </Link>
         </div>

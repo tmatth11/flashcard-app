@@ -35,8 +35,8 @@ export default function EditFlashcardModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        aria-label="Close"
-                        title="Close"
+                        aria-label="Close edit flashcard modal"
+                        title="Close edit flashcard modal"
                         className="red-icon"
                     >
                         <X />
@@ -47,9 +47,7 @@ export default function EditFlashcardModal({
                     <input type="hidden" name="cardId" value={card.id} />
                     <input type="hidden" name="setId" value={card.setId} />
 
-                    {state?.error && (
-                        <ErrorBanner message={state.error} />
-                    )}
+                    {state?.error && <ErrorBanner message={state.error} />}
                     {/* Term input */}
                     <div className="mt-4 flex flex-col">
                         <textarea
@@ -77,16 +75,17 @@ export default function EditFlashcardModal({
                         </label>
                     </div>
                     <div className="mt-2 flex justify-end gap-2">
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             onClick={onClose}
                             className="btn btn-red"
                         >
                             Cancel
                         </button>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             disabled={isPending}
+                            aria-disabled={isPending}
                             className="btn btn-primary"
                         >
                             Save

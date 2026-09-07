@@ -19,10 +19,10 @@ export default function FlashcardSetForm({
     const actionToUse = isEditMode ? updateFlashcardSet : createFlashcardSet;
 
     const baseId = useId();
-    const [state, formAction, isPending] = useActionState<FlashcardSetState, FormData>(
-        actionToUse,
-        initialState,
-    );
+    const [state, formAction, isPending] = useActionState<
+        FlashcardSetState,
+        FormData
+    >(actionToUse, initialState);
 
     const [flashcards, setFlashcards] = useState<Flashcard[]>(() =>
         initialData?.flashcards.length
@@ -30,7 +30,9 @@ export default function FlashcardSetForm({
             : [{ id: Date.now(), term: "", definition: "" }],
     );
     const [title, setTitle] = useState(initialData?.title ?? "");
-    const [description, setDescription] = useState(initialData?.description ?? "");
+    const [description, setDescription] = useState(
+        initialData?.description ?? "",
+    );
 
     const appendCard = () => {
         setFlashcards((prev) => [
@@ -78,18 +80,19 @@ export default function FlashcardSetForm({
         >
             {setId && <input type="hidden" name="setId" value={setId} />}
             {/* Error message banner */}
-            {state?.message && (
-                <ErrorBanner message={state.message} />
-            )}
+            {state?.message && <ErrorBanner message={state.message} />}
 
             {/* Create Set header */}
             <div className="mt-5 flex flex-col items-center justify-between gap-2 md:flex-row md:gap-0">
                 <h1 className="text-center text-xl font-semibold">
-                    {isEditMode ? "Edit your flashcard set" : "Create a new flashcard set"}
+                    {isEditMode
+                        ? "Edit your flashcard set"
+                        : "Create a new flashcard set"}
                 </h1>
                 <button
                     type="submit"
                     disabled={isPending || isFormInvalid}
+                    aria-disabled={isPending || isFormInvalid}
                     className="btn btn-primary"
                 >
                     {isEditMode ? "Save" : "Create"}
@@ -194,9 +197,17 @@ export default function FlashcardSetForm({
                                         className="red-icon"
                                         aria-label="Delete card"
                                         disabled={!isRemovable}
+                                        aria-disabled={!isRemovable}
+                                        title="Delete flashcard"
                                         onClick={() => removeCard(flashcard.id)}
                                     >
-                                        <Trash2 />
+                                        <Trash2 aria-hidden="true" />
+                                        <span className="sr-only">
+                                            Delete flashcard{" "}
+                                            {!isRemovable
+                                                ? "(Disabled: You need at least 2 flashcards to remove this flashcard)"
+                                                : ""}
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -254,8 +265,10 @@ export default function FlashcardSetForm({
                             <div className="my-2 flex justify-center">
                                 <button
                                     type="button"
-                                    className="cursor-pointer rounded-full p-2 font-semibold text-white btn-primary"
+                                    className="btn-primary cursor-pointer rounded-full p-2 font-semibold text-white"
                                     onClick={() => insertCard(index)}
+                                    aria-label="Add flashcard"
+                                    title="Add flashcard"
                                 >
                                     <Plus />
                                 </button>
@@ -269,7 +282,6 @@ export default function FlashcardSetForm({
                 type="button"
                 onClick={appendCard}
                 className="btn btn-primary mt-2"
-                aria-label="Add card"
             >
                 Add card
             </button>
@@ -277,7 +289,8 @@ export default function FlashcardSetForm({
                 <button
                     type="submit"
                     disabled={isPending || isFormInvalid}
-                    className="btn mt-4 w-1/2 btn-primary"
+                    aria-disabled={isPending || isFormInvalid}
+                    className="btn btn-primary mt-4 w-1/2"
                 >
                     {isEditMode ? "Save" : "Create"}
                 </button>

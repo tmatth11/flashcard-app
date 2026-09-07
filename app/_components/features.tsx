@@ -9,7 +9,9 @@ export default function Features() {
                 {/* Private/Public Sets */}
                 <div className="feature">
                     <div className="feature-icon">
-                        <Lock />
+                        <Lock>
+                            <title>Lock icon</title>
+                        </Lock>
                     </div>
                     <h2 className="text-lg">Private Sets</h2>
                     <p>
@@ -28,7 +30,9 @@ export default function Features() {
                 {/* Mobile-Friendly User Interface */}
                 <div className="feature">
                     <div className="feature-icon">
-                        <TabletSmartphone />
+                        <TabletSmartphone>
+                            <title>Tablet and smartphone icon</title>
+                        </TabletSmartphone>
                     </div>
                     <h2 className="text-lg">Mobile Friendly</h2>
                     <p>Study your flashcards on the go</p>

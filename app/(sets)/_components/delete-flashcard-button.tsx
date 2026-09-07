@@ -26,11 +26,14 @@ export default function DeleteFlashcardButton({
                 onClick={(e) => e.stopPropagation()}
                 type="submit"
                 aria-label="delete"
-                title="Delete"
+                title="Delete flashcard"
                 className="red-icon"
                 disabled={isOnlyCard}
             >
                 <Trash />
+                <span className="sr-only">
+                    Delete flashcard {isOnlyCard ? "(Disabled: You need at least 2 flashcards to remove this flashcard)" : ""}
+                </span>
             </button>
         </form>
     );
