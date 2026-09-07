@@ -7,6 +7,7 @@ import {
 import { Plus, Trash2 } from "lucide-react";
 import { useActionState, useId, useState } from "react";
 import { Flashcard, FlashcardSetFormProps, FlashcardSetState } from "../types";
+import ErrorBanner from "./error-banner";
 
 const initialState: FlashcardSetState = {};
 
@@ -78,9 +79,7 @@ export default function FlashcardSetForm({
             {setId && <input type="hidden" name="setId" value={setId} />}
             {/* Error message banner */}
             {state?.message && (
-                <div className="rounded-md border-4 border-red-700 bg-red-500 p-2 text-center break-all text-white">
-                    {state.message}
-                </div>
+                <ErrorBanner message={state.message} />
             )}
 
             {/* Create Set header */}
@@ -91,7 +90,7 @@ export default function FlashcardSetForm({
                 <button
                     type="submit"
                     disabled={isPending || isFormInvalid}
-                    className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                    className="btn btn-primary"
                 >
                     {isEditMode ? "Save" : "Create"}
                 </button>
@@ -115,7 +114,6 @@ export default function FlashcardSetForm({
                         id={`${baseId}-title`}
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                         placeholder="Enter title"
                         required
                     ></textarea>
@@ -140,7 +138,6 @@ export default function FlashcardSetForm({
                         id={`${baseId}-description`}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                         placeholder="Enter description"
                     ></textarea>
                     <label htmlFor={`${baseId}-description`} className="mt-1">
@@ -194,7 +191,7 @@ export default function FlashcardSetForm({
                                     {/* Delete button */}
                                     <button
                                         type="button"
-                                        className="cursor-pointer enabled:hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="red-icon"
                                         aria-label="Delete card"
                                         disabled={!isRemovable}
                                         onClick={() => removeCard(flashcard.id)}
@@ -217,7 +214,6 @@ export default function FlashcardSetForm({
                                                 e.target.value,
                                             )
                                         }
-                                        className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
                                         placeholder="Enter term"
                                         required
                                     ></textarea>
@@ -241,7 +237,6 @@ export default function FlashcardSetForm({
                                                 e.target.value,
                                             )
                                         }
-                                        className="rounded-md bg-neutral-300 p-1 dark:bg-slate-800 dark:text-white"
                                         placeholder="Enter definition"
                                         required
                                     ></textarea>
@@ -259,7 +254,7 @@ export default function FlashcardSetForm({
                             <div className="my-2 flex justify-center">
                                 <button
                                     type="button"
-                                    className="cursor-pointer rounded-full bg-blue-500 p-2 font-semibold text-white hover:bg-blue-400"
+                                    className="cursor-pointer rounded-full p-2 font-semibold text-white btn-primary"
                                     onClick={() => insertCard(index)}
                                 >
                                     <Plus />
@@ -273,7 +268,7 @@ export default function FlashcardSetForm({
             <button
                 type="button"
                 onClick={appendCard}
-                className="button mt-4 bg-blue-500 hover:bg-blue-400"
+                className="btn btn-primary mt-2"
                 aria-label="Add card"
             >
                 Add card
@@ -282,7 +277,7 @@ export default function FlashcardSetForm({
                 <button
                     type="submit"
                     disabled={isPending || isFormInvalid}
-                    className="button mt-4 w-1/2 bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                    className="btn mt-4 w-1/2 btn-primary"
                 >
                     {isEditMode ? "Save" : "Create"}
                 </button>

@@ -2,6 +2,7 @@ import { useActionState, useEffect } from "react";
 import { Flashcard, FlashcardState } from "../types";
 import { updateFlashcard } from "@/app/actions/set-actions";
 import { X } from "lucide-react";
+import ErrorBanner from "./error-banner";
 
 const initialState: FlashcardState = {};
 
@@ -36,7 +37,7 @@ export default function EditFlashcardModal({
                         onClick={onClose}
                         aria-label="Close"
                         title="Close"
-                        className="cursor-pointer enabled:hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="red-icon"
                     >
                         <X />
                     </button>
@@ -47,9 +48,7 @@ export default function EditFlashcardModal({
                     <input type="hidden" name="setId" value={card.setId} />
 
                     {state?.error && (
-                        <div className="rounded-md border-4 border-red-700 bg-red-500 p-2 text-center break-all text-white">
-                            {state.error}
-                        </div>
+                        <ErrorBanner message={state.error} />
                     )}
                     {/* Term input */}
                     <div className="mt-4 flex flex-col">
@@ -57,7 +56,6 @@ export default function EditFlashcardModal({
                             name="term"
                             id="term"
                             defaultValue={card.term}
-                            className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                             placeholder="Enter term"
                             required
                         ></textarea>
@@ -71,7 +69,6 @@ export default function EditFlashcardModal({
                             name="definition"
                             id="definition"
                             defaultValue={card.definition}
-                            className="rounded-md bg-neutral-300 p-2 dark:bg-slate-800 dark:text-white"
                             placeholder="Enter definition"
                             required
                         ></textarea>

@@ -27,7 +27,7 @@ export default function DeleteFlashcardButton({
                 type="submit"
                 aria-label="delete"
                 title="Delete"
-                className="cursor-pointer enabled:hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50"
+                className="red-icon"
                 disabled={isOnlyCard}
             >
                 <Trash size={16} />

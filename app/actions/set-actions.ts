@@ -282,7 +282,7 @@ export async function updateFlashcard(
     });
 
     if (!set || set.userId !== userId) {
-        return { error: "Forbidden: You do not own this flashcard set" };
+        return { success: false, error: "Forbidden: You do not own this flashcard set" };
     }
 
     await db
