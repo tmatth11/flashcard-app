@@ -59,13 +59,11 @@
     @apply bg-btn-secondary hover:bg-btn-secondary-hover disabled:hover:bg-btn-secondary;
 }
 
-/* Section */
+/* Home Page */
 
-section {
+.home-section {
     @apply mt-5 flex flex-col items-center gap-4;
 }
-
-/* Home Page */
 
 .feature {
     @apply flex flex-1 flex-col items-center gap-1 text-center;
@@ -83,16 +81,12 @@ section {
     @apply flex items-center gap-1;
 }
 
-button:focus,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
+/* Custom Focus Outline */
+
+*:focus-visible {
     outline: none;
 }
 
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
+*:focus-visible {
     @apply outline-2 dark:outline-white outline-yellow-700;
 }

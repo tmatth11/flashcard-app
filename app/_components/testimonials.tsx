@@ -32,7 +32,7 @@ export default function Testimonials() {
     ];
 
     return (
-        <section>
+        <section className="home-section">
             <h1 className="text-2xl font-semibold lg:text-3xl">Testimonials</h1>
             <div className="mt-2 flex flex-col gap-2 md:flex-row">
                 {testimonials.map((testimonial) => (

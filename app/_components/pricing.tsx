@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Pricing() {
     return (
-        <section>
+        <section className="home-section">
             <h1 className="text-2xl font-semibold lg:text-3xl">Pricing</h1>
             <div className="flex h-90 w-70 flex-col items-center justify-center gap-2 rounded-md bg-neutral-300 p-2 dark:bg-slate-700">
                 <h2 className="text-lg font-semibold">Flashcard App</h2>

@@ -16,7 +16,7 @@ export default function Navbar() {
             <nav className="flex flex-col items-center justify-between md:flex-row">
                 <Link
                     href="/"
-                    className="mb-2 text-2xl font-semibold md:mb-0 dark:text-white"
+                    className="app-title mb-2 text-2xl font-semibold md:mb-0 dark:text-white"
                     onClick={() => {
                         window.scrollTo(0, 0);
                         if (linksDisplay == "hidden") {
@@ -102,7 +102,7 @@ export default function Navbar() {
                         </Link>
                     </Show>
                     <Show when="signed-in">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 user-btn">
                             <UserButton />
                             <span className="md:hidden">My account</span>
                         </div>

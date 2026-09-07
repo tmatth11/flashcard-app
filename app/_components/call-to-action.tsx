@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function CallToAction() {
     return (
-        <section>
+        <section className="home-section">
             <h1 className="text-2xl font-semibold lg:text-3xl">
                 What are you waiting for?
             </h1>

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Header() {
     return (
-        <section className="md:flex-row">
+        <section className="home-section md:flex-row">
             <div className="flex flex-col items-center gap-2 md:items-start">
                 <h1 className="text-center text-3xl font-semibold md:text-left">
                     Study flashcard sets in the browser
