@@ -30,7 +30,7 @@ export default function DeleteFlashcardButton({
                 className="red-icon"
                 disabled={isOnlyCard}
             >
-                <Trash size={16} />
+                <Trash />
             </button>
         </form>
     );

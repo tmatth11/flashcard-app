@@ -110,7 +110,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                         <div className="flex items-center gap-2">
                             <Link
                                 href={`/edit-set/${setId}`}
-                                className="button bg-yellow-600 hover:bg-yellow-500"
+                                className="btn btn-edit"
                             >
                                 Edit
                             </Link>

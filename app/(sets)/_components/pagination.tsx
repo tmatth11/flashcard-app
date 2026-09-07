@@ -31,7 +31,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
             {/* Previous arrow */}
             <Link href={createPageURL(currentPage - 1)}>
                 <button
-                    className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                    className="btn btn-primary"
                     aria-label="Previous page"
                     disabled={validTotalPages === 1}
                 >
@@ -45,7 +45,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
             {/* Next arrow */}
             <Link href={createPageURL(currentPage + 1)}>
                 <button
-                    className="button bg-blue-500 enabled:hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-75"
+                    className="btn btn-primary"
                     aria-label="Next page"
                     disabled={validTotalPages === 1}
                 >

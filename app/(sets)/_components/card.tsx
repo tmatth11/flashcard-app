@@ -46,7 +46,6 @@ export default function Card({
                                 className="button"
                             >
                                 <Pencil
-                                    size={16}
                                     className="text-black hover:text-gray-500 dark:text-white"
                                 />
                             </button>

@@ -80,14 +80,14 @@ export default function EditFlashcardModal({
                         <button 
                             type="button" 
                             onClick={onClose}
-                            className="button bg-red-600 hover:bg-red-500"
+                            className="btn btn-red"
                         >
                             Cancel
                         </button>
                         <button 
                             type="submit" 
                             disabled={isPending}
-                            className="button bg-yellow-600 enabled:hover:bg-yellow-500 disabled:opacity-50"
+                            className="btn btn-primary"
                         >
                             Save
                         </button>

@@ -36,7 +36,7 @@ export default function StarButton({
             title="Star"
             aria-label={isStarred ? "Unstar flashcard" : "Star flashcard"}
         >
-            <Star fill="currentColor" color="currentColor" size={16} />
+            <Star fill="currentColor" color="currentColor" />
         </button>
     );
 }

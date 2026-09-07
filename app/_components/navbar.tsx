@@ -19,11 +19,7 @@ export default function Navbar() {
                     className="app-title mb-2 text-2xl font-semibold md:mb-0 dark:text-white"
                     onClick={() => {
                         window.scrollTo(0, 0);
-                        if (linksDisplay == "hidden") {
-                            setLinksDisplay("flex");
-                        } else {
-                            setLinksDisplay("hidden");
-                        }
+                        setLinksDisplay("hidden");
                     }}
                 >
                     Flashcard App
