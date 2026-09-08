@@ -1,6 +1,6 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-const hasProxy = process.env.VERCEL_ENV === "production" && Boolean(process.env.NEXT_PUBLIC_CLERK_PROXY_URL);
+const hasProxy = Boolean(process.env.NEXT_PUBLIC_CLERK_PROXY_URL);
 
 export default clerkMiddleware(
     hasProxy
