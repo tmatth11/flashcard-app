@@ -122,3 +122,39 @@ export async function getFlashcardSetById(id: number, currentUserId?: string | n
         }
     });
 }
+
+export async function getPublicFlashcardSetIds() {
+    return await db
+        .select({ id: flashcardSet.id })
+        .from(flashcardSet)
+        .where(eq(flashcardSet.public, true));
+}
+
+export async function getPublicUsernames() {
+    const distinctUsers = await db
+        .selectDistinct({userId: flashcardSet.userId})
+        .from(flashcardSet)
+        .where(eq(flashcardSet.public, true));
+    
+    if (distinctUsers.length === 0) return [];
+
+    const client = await clerkClient();
+
+    const usernames = await Promise.all(
+        distinctUsers.map(async ({userId}) => {
+            try {
+                const user = await client.users.getUser(userId);
+                return user.username || null;
+            } catch {
+                return null;
+            }
+        })
+    );
+
+    return [...new Set(
+        usernames.filter(
+            (name): name is string =>
+                Boolean(name) && name !== "Unknown User"
+        )
+    )];
+}
