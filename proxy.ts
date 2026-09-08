@@ -1,10 +1,15 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export default clerkMiddleware({
-    frontendApiProxy: {
-        enabled: true,
-    },
-});
+const hasProxy = Boolean(process.env.NEXT_PUBLIC_CLERK_PROXY_URL);
+
+export default clerkMiddleware(
+    hasProxy
+        ? {
+            frontendApiProxy: {
+                enabled: true,
+            },
+        } : {}
+);
 
 export const config = {
     matcher: [
