@@ -20,7 +20,7 @@ export default function Testimonials() {
             id: 1,
             stars: 5,
             message:
-                "\"I love using the dark mode feature so I don't blind myself.\"",
+                "\"I love using the dark mode feature, it's easy on my eyes!\"",
             author: "G-Man",
         },
         {
