@@ -31,8 +31,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
 
     if (!setData) {
         notFound();
-    }
-    else if (!setData.public && setData.userId !== userId) {
+    } else if (!setData.public && setData.userId !== userId) {
         unauthorized();
     }
 
@@ -67,10 +66,18 @@ export default async function Page({ params, searchParams }: SetPageProps) {
         totalDisplayCards || 1,
     );
 
-    const client = await clerkClient();
-    const setOwner = await client.users.getUser(setData.userId);
-    const username = setOwner.username ?? "Unknown user";
-    const imageUrl = setOwner.imageUrl ?? "/blank-user.png";
+    let username = "Deleted user";
+    let imageUrl = "/blank-user.png";
+    let isUserDeleted = false;
+
+    try {
+        const client = await clerkClient();
+        const setOwner = await client.users.getUser(setData.userId);
+        username = setOwner.username || "Unknown user";
+        imageUrl = setOwner.imageUrl || "/blank-user.png";
+    } catch {
+        isUserDeleted = true;
+    }
 
     return (
         <div className="flex flex-col items-center p-2">
@@ -84,12 +91,18 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                         alt={`${username}'s profile picture`}
                         className="inline-block rounded-full"
                     />{" "}
-                    <Link
-                        className="hover:underline"
-                        href={`/sets/${username}`}
-                    >
-                        {isOwner ? "You" : username}
-                    </Link>
+                    {isUserDeleted ? (
+                        <span>
+                            Deleted User
+                        </span>
+                    ) : (
+                        <Link
+                            className="hover:underline"
+                            href={`/sets/${username}`}
+                        >
+                            {isOwner ? "You" : username}
+                        </Link>
+                    )}
                 </span>
                 <h1 className="mt-4 text-lg font-semibold break-all md:text-xl">
                     {setData.title}
