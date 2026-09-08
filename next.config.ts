@@ -14,14 +14,6 @@ const nextConfig: NextConfig = {
     experimental: {
         authInterrupts: true,
     },
-    async rewrites() {
-        return [
-            {
-                source: "/__clerk/:path*",
-                destination: "https://clerk.flashcard-app-eight-theta.vercel.app/__clerk/:path*",
-            },
-        ];
-    },
 };
 
 export default nextConfig;
