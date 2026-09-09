@@ -1,17 +1,17 @@
 import { auth } from "@clerk/nextjs/server";
-import { ViewAndEditSetPageProps } from "../../types";
+import { ViewAndEditSetPageProps } from "../../../(sets)/types";
 import { notFound, unauthorized } from "next/navigation";
-import FlashcardSetForm from "../../_components/flashcard-form";
 import { getFlashcardSetById } from "@/app/_lib/data";
 import z from "zod";
 import { Metadata } from "next";
+import FlashcardSetForm from "../../_components/flashcard-form";
 
 export const metadata: Metadata = {
     title: "Edit Set",
     description: "Edit this flashcard set",
 };
 
-const IdParamSchema = z.coerce.number().int().positive()
+const IdParamSchema = z.coerce.number().int().positive();
 
 export default async function Page({ params }: ViewAndEditSetPageProps) {
     const { userId } = await auth.protect();
@@ -26,8 +26,7 @@ export default async function Page({ params }: ViewAndEditSetPageProps) {
     const setData = await getFlashcardSetById(setId);
     if (!setData) {
         notFound();
-    }
-    else if (setData.userId !== userId) {
+    } else if (setData.userId !== userId) {
         console.log("Unauthorized");
         unauthorized();
     }
