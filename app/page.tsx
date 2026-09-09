@@ -3,6 +3,12 @@ import Features from "./_components/features";
 import Testimonials from "./_components/testimonials";
 import Pricing from "./_components/pricing";
 import CallToAction from "./_components/call-to-action";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Home | Flashcard App",
+    description: "Study flashcard sets in the browser",
+};
 
 export default function Home() {
     return (

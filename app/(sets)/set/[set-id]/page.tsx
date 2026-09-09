@@ -12,6 +12,40 @@ import FlashcardFilter from "../../_components/flashcard-filter";
 
 const IdParamSchema = z.coerce.number().int().positive();
 
+export async function generateMetadata({ params }: SetPageProps) {
+    const { userId } = await auth();
+
+    const resolvedParams = await params;
+
+    const result = IdParamSchema.safeParse(resolvedParams["set-id"]);
+    if (!result.success) {
+        return {};
+    }
+
+    const setId: number = result.data;
+    const setData = await getFlashcardSetById(setId, userId);
+
+    if (!setData) {
+        return {};
+    } else if (!setData.public) {
+        return {};
+    }
+
+    try {
+        const client = await clerkClient();
+        const setOwner = await client.users.getUser(setData.userId);
+
+        if (setOwner.username === null) return {};
+
+        return {
+            title: `${setData.title}`,
+            description: setData.description ? setData.description : `Study this set from ${setOwner.username}`,
+        };
+    } catch {
+        return {};
+    }
+}
+
 export default async function Page({ params, searchParams }: SetPageProps) {
     const { userId } = await auth();
 
@@ -66,7 +100,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
         totalDisplayCards || 1,
     );
 
-    let username = "Deleted user";
+    let username = "Deleted User";
     let imageUrl = "/blank-user.png";
     let isUserDeleted = false;
 
@@ -92,9 +126,7 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                         className="inline-block rounded-full"
                     />{" "}
                     {isUserDeleted ? (
-                        <span>
-                            Deleted User
-                        </span>
+                        <span>Deleted User</span>
                     ) : (
                         <Link
                             className="hover:underline"

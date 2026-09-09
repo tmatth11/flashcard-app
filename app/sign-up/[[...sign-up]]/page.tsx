@@ -1,4 +1,10 @@
 import { SignUp } from "@clerk/nextjs";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Sign Up",
+    description: "Sign up using Clerk",
+};
 
 export default function Page() {
 

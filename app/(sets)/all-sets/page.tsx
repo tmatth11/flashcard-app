@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import FlashcardSetView from "../_components/flashcard-set-view";
+
+export const metadata: Metadata = {
+    title: "All Sets",
+    description: "View all public flashcard sets",
+};
 
 export default async function Page(props: {
     searchParams?: Promise<{
