@@ -20,7 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
         <html lang="en" className={`${inter.className} h-full`} suppressHydrationWarning>
             <body
-                className="flex min-h-dvh flex-col"
+                className="flex min-h-dvh flex-col bg-main"
                 suppressHydrationWarning
             >
                 <ThemeProvider
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 >
                     <ClerkThemeProvider>
                         <Navbar />
-                        <main className="bg-main flex-1 dark:text-white">
+                        <main className="flex-1 dark:text-white">
                             {children}
                         </main>
                     </ClerkThemeProvider>
