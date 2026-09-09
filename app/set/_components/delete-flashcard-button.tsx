@@ -1,4 +1,4 @@
-import { deleteFlashcard } from "@/app/actions/set-actions";
+import { deleteFlashcard } from "@/app/_actions/card-actions";
 import { Trash } from "lucide-react";
 
 export default function DeleteFlashcardButton({
@@ -32,7 +32,10 @@ export default function DeleteFlashcardButton({
             >
                 <Trash />
                 <span className="sr-only">
-                    Delete flashcard {isOnlyCard ? "(Disabled: You need at least 2 flashcards to remove this flashcard)" : ""}
+                    Delete flashcard{" "}
+                    {isOnlyCard
+                        ? "(Disabled: You need at least 2 flashcards to remove this flashcard)"
+                        : ""}
                 </span>
             </button>
         </form>

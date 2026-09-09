@@ -16,6 +16,16 @@ export interface FlashcardSetViewProps extends FlashcardSetProps {
     placeholder: string;
 }
 
+export interface FlashcardSetFormProps {
+    setId?: number;
+    initialData?: {
+        title: string;
+        description: string | null;
+        isPublic: boolean;
+        flashcards: Flashcard[]
+    };
+}
+
 export interface Flashcard {
     id: number;
     term: string;

@@ -1,4 +1,4 @@
-import { deleteFlashcardSet } from "@/app/actions/set-actions";
+import { deleteFlashcardSet } from "@/app/_actions/set-actions";
 import { FlashcardSetFilters } from "../types";
 
 export function DeleteFlashcardSetButton({

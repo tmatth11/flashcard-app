@@ -3,7 +3,7 @@
 import {
     createFlashcardSet,
     updateFlashcardSet,
-} from "@/app/actions/set-actions";
+} from "@/app/_actions/set-actions";
 import { Plus, Trash2 } from "lucide-react";
 import { useActionState, useId, useState } from "react";
 import {

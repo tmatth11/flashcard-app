@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleStarFlashcard } from "@/app/actions/set-actions";
+import { toggleStarFlashcard } from "@/app/_actions/star-actions";
 import { Star } from "lucide-react";
 import React, { useTransition } from "react";
 
@@ -38,10 +38,7 @@ export default function StarButton({
         >
             <Star fill="currentColor" color="currentColor" />
             <span className="sr-only">
-                Star flashcard{" "}
-                {isPending
-                    ? "(Disabled: Pending...)"
-                    : ""}
+                Star flashcard {isPending ? "(Disabled: Pending...)" : ""}
             </span>
         </button>
     );
