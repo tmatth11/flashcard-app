@@ -1,13 +1,16 @@
 import { flashcard, flashcardSet } from '../_db/schema';
 import { asc, count, desc, eq, getTableColumns, or } from "drizzle-orm";
 import { clerkClient } from '@clerk/nextjs/server';
-import { FlashcardSetFilters } from '../(sets)/types';
+import { FlashcardSetFilters } from '../types';
 import { db } from '../_db/drizzle';
 
 const ITEMS_PER_PAGE = 5;
+
+// Get flashcard sets with user filters applied
 export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
     const visibilityConditions = [];
 
+    // Optionally filter public/non-public sets
     if (filters.visibility === "public") {
         visibilityConditions.push(eq(flashcardSet.public, true));
     }
@@ -15,6 +18,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
         visibilityConditions.push(eq(flashcardSet.public, false));
     }
 
+    // Optionally sort flashcards according to user preferences
     let orderByClause;
     switch (filters.sortBy) {
         case "created-ascending":
@@ -32,6 +36,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
             break;
     }
 
+    // Get flashcard sets with number of terms
     const flashcardSets = await db
         .select({
             ...getTableColumns(flashcardSet),
@@ -45,6 +50,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
 
     const client = await clerkClient();
 
+    // Include username and image URL with flashcard sets
     const flashcardSetsAndUsers = await Promise.all(
         flashcardSets.map(async (set) => {
             try {
@@ -54,8 +60,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
                     username: user.username || "Unknown User",
                     imageUrl: user.imageUrl,
                 };
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            } catch (error) {
+            } catch {
                 return {
                     ...set,
                     username: "Unknown User",
@@ -65,6 +70,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
         })
     );
 
+    // Optionally filter by username
     let results = flashcardSetsAndUsers;
     if (filters.targetUsername) {
         results = results.filter(
@@ -72,6 +78,7 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
         )
     }
 
+    // Optionally filter by title, description, or username
     if (filters.query) {
         const lowerQuery = filters.query.toLowerCase();
 
@@ -87,7 +94,8 @@ export async function getFilteredFlashcardSets(filters: FlashcardSetFilters) {
     return results;
 }
 
-export async function getAllFlashcardSets(filters: FlashcardSetFilters) {
+// Get all the flashcard sets in the current page
+export async function getFlashcardSetsInPage(filters: FlashcardSetFilters) {
     const page = Math.max(1, Number(filters.currentPage) || 1);
     const offset = (page - 1) * ITEMS_PER_PAGE;
     const allFilteredSets = await getFilteredFlashcardSets(filters);
@@ -95,17 +103,14 @@ export async function getAllFlashcardSets(filters: FlashcardSetFilters) {
     return allFilteredSets.slice(offset, offset + ITEMS_PER_PAGE);
 }
 
+// Get the total number of pages of flashcard sets
 export async function fetchFlashcardSetsPages(filters: FlashcardSetFilters) {
-    try {
-        const allFilteredSets = await getFilteredFlashcardSets(filters);
-
-        return Math.ceil(Number(allFilteredSets.length) / ITEMS_PER_PAGE);
-    } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to fetch total number of pages.");
-    }
+    const allFilteredSets = await getFilteredFlashcardSets(filters);
+    
+    return Math.ceil(Number(allFilteredSets.length) / ITEMS_PER_PAGE);
 }
 
+// Get the flashcard set by the specified ID, along with the stars by the currently logged in user
 export async function getFlashcardSetById(id: number, currentUserId?: string | null) {
     return await db.query.flashcardSet.findFirst({
         where: (set, { eq }) => eq(set.id, id),
@@ -123,6 +128,7 @@ export async function getFlashcardSetById(id: number, currentUserId?: string | n
     });
 }
 
+// Get all flashcard set IDs
 export async function getPublicFlashcardSetIds() {
     return await db
         .select({ id: flashcardSet.id })
@@ -130,27 +136,32 @@ export async function getPublicFlashcardSetIds() {
         .where(eq(flashcardSet.public, true));
 }
 
+// Get usernames of all users who have made public flashcard sets
 export async function getPublicUsernames() {
+    // Get list of distinct users who have made public flashcard sets
     const distinctUsers = await db
-        .selectDistinct({userId: flashcardSet.userId})
+        .selectDistinct({ userId: flashcardSet.userId })
         .from(flashcardSet)
         .where(eq(flashcardSet.public, true));
-    
+
     if (distinctUsers.length === 0) return [];
 
     const client = await clerkClient();
 
+    // Get the user IDs of users who have made public flashcard sets
     const usernames = await Promise.all(
-        distinctUsers.map(async ({userId}) => {
+        distinctUsers.map(async ({ userId }) => {
             try {
                 const user = await client.users.getUser(userId);
                 return user.username || null;
-            } catch {
+            } 
+            catch {
                 return null;
             }
         })
     );
 
+    // Filter out unknown users
     return [...new Set(
         usernames.filter(
             (name): name is string =>

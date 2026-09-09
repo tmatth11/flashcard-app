@@ -2,6 +2,7 @@ import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import FlashcardSetView from "../../_components/flashcard-set-view";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { Visibility } from "@/app/types";
 
 export async function generateMetadata({
     params,
@@ -26,7 +27,7 @@ export default async function Page(props: {
         query?: string;
         page?: string;
         sort?: string;
-        visibility?: "all" | "private" | "public";
+        visibility?: Visibility;
     }>;
 }) {
     const params = await props.params;

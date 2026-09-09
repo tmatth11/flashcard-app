@@ -1,9 +1,9 @@
-import { getAllFlashcardSets } from "@/app/_lib/data";
+import { getFlashcardSetsInPage } from "@/app/_lib/data";
 import Image from "next/image";
-import { FlashcardSetProps } from "../types";
 import Link from "next/link";
 import { Lock } from "lucide-react";
-import { DeleteFlashcardSetButton } from "./delete-flashcard-set-button";
+import { FlashcardSetProps } from "@/app/types";
+import { DeleteFlashcardSetButton } from "@/app/_components/delete-flashcard-set-button";
 
 export default async function FlashcardSetList(props: FlashcardSetProps) {
     const { isOwner, isUserPage } = props;
@@ -16,7 +16,7 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
         visibility: props.visibility,
     };
 
-    const flashcardSets = await getAllFlashcardSets(filters);
+    const flashcardSets = await getFlashcardSetsInPage(filters);
 
     return (
         <div className="mt-4 flex flex-col justify-center gap-4">

@@ -1,7 +1,7 @@
 "use client";
 
 import { Pencil } from "lucide-react";
-import { Flashcard } from "../types";
+import { Flashcard } from "../../types";
 import { useState } from "react";
 import DeleteFlashcardButton from "./delete-flashcard-button";
 import EditFlashcardModal from "./edit-flashcard-modal";
@@ -41,9 +41,7 @@ export default function FlashcardItem({
                                     title="Edit"
                                     className="button"
                                 >
-                                    <Pencil
-                                        className="text-black hover:text-gray-500 dark:text-white"
-                                    />
+                                    <Pencil className="text-black hover:text-gray-500 dark:text-white" />
                                 </button>
                                 <DeleteFlashcardButton
                                     totalCards={totalCards}

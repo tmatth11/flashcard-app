@@ -2,11 +2,11 @@
 
 import { auth } from '@clerk/nextjs/server';
 import z from 'zod';
-import { flashcard, flashcardSet, flashcardStar } from '../_db/schema';
+import { flashcard, flashcardSet } from '../_db/schema';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { and, asc, count, eq } from 'drizzle-orm';
-import { FlashcardSetFilters, FlashcardSetState, FlashcardState } from '../(sets)/types';
+import { and, eq } from 'drizzle-orm';
+import { FlashcardSetFilters, FlashcardSetState } from '../types';
 import { fetchFlashcardSetsPages } from '../_lib/data';
 import { db } from '../_db/drizzle';
 
@@ -22,9 +22,11 @@ const FlashcardSetSchema = z.object({
     ).min(1, "At least one flashcard is required")
 });
 
+// Insert user-created flashcard set into database
 export async function createFlashcardSet(prevState: FlashcardSetState, formData: FormData) {
     const { userId } = await auth();
 
+    // Only allow logged in users to create flashcard sets
     if (!userId) {
         return {
             message: "Unauthorized. Please sign in to create flashcards sets.",
@@ -32,17 +34,20 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
         };
     }
 
+    // Get form elements
     const rawTitle = formData.get("title");
     const rawDescription = formData.get("description")?.toString().trim() || undefined;
     const rawPublic = formData.get("public");
     const terms = formData.getAll("term") as string[];
     const definitions = formData.getAll("definition") as string[];
 
+    // Combine terms with definitions
     const rawCards = terms.map((term, i) => ({
         term: term || "",
         definition: definitions[i] || ""
     }));
 
+    // Validate necessary fields
     const validatedFields = FlashcardSetSchema.safeParse({
         title: rawTitle,
         description: rawDescription || undefined,
@@ -50,9 +55,10 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
         cards: rawCards,
     });
 
+    // Return errors if present
     if (!validatedFields.success) {
         return {
-            errors: validatedFields.error.flatten().fieldErrors,
+            errors: z.treeifyError(validatedFields.error),
             message: "Missing or invalid fields. Please check your inputs.",
             success: false,
         };
@@ -62,6 +68,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
     let redirectPath = "/my-sets";
 
     try {
+        // Insert new entry into flashcardSet table
         const [newSet] = await db
             .insert(flashcardSet)
             .values({
@@ -74,6 +81,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
 
         redirectPath = `/set/${newSet.id}`;
 
+        // Gather cards that the user created
         const cardsToInsert = data.cards.map((card, index) => ({
             setId: newSet.id,
             term: card.term,
@@ -81,6 +89,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
             order: index,
         }));
 
+        // Insert the cards into the cards table
         await db.insert(flashcard).values(cardsToInsert);
     }
     catch (error) {
@@ -95,30 +104,38 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
     redirect(redirectPath);
 };
 
+// Delete flashcard set and maintain search parameters
 export async function deleteFlashcardSet(id: number, username: string, filters?: FlashcardSetFilters) {
     const { userId } = await auth();
+
+    // Only allow logged in users to delete flashcard sets
     if (!userId) throw new Error("Unauthorized");
 
+    // Find user ID specified flashcard set 
     const set = await db.query.flashcardSet.findFirst({
         where: eq(flashcardSet.id, id),
         columns: { userId: true }
     });
 
+    // Protect against users deleting each other's flashcard sets
     if (!set || set.userId !== userId) {
         throw new Error("Forbidden");
     }
 
+    // Delete flashcard set
     await db.delete(flashcardSet).where(eq(flashcardSet.id, id));
 
+    revalidatePath(`/sets/${username}`);
+
+    // Redirect to sets page if no filters are applied
     if (filters === undefined) {
-        revalidatePath(`/sets/${username}`);
         redirect(`/sets/${username}`);
     }
 
     const totalPages = await fetchFlashcardSetsPages(filters);
     const currentPage = filters.currentPage || 1;
-    revalidatePath(`/sets/${username}`);
 
+    // Reset filters and update page count if on invalid page
     if (currentPage > totalPages && totalPages > 0) {
         const params = new URLSearchParams();
         if (filters.query) params.set("query", filters.query);
@@ -133,6 +150,7 @@ export async function deleteFlashcardSet(id: number, username: string, filters?:
 export async function updateFlashcardSet(prevState: FlashcardSetState, formData: FormData) {
     const { userId } = await auth();
 
+    // Only allow logged in users to edit flashcard sets
     if (!userId) {
         return {
             message: "Unauthorized. Please sign in to edit flashcards sets.",
@@ -140,29 +158,37 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
         };
     }
 
+    // Get necessary form elements
     const rawSetId = formData.get("setId");
     const setId = Number(rawSetId);
     const title = (formData.get("title") as string)?.trim();
     const description = (formData.get("description") as string)?.trim() || null;
     const isPublic = formData.get("public") === "on";
 
+    // Prevent user from modfying non-existent flashcard sets
     if (!setId || isNaN(setId)) {
         return { message: "Invalid flashcard set ID.", success: false };
     }
 
+    // Prevent user from not including a title in their set
     if (!title) {
         return { message: "Title is required.", success: false };
     }
 
+    // Get included terms and definitions
     const terms = formData.getAll("term") as string[];
     const definitions = formData.getAll("definition") as string[];
 
+
+    // Prevent user from providing empty terms/definitions
     if (terms.length === 0 || terms.some((t) => !t.trim()) || definitions.some((d) => !d.trim())) {
         return { message: "All flashcards must have both a term and a definition.", success: false };
     }
 
     try {
+        // Update flashcard set information and flashcards
         await db.transaction(async (tx) => {
+            // Update flashcard set if user is the owner
             const updatedSets = await tx
                 .update(flashcardSet)
                 .set({
@@ -174,12 +200,15 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
                 .where(and(eq(flashcardSet.id, setId), eq(flashcardSet.userId, userId)))
                 .returning({ id: flashcardSet.id });
 
+            // Throw error if set was not found or if user doesn't own set
             if (updatedSets.length === 0) {
                 throw new Error("Set not found or unauthorized.");
             }
 
+            // Delete all flashcards
             await tx.delete(flashcard).where(eq(flashcard.setId, setId));
 
+            // Gather new and old flashcards
             const cardsToInsert = terms.map((term, index) => ({
                 setId,
                 term: term.trim(),
@@ -187,6 +216,7 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
                 order: index
             }));
 
+            // Insert all flashcards at once
             await tx.insert(flashcard).values(cardsToInsert);
         });
     }
@@ -201,129 +231,4 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
     revalidatePath(`/edit-set/${setId}`);
     revalidatePath(`/set/${setId}`);
     redirect(`/set/${setId}`)
-}
-
-export async function deleteFlashcard(
-    cardId: number,
-    setId: number,
-    currentCard: number,
-) {
-    const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
-
-    const set = await db.query.flashcardSet.findFirst({
-        where: eq(flashcardSet.id, setId),
-        columns: { userId: true },
-    });
-
-    if (!set || set.userId !== userId) {
-        throw new Error("Forbidden: You do not own this flashcard set");
-    }
-
-    const [{ value: totalCards }] = await db
-        .select({ value: count() })
-        .from(flashcard)
-        .where(eq(flashcard.setId, setId));
-
-    if (totalCards <= 1) {
-        throw new Error("A set must have at least 1 card.");
-    }
-
-    await db.transaction(async (tx) => {
-        await tx.delete(flashcard).where(eq(flashcard.id, cardId));
-
-        const remainingCards = await tx.query.flashcard.findMany({
-            where: eq(flashcard.setId, setId),
-            orderBy: [asc(flashcard.order), asc(flashcard.id)],
-        });
-
-        for (let i = 0; i < remainingCards.length; i++) {
-            await tx
-                .update(flashcard)
-                .set({ order: i })
-                .where(eq(flashcard.id, remainingCards[i].id))
-        }
-    });
-
-    const newTotalCards = totalCards - 1;
-
-    if (currentCard && currentCard >= newTotalCards) {
-        redirect(`/set/${setId}?page=${newTotalCards}`)
-    }
-
-    revalidatePath(`/set/${setId}`);
-}
-
-export async function updateFlashcard(
-    prevState: FlashcardState,
-    formData: FormData
-) {
-    const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
-
-    const cardId = Number(formData.get("cardId"));
-    const setId = Number(formData.get("setId"));
-    const term = (formData.get("term") as string)?.trim();
-    const definition = (formData.get("definition") as string)?.trim();
-
-    if (!term || !definition) {
-        return {
-            error: "Validation failed",
-            errors: {
-                term: !term ? ["Term is required."] : undefined,
-                definition: !definition ? ["Definition is required."] : undefined,
-            }
-        };
-    }
-
-    const set = await db.query.flashcardSet.findFirst({
-        where: eq(flashcardSet.id, setId),
-        columns: { userId: true }
-    });
-
-    if (!set || set.userId !== userId) {
-        return { success: false, error: "Forbidden: You do not own this flashcard set" };
-    }
-
-    await db
-        .update(flashcard)
-        .set({ term, definition })
-        .where(eq(flashcard.id, cardId));
-
-    revalidatePath(`/sets/${setId}`);
-
-    return { success: true };
-}
-
-export async function toggleStarFlashcard(flashcardId: number, setId: number) {
-    const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
-
-    const existingStar = await db.query.flashcardStar.findFirst({
-        where: and(
-            eq(flashcardStar.userId, userId),
-            eq(flashcardStar.flashcardId, flashcardId)
-        ),
-    });
-
-    // User has flashcard already starred
-    if (existingStar) {
-        await db
-            .delete(flashcardStar)
-            .where(
-                and(
-                    eq(flashcardStar.userId, userId),
-                    eq(flashcardStar.flashcardId, flashcardId)
-                )
-            );
-    }
-    // User has not yet starred flashcard
-    else {
-        await db.insert(flashcardStar).values({
-            userId,
-            flashcardId
-        });
-    }
-
-    revalidatePath(`/set/${setId}`);
 }

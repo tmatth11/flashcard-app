@@ -1,9 +1,11 @@
+export type Visibility = "all" | "private" | "public";
+
 export interface FlashcardSetFilters {
     query: string;
     currentPage: number;
     sortBy: string;
     targetUsername?: string;
-    visibility?: "all" | "private" | "public";
+    visibility?: Visibility;
 }
 export interface FlashcardSetProps extends FlashcardSetFilters {
     isUserPage: boolean;
@@ -14,15 +16,6 @@ export interface FlashcardSetViewProps extends FlashcardSetProps {
     placeholder: string;
 }
 
-export interface Flashcard {
-    id: number;
-    term: string;
-    definition: string;
-    setId?: number;
-    order?: number;
-    isStarred?: boolean;
-}
-
 export interface FlashcardSetFormProps {
     setId?: number;
     initialData?: {
@@ -31,6 +24,15 @@ export interface FlashcardSetFormProps {
         isPublic: boolean;
         flashcards: Flashcard[]
     };
+}
+
+export interface Flashcard {
+    id: number;
+    term: string;
+    definition: string;
+    setId?: number;
+    order?: number;
+    isStarred?: boolean;
 }
 
 export interface ViewAndEditSetPageProps {

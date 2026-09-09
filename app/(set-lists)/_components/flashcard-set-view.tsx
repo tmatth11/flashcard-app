@@ -1,11 +1,11 @@
 import { fetchFlashcardSetsPages } from "@/app/_lib/data";
-import FlashcardSetList from "./flashcard-set-list";
-import Pagination from "./pagination";
+import Pagination from "../../_components/pagination";
 import Searchbox from "./searchbox";
 import { Suspense } from "react";
 import SortBy from "./sort-by";
 import VisibilityFilter from "./visibility-filter";
-import { FlashcardSetViewProps } from "../types";
+import { FlashcardSetViewProps } from "../../types";
+import FlashcardSetList from "./flashcard-set-list";
 
 export default async function FlashcardSetView({
     placeholder,
@@ -15,7 +15,7 @@ export default async function FlashcardSetView({
     targetUsername,
     isOwner = false,
     visibility = "all",
-    isUserPage
+    isUserPage,
 }: FlashcardSetViewProps) {
     const filters = {
         query: query,
@@ -24,7 +24,7 @@ export default async function FlashcardSetView({
         targetUsername: targetUsername,
         visibility: visibility,
     };
-    
+
     const totalPages = await fetchFlashcardSetsPages(filters);
 
     return (

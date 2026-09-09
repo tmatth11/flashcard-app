@@ -3,11 +3,15 @@
 import {
     createFlashcardSet,
     updateFlashcardSet,
-} from "@/app/actions/set-actions";
+} from "@/app/_actions/set-actions";
 import { Plus, Trash2 } from "lucide-react";
 import { useActionState, useId, useState } from "react";
-import { Flashcard, FlashcardSetFormProps, FlashcardSetState } from "../types";
-import ErrorBanner from "./error-banner";
+import {
+    FlashcardSetState,
+    FlashcardSetFormProps,
+    Flashcard,
+} from "@/app/types";
+import ErrorBanner from "@/app/_components/error-banner";
 
 const initialState: FlashcardSetState = {};
 

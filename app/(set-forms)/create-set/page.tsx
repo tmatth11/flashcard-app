@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
-import FlashcardSetForm from "../_components/flashcard-form";
 import { Metadata } from "next";
+import FlashcardSetForm from "../_components/flashcard-form";
 
 export const metadata: Metadata = {
     title: "Create Set",
