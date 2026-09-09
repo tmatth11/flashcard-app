@@ -20,7 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
         <html lang="en" className={inter.className} suppressHydrationWarning>
             <body
-                className="flex min-h-screen flex-col"
+                className="flex min-h-dvh flex-col"
                 suppressHydrationWarning
             >
                 <ThemeProvider
