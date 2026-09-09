@@ -34,6 +34,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
                     className="btn btn-primary"
                     aria-label="Previous page"
                     disabled={validTotalPages === 1}
+                    tabIndex={-1}
                     title="Previous page"
                 >
                     <ArrowLeft />
@@ -55,6 +56,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
                     className="btn btn-primary"
                     aria-label="Next page"
                     disabled={validTotalPages === 1}
+                    tabIndex={-1}
                     title="Next page"
                 >
                     <ArrowRight />
