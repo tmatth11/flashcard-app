@@ -1,4 +1,4 @@
-import { getAllFlashcardSets } from "@/app/_lib/data";
+import { getFlashcardSetsInPage } from "@/app/_lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { Lock } from "lucide-react";
@@ -16,7 +16,7 @@ export default async function FlashcardSetList(props: FlashcardSetProps) {
         visibility: props.visibility,
     };
 
-    const flashcardSets = await getAllFlashcardSets(filters);
+    const flashcardSets = await getFlashcardSetsInPage(filters);
 
     return (
         <div className="mt-4 flex flex-col justify-center gap-4">
