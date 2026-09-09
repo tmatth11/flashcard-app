@@ -1,14 +1,14 @@
 import { getFlashcardSetById } from "@/app/_lib/data";
-import { SetPageProps } from "../../../types";
 import { notFound, redirect, unauthorized } from "next/navigation";
 import z from "zod";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
-import FlashcardDisplay from "../../_components/flashcard-display";
-import FlashcardItem from "../../_components/flashcard-item";
-import { DeleteFlashcardSetButton } from "../../_components/delete-flashcard-set-button";
-import FlashcardFilter from "../../_components/flashcard-filter";
+import { DeleteFlashcardSetButton } from "@/app/_components/delete-flashcard-set-button";
+import { SetPageProps } from "@/app/types";
+import FlashcardDisplay from "../_components/flashcard-display";
+import FlashcardFilter from "../_components/flashcard-filter";
+import FlashcardItem from "../_components/flashcard-item";
 
 const IdParamSchema = z.coerce.number().int().positive();
 
