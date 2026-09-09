@@ -4,6 +4,12 @@ import { notFound, unauthorized } from "next/navigation";
 import FlashcardSetForm from "../../_components/flashcard-form";
 import { getFlashcardSetById } from "@/app/_lib/data";
 import z from "zod";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Edit Set",
+    description: "Edit this flashcard set",
+};
 
 const IdParamSchema = z.coerce.number().int().positive()
 

@@ -3,6 +3,21 @@ import FlashcardSetView from "../../_components/flashcard-set-view";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{
+        username: string;
+    }>;
+}) {
+    const resolvedParams = await params;
+
+    return {
+        title: `${resolvedParams.username}'s flashcard sets`,
+        description: `All sets created by ${resolvedParams.username}`,
+    };
+}
+
 export default async function Page(props: {
     params: Promise<{
         username: string;
@@ -28,7 +43,7 @@ export default async function Page(props: {
     }
 
     const loggedInUser = await currentUser();
-    const userImageUrl = users.data[0].imageUrl || '/blank-user.png';
+    const userImageUrl = users.data[0].imageUrl || "/blank-user.png";
     const isOwner = loggedInUser?.username === username;
 
     const query = searchParams?.query || "";
@@ -49,7 +64,7 @@ export default async function Page(props: {
                     src={userImageUrl}
                     alt={`${username}'s profile picture`}
                 />
-                <h1 className="text-center text-2xl font-semibold mt-2">
+                <h1 className="mt-2 text-center text-2xl font-semibold">
                     {pageTitle}
                 </h1>
             </div>

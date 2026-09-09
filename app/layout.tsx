@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/app/_components/navbar";
 import { ThemeProvider } from "./_components/theme-provider";
 import ClerkThemeProvider from "./_components/clerk-theme-provider";
+import { Metadata } from "next";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -12,9 +12,8 @@ const inter = Inter({
 export const metadata: Metadata = {
     title: {
         template: "%s | Flashcard App",
-        default: "Flashcard App",
-    },
-    description: "Create your own flashcards and share them with friends!",
+        default: "Flashcard App"
+    }
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
