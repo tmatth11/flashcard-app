@@ -61,7 +61,7 @@ export default function Card({
                     tabIndex={0}
                     onKeyDown={handleKeyDown}
                     onClick={() => setTermSide((prev) => !prev)}
-                    className="flex flex-1 cursor-pointer items-center justify-center focus:ring-2 focus:ring-blue-500 focus:outline-none dark:focus:ring-blue-400"
+                    className="flex flex-1 cursor-pointer items-center justify-center"
                 >
                     <p className="w-full text-center text-xl wrap-break-word">
                         {termSide ? flashcard.term : flashcard.definition}
