@@ -4,17 +4,17 @@ import { FlashcardSetFilters } from "../types";
 export function DeleteFlashcardSetButton({
     id,
     username,
-    filters
+    filters,
 }: {
     id: number;
     username: string;
-    filters?: FlashcardSetFilters
+    filters?: FlashcardSetFilters;
 }) {
     const deleteFlashcardSetWithId = deleteFlashcardSet.bind(
         null,
         id,
         username,
-        filters
+        filters,
     );
 
     return (

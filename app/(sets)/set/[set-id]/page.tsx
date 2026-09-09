@@ -1,5 +1,5 @@
 import { getFlashcardSetById } from "@/app/_lib/data";
-import { SetPageProps } from "../../types";
+import { SetPageProps } from "../../../types";
 import { notFound, redirect, unauthorized } from "next/navigation";
 import z from "zod";
 import { auth, clerkClient } from "@clerk/nextjs/server";
@@ -39,7 +39,9 @@ export async function generateMetadata({ params }: SetPageProps) {
 
         return {
             title: `${setData.title}`,
-            description: setData.description ? setData.description : `Study this set from ${setOwner.username}`,
+            description: setData.description
+                ? setData.description
+                : `Study this set from ${setOwner.username}`,
         };
     } catch {
         return {};

@@ -1,9 +1,9 @@
 import { getAllFlashcardSets } from "@/app/_lib/data";
 import Image from "next/image";
-import { FlashcardSetProps } from "../types";
 import Link from "next/link";
 import { Lock } from "lucide-react";
-import { DeleteFlashcardSetButton } from "./delete-flashcard-set-button";
+import { FlashcardSetProps } from "@/app/types";
+import { DeleteFlashcardSetButton } from "@/app/_components/delete-flashcard-set-button";
 
 export default async function FlashcardSetList(props: FlashcardSetProps) {
     const { isOwner, isUserPage } = props;

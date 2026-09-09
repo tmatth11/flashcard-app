@@ -1,7 +1,7 @@
 import { flashcard, flashcardSet } from '../_db/schema';
 import { asc, count, desc, eq, getTableColumns, or } from "drizzle-orm";
 import { clerkClient } from '@clerk/nextjs/server';
-import { FlashcardSetFilters } from '../(sets)/types';
+import { FlashcardSetFilters } from '../types';
 import { db } from '../_db/drizzle';
 
 const ITEMS_PER_PAGE = 5;
@@ -132,16 +132,16 @@ export async function getPublicFlashcardSetIds() {
 
 export async function getPublicUsernames() {
     const distinctUsers = await db
-        .selectDistinct({userId: flashcardSet.userId})
+        .selectDistinct({ userId: flashcardSet.userId })
         .from(flashcardSet)
         .where(eq(flashcardSet.public, true));
-    
+
     if (distinctUsers.length === 0) return [];
 
     const client = await clerkClient();
 
     const usernames = await Promise.all(
-        distinctUsers.map(async ({userId}) => {
+        distinctUsers.map(async ({ userId }) => {
             try {
                 const user = await client.users.getUser(userId);
                 return user.username || null;

@@ -1,5 +1,5 @@
 import { useActionState, useEffect } from "react";
-import { Flashcard, FlashcardState } from "../types";
+import { Flashcard, FlashcardState } from "../../types";
 import { updateFlashcard } from "@/app/actions/set-actions";
 import { X } from "lucide-react";
 import ErrorBanner from "../../_components/error-banner";

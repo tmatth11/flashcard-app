@@ -6,7 +6,7 @@ import { flashcard, flashcardSet, flashcardStar } from '../_db/schema';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { and, asc, count, eq } from 'drizzle-orm';
-import { FlashcardSetFilters, FlashcardSetState, FlashcardState } from '../(sets)/types';
+import { FlashcardSetFilters, FlashcardSetState, FlashcardState } from '../types';
 import { fetchFlashcardSetsPages } from '../_lib/data';
 import { db } from '../_db/drizzle';
 

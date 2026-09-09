@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { ViewAndEditSetPageProps } from "../../../(sets)/types";
+import { ViewAndEditSetPageProps } from "../../../types";
 import { notFound, unauthorized } from "next/navigation";
 import { getFlashcardSetById } from "@/app/_lib/data";
 import z from "zod";

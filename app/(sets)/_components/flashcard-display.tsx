@@ -1,6 +1,6 @@
-import { Flashcard } from "../types";
+import { Flashcard } from "../../types";
 import Card from "./card";
-import Pagination from "./pagination";
+import Pagination from "../../_components/pagination";
 import StudyStarredCheckbox from "./study-starred-checkbox";
 
 export default function FlashcardDisplay({

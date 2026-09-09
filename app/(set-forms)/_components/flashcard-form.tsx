@@ -6,7 +6,11 @@ import {
 } from "@/app/actions/set-actions";
 import { Plus, Trash2 } from "lucide-react";
 import { useActionState, useId, useState } from "react";
-import { FlashcardSetState, FlashcardSetFormProps, Flashcard } from "@/app/(sets)/types";
+import {
+    FlashcardSetState,
+    FlashcardSetFormProps,
+    Flashcard,
+} from "@/app/types";
 import ErrorBanner from "@/app/_components/error-banner";
 
 const initialState: FlashcardSetState = {};
