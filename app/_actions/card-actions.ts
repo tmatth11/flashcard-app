@@ -17,7 +17,7 @@ export async function deleteFlashcard(
     const { userId } = await auth();
 
     // Only allow users who are logged in to delete flashcards
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw new Error("Unauthorized: You must be logged in to delete flashcards.");
 
     // Find user ID of flashcard creator
     const set = await db.query.flashcardSet.findFirst({
@@ -27,7 +27,7 @@ export async function deleteFlashcard(
 
     // Only let the set owner delete this flashcard
     if (!set || set.userId !== userId) {
-        throw new Error("Forbidden: You do not own this flashcard set");
+        throw new Error("Forbidden: You do not own this flashcard set.");
     }
 
     // Get the total number of cards belonging to this set
@@ -38,7 +38,7 @@ export async function deleteFlashcard(
 
     // Prevent user from deleting this flashcard if there is only 1 card in the set
     if (totalCards <= 1) {
-        throw new Error("A set must have at least 1 card.");
+        throw new Error("Error: A set must have at least 1 card.");
     }
 
     await db.transaction(async (tx) => {
@@ -79,7 +79,7 @@ export async function updateFlashcard(
     const { userId } = await auth();
 
     // Only allow logged in users to update flashcard
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw new Error("Unauthorized: You must be logged in to update flashcards.");
 
     // Get necessary form elements
     const cardId = Number(formData.get("cardId"));
@@ -106,7 +106,7 @@ export async function updateFlashcard(
 
     // Prevent users from deleting each other's flashcards
     if (!set || set.userId !== userId) {
-        return { success: false, error: "Forbidden: You do not own this flashcard set" };
+        return { success: false, error: "Forbidden: You do not own this flashcard set." };
     }
 
     // Update the flashcard
@@ -115,7 +115,7 @@ export async function updateFlashcard(
         .set({ term, definition })
         .where(eq(flashcard.id, cardId));
 
-    revalidatePath(`/sets/${setId}`);
+    revalidatePath(`/set/${setId}`);
 
     return { success: true };
 }
