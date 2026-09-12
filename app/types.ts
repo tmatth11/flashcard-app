@@ -3,7 +3,7 @@ export type Visibility = "all" | "private" | "public";
 export interface FlashcardSetFilters {
     query: string;
     currentPage: number;
-    sortBy: string;
+    sortBy?: string;
     targetUsername?: string;
     visibility?: Visibility;
 }

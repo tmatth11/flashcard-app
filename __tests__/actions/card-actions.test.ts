@@ -1,34 +1,11 @@
 import { deleteFlashcard, updateFlashcard } from "@/app/_actions/card-actions";
 import { db } from "@/app/_db/drizzle";
-import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { getTestParams, mockAuthUser, mockRemainingCards, mockSetOwner, mockTotalCardsCount, TEST_PARAMS, TEST_USERS } from "./helpers";
 
-/* Test Setup */
-
-type AuthResult = Awaited<ReturnType<typeof auth>>;
-type SetQueryResult = Awaited<ReturnType<typeof db.query.flashcardSet.findFirst>>;
-type SelectCountResult = ReturnType<typeof db.select>;
-type RemainingCardsResult = Awaited<ReturnType<typeof db.query.flashcard.findMany>>;
-
-const TEST_USERS = {
-    owner: "user_owner_123",
-    other: "user_other_123"
-} as const;
-
-const TEST_PARAMS = {
-    cardId: 1,
-    setId: 10,
-    currentCard: 1,
-};
-
-function getTestParams(overrides?: Partial<typeof TEST_PARAMS>) {
-    return {
-        ...TEST_PARAMS,
-        ...overrides,
-    };
-}
+// Flashcard form data generator
 
 function createCardFormData(overrides?: {
     cardId?: string;
@@ -37,6 +14,7 @@ function createCardFormData(overrides?: {
     definition?: string;
 }) {
     const formData = new FormData();
+
     formData.append("cardId", overrides?.cardId ?? String(TEST_PARAMS.cardId));
     formData.append("setId", overrides?.setId ?? String(TEST_PARAMS.setId));
     formData.append("term", overrides?.term ?? "What is the sum of 1 + 1?");
@@ -45,31 +23,7 @@ function createCardFormData(overrides?: {
     return formData;
 }
 
-function mockAuthUser(userId: string | null = TEST_USERS.owner) {
-    vi.mocked(auth).mockResolvedValueOnce({ userId } as unknown as AuthResult);
-}
-
-function mockSetOwner(userId: string = TEST_USERS.owner) {
-    vi.mocked(db.query.flashcardSet.findFirst).mockResolvedValueOnce(
-        {userId} as unknown as SetQueryResult
-    );
-}
-
-function mockTotalCardsCount(cardCount: number) {
-    vi.mocked(db.select).mockReturnValueOnce({
-        from: vi.fn().mockReturnValueOnce({
-            where: vi.fn().mockResolvedValueOnce([{value: cardCount}]),
-        }),
-    } as unknown as SelectCountResult);
-}
-
-function mockRemainingCards(cards: Array<{id: number; order: number}> = [{id: 2, order: 0}, {id: 3, order: 1}]) {
-    vi.mocked(db.query.flashcard.findMany).mockResolvedValueOnce(
-        cards as unknown as RemainingCardsResult
-    );
-}
-
-/* Flashcard Actions Tests*/
+// Flashcard Actions Tests
 
 describe("Flashcard Actions", () => {
     beforeEach(() => {

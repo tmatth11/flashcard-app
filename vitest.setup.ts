@@ -37,6 +37,10 @@ vi.mock("@/app/_db/drizzle", () => ({
     db: mockDb,
 }));
 
+vi.mock("@/app/_lib/data", () => ({
+    fetchFlashcardSetsPages: vi.fn(),
+}));
+
 // Clerk
 
 vi.mock("@clerk/nextjs/server", () => ({
