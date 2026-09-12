@@ -92,8 +92,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
         // Insert the cards into the cards table
         await db.insert(flashcard).values(cardsToInsert);
     }
-    catch (error) {
-        console.error("Database Error:", error);
+    catch {
         return {
             message: "Database Error: Failed to create flashcard set.",
             success: false,
@@ -227,8 +226,6 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
         });
     }
     catch (error) {
-        console.error("Failed to update flashcard set:", error);
-
         return {
             message: error instanceof Error ? error.message : "Error: An error occurred while updating the set.",
             success: false,

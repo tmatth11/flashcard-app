@@ -12,6 +12,7 @@ type RemainingCardsResult = Awaited<ReturnType<typeof db.query.flashcard.findMan
 type DatabaseInsertResult = ReturnType<typeof db.insert>;
 type UpdateSetResult = ReturnType<typeof db.update>;
 type DatabaseDeleteResult = ReturnType<typeof db.delete>;
+type FlashcardStarQueryResult = Awaited<ReturnType<typeof db.query.flashcardStar.findFirst>>;
 
 // Objects
 
@@ -97,4 +98,12 @@ export function mockDatabaseInsert() {
     vi.mocked(db.insert).mockReturnValueOnce({
         values: vi.fn().mockResolvedValueOnce(undefined),
     } as unknown as DatabaseInsertResult);
+}
+
+export function mockExistingStar(hasStar: boolean = true) {
+    const starResult = hasStar
+        ? ({userId: TEST_USERS.owner, flashcardId: TEST_PARAMS.cardId} as unknown as FlashcardStarQueryResult)
+        : undefined;
+    
+        vi.mocked(db.query.flashcardStar.findFirst).mockResolvedValueOnce(starResult);
 }
