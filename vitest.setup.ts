@@ -1,4 +1,5 @@
 import { vi } from 'vitest';
+import "@testing-library/jest-dom/vitest";
 
 // Dummy environment variables
 process.env.CLERK_SECRET_KEY = 'sk_test_dummy'

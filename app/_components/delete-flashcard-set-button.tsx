@@ -1,15 +1,17 @@
 import { deleteFlashcardSet } from "@/app/_actions/set-actions";
 import { FlashcardSetFilters } from "../types";
 
+export interface DeleteFlashcardSetButtonProps {
+    id: number;
+    username: string;
+    filters?: FlashcardSetFilters;
+}
+
 export function DeleteFlashcardSetButton({
     id,
     username,
     filters,
-}: {
-    id: number;
-    username: string;
-    filters?: FlashcardSetFilters;
-}) {
+}: DeleteFlashcardSetButtonProps) {
     const deleteFlashcardSetWithId = deleteFlashcardSet.bind(
         null,
         id,
