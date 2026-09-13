@@ -11,7 +11,7 @@ export async function toggleStarFlashcard(flashcardId: number, setId: number) {
     const { userId } = await auth();
 
     // Only allow logged in users to star flashcards
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw new Error("Unauthorized: You must be logged in to star flashcards.");
 
     // Determine if user has already starred flashcard
     const existingStar = await db.query.flashcardStar.findFirst({

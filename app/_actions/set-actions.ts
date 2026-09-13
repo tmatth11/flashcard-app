@@ -29,7 +29,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
     // Only allow logged in users to create flashcard sets
     if (!userId) {
         return {
-            message: "Unauthorized. Please sign in to create flashcards sets.",
+            message: "Unauthorized: Please sign in to create flashcards sets.",
             success: false,
         };
     }
@@ -59,7 +59,7 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
     if (!validatedFields.success) {
         return {
             errors: z.treeifyError(validatedFields.error),
-            message: "Missing or invalid fields. Please check your inputs.",
+            message: "Error: Missing or invalid fields. Please check your inputs.",
             success: false,
         };
     }
@@ -92,10 +92,9 @@ export async function createFlashcardSet(prevState: FlashcardSetState, formData:
         // Insert the cards into the cards table
         await db.insert(flashcard).values(cardsToInsert);
     }
-    catch (error) {
-        console.error("Database Error:", error);
+    catch {
         return {
-            message: "Database error: Failed to create flashcard set.",
+            message: "Database Error: Failed to create flashcard set.",
             success: false,
         };
     }
@@ -109,7 +108,7 @@ export async function deleteFlashcardSet(id: number, username: string, filters?:
     const { userId } = await auth();
 
     // Only allow logged in users to delete flashcard sets
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw new Error("Unauthorized: You must be logged in to delete flashcard sets.");
 
     // Find user ID specified flashcard set 
     const set = await db.query.flashcardSet.findFirst({
@@ -119,7 +118,7 @@ export async function deleteFlashcardSet(id: number, username: string, filters?:
 
     // Protect against users deleting each other's flashcard sets
     if (!set || set.userId !== userId) {
-        throw new Error("Forbidden");
+        throw new Error("Forbidden: You do not own this flashcard set.");
     }
 
     // Delete flashcard set
@@ -131,19 +130,21 @@ export async function deleteFlashcardSet(id: number, username: string, filters?:
     if (filters === undefined) {
         redirect(`/sets/${username}`);
     }
+    // Redirect to sets page if filters are applied
+    else {
+        const totalPages = await fetchFlashcardSetsPages(filters);
+        const currentPage = filters.currentPage || 1;
 
-    const totalPages = await fetchFlashcardSetsPages(filters);
-    const currentPage = filters.currentPage || 1;
+        // Reset filters and update page count if on invalid page
+        if (currentPage > totalPages && totalPages > 0) {
+            const params = new URLSearchParams();
+            if (filters.query) params.set("query", filters.query);
+            if (filters.sortBy) params.set("sort", filters.sortBy);
+            if (filters.visibility) params.set("visibility", filters.visibility);
+            params.set("page", totalPages.toString());
 
-    // Reset filters and update page count if on invalid page
-    if (currentPage > totalPages && totalPages > 0) {
-        const params = new URLSearchParams();
-        if (filters.query) params.set("query", filters.query);
-        if (filters.sortBy) params.set("sort", filters.sortBy);
-        if (filters.visibility) params.set("visibility", filters.visibility);
-        params.set("page", totalPages.toString());
-
-        redirect(`/sets/${username}?${params.toString()}`);
+            redirect(`/sets/${username}?${params.toString()}`);
+        }
     }
 }
 
@@ -153,7 +154,7 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
     // Only allow logged in users to edit flashcard sets
     if (!userId) {
         return {
-            message: "Unauthorized. Please sign in to edit flashcards sets.",
+            message: "Unauthorized: Please sign in to edit flashcards sets.",
             success: false,
         };
     }
@@ -166,13 +167,17 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
     const isPublic = formData.get("public") === "on";
 
     // Prevent user from modfying non-existent flashcard sets
-    if (!setId || isNaN(setId)) {
-        return { message: "Invalid flashcard set ID.", success: false };
+    if (rawSetId === null || rawSetId === "") {
+        return { message: "Error: Flashcard set ID must be provided.", success: false };
+    }
+
+    if (isNaN(setId)) {
+        return { message: "Error: Invalid flashcard set ID.", success: false };
     }
 
     // Prevent user from not including a title in their set
     if (!title) {
-        return { message: "Title is required.", success: false };
+        return { message: "Error: Title is required.", success: false };
     }
 
     // Get included terms and definitions
@@ -182,7 +187,7 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
 
     // Prevent user from providing empty terms/definitions
     if (terms.length === 0 || terms.some((t) => !t.trim()) || definitions.some((d) => !d.trim())) {
-        return { message: "All flashcards must have both a term and a definition.", success: false };
+        return { message: "Error: All flashcards must have both a term and a definition.", success: false };
     }
 
     try {
@@ -202,7 +207,7 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
 
             // Throw error if set was not found or if user doesn't own set
             if (updatedSets.length === 0) {
-                throw new Error("Set not found or unauthorized.");
+                throw new Error("Error: Set not found or you are unauthorized.");
             }
 
             // Delete all flashcards
@@ -221,9 +226,8 @@ export async function updateFlashcardSet(prevState: FlashcardSetState, formData:
         });
     }
     catch (error) {
-        console.error("Failed to update flashcard set:", error);
         return {
-            message: "An error occured while updating the set. Please try again",
+            message: error instanceof Error ? error.message : "Error: An error occurred while updating the set.",
             success: false,
         };
     }
