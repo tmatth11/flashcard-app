@@ -4,7 +4,11 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export default function Pagination({ totalPages }: { totalPages: number }) {
+export interface PaginationProps {
+    totalPages: number;
+}
+
+export default function Pagination({ totalPages }: PaginationProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
