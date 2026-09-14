@@ -1,7 +1,8 @@
 "use client";
 import * as React from "react";
-import { CircleQuestionMark, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from '@teispace/next-themes';
+import ModeToggleSkeleton from "./mode-toggle-skeleton";
 
 export default function ModeToggle() {
     const { setTheme, resolvedTheme } = useTheme();
@@ -15,12 +16,7 @@ export default function ModeToggle() {
 
     if (!mounted) {
         return (
-            <button
-                aria-label="Loading dark mode toggle"
-                className="mode-toggle scale-0 rotate-90 cursor-pointer"
-            >
-                <CircleQuestionMark />
-            </button>
+            <ModeToggleSkeleton />
         );
     }
 
