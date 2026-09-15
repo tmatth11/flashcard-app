@@ -26,8 +26,7 @@ vi.mock("@clerk/nextjs", () => ({
         children: React.ReactNode;
     }) => {
         const { isSignedIn } = useUser();
-        if (when === "signed-in" && isSignedIn) return <>{children}</>;
-        if (when === "signed-out" && !isSignedIn) return <>{children}</>;
+        return  (when === "signed-in") === isSignedIn ?  <>{children}</> : null;
     },
 }));
 
