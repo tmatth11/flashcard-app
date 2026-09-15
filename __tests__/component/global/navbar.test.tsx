@@ -1,9 +1,10 @@
+import "../helpers";
+
 import Navbar from "@/app/_components/navbar";
-import { useUser } from "@clerk/nextjs";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { mockClerkAuthUser } from "../helpers";
 
 vi.mock("@/app/_components/mode-toggle", () => ({
     default: () => <div data-testid="mode-toggle">Toggle mode</div>,
@@ -15,38 +16,6 @@ vi.mock("next/navigation", () => ({
     useSearchParams: () => new URLSearchParams(),
 }));
 
-vi.mock("@clerk/nextjs", () => ({
-    useUser: vi.fn(),
-    UserButton: () => <div data-testid="user-button">Clerk User Button</div>,
-    Show: ({
-        when,
-        children,
-    }: {
-        when: "signed-in" | "signed-out";
-        children: React.ReactNode;
-    }) => {
-        const { isSignedIn } = useUser();
-        return  (when === "signed-in") === isSignedIn ?  <>{children}</> : null;
-    },
-}));
-
-function mockClerkAuthUser(user: { username: string } | null = null) {
-    if (user) {
-        vi.mocked(useUser).mockReturnValue({
-            user: { username: user.username } as unknown as NonNullable<
-                ReturnType<typeof useUser>["user"]
-            >,
-            isLoaded: true,
-            isSignedIn: true,
-        });
-    } else {
-        vi.mocked(useUser).mockReturnValue({
-            user: null,
-            isLoaded: true,
-            isSignedIn: false,
-        });
-    }
-}
 
 describe("Navbar", () => {
     const mockUserName = "test_user";
