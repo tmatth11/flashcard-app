@@ -3,11 +3,13 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
+export interface VisibilityFilterProps {
+    defaultValue?: string;
+}
+
 export default function VisibilityFilter({
     defaultValue = "all",
-}: {
-    defaultValue?: string;
-}) {
+}: VisibilityFilterProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
