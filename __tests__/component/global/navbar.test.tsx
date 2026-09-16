@@ -1,5 +1,3 @@
-import "../helpers";
-
 import Navbar from "@/app/_components/navbar";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -9,13 +7,6 @@ import { mockClerkAuthUser } from "../helpers";
 vi.mock("@/app/_components/mode-toggle", () => ({
     default: () => <div data-testid="mode-toggle">Toggle mode</div>,
 }));
-
-vi.mock("next/navigation", () => ({
-    useRouter: () => ({ push: vi.fn(), replace: vi.fn(), prefetch: vi.fn() }),
-    usePathname: () => "/",
-    useSearchParams: () => new URLSearchParams(),
-}));
-
 
 describe("Navbar", () => {
     const mockUserName = "test_user";
