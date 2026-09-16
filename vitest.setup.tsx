@@ -63,6 +63,7 @@ vi.mock("@clerk/nextjs", () => ({
         const { isSignedIn } = useUser();
         return (when === "signed-in") === isSignedIn ? <>{children}</> : null;
     },
+    useAuth: vi.fn(),
 }));
 
 // Next.js

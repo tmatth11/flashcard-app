@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { vi } from "vitest";
 
 export function mockClerkAuthUser(user: { username: string } | null = null) {
@@ -17,4 +17,21 @@ export function mockClerkAuthUser(user: { username: string } | null = null) {
             isSignedIn: false,
         });
     }
+}
+
+export function mockClerkAuth(isSignedIn: boolean = false) {
+    vi.mocked(useAuth).mockReturnValue({
+        isLoaded: true,
+        isSignedIn,
+        userId: isSignedIn ? "user123" : null,
+        sessionId: isSignedIn ? "sess123" : null,
+        sessionClaims: null,
+        actor: null,
+        orgId: null,
+        orgRole: null,
+        orgSlug: null,
+        has: vi.fn(),
+        signOut: vi.fn(),
+        getToken: vi.fn(),
+    } as ReturnType<typeof useAuth>);
 }

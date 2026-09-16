@@ -6,6 +6,7 @@ import { useState } from "react";
 import DeleteFlashcardButton from "./delete-flashcard-button";
 import EditFlashcardModal from "./edit-flashcard-modal";
 import StarButton from "./star-button";
+import { useAuth } from "@clerk/nextjs";
 
 export default function FlashcardItem({
     isOwner,
@@ -20,6 +21,8 @@ export default function FlashcardItem({
     currentCard: number;
     index: number;
 }) {
+    const { isSignedIn } = useAuth();
+
     const [isEditOpen, setIsEditOpen] = useState(false);
 
     return (
@@ -28,11 +31,13 @@ export default function FlashcardItem({
                 <div className="mb-2 flex items-center justify-between gap-2 p-1">
                     <span>{index + 1}</span>
                     <div className="flex items-center">
-                        <StarButton
-                            flashcardId={flashcard.id}
-                            setId={flashcard.setId!}
-                            isStarred={flashcard.isStarred!}
-                        />
+                        {isSignedIn && (
+                            <StarButton
+                                flashcardId={flashcard.id}
+                                setId={flashcard.setId!}
+                                isStarred={flashcard.isStarred!}
+                            />
+                        )}
                         {isOwner && (
                             <div className="flex items-center">
                                 <button

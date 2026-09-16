@@ -22,7 +22,7 @@ describe("VisibilityFilter", () => {
         expect(screen.getByRole("combobox")).toHaveValue("private");
     });
 
-    it("sets visibility parameter to chosen value and reset page parameter to 1", async () => {
+    it("sets visibility parameter to chosen value and resets page parameter to 1", async () => {
         const user = userEvent.setup();
 
         render(<VisibilityFilter />);
