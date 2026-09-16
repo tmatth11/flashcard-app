@@ -2,7 +2,11 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function SortBy({ defaultValue }: { defaultValue: string }) {
+export interface SortByProps {
+    defaultValue: string;
+};
+
+export default function SortBy({ defaultValue }: SortByProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const {replace} = useRouter();
