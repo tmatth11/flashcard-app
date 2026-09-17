@@ -1,4 +1,6 @@
-import { useActionState, useEffect } from "react";
+"use client";
+
+import { useActionState, useEffect, useState } from "react";
 import { Flashcard, FlashcardState } from "../../types";
 import { X } from "lucide-react";
 import ErrorBanner from "../../_components/error-banner";
@@ -15,6 +17,9 @@ export default function EditFlashcardModal({
     isOpen: boolean;
     onClose: () => void;
 }) {
+    const [term, setTerm] = useState(card.term);
+    const [definition, setDefinition] = useState(card.definition);
+
     const [state, formAction, isPending] = useActionState<
         FlashcardState,
         FormData
@@ -25,6 +30,8 @@ export default function EditFlashcardModal({
             onClose();
         }
     }, [state?.success, onClose]);
+
+    const isFormInvalid = !term.trim() || !definition.trim();
 
     if (!isOpen) return null;
 
@@ -47,13 +54,16 @@ export default function EditFlashcardModal({
                     <input type="hidden" name="cardId" value={card.id} />
                     <input type="hidden" name="setId" value={card.setId} />
 
+                    {/* Error Banner */}
                     {state?.error && <ErrorBanner message={state.error} />}
+
                     {/* Term input */}
                     <div className="mt-4 flex flex-col">
                         <textarea
                             name="term"
                             id="term"
-                            defaultValue={card.term}
+                            value={term}
+                            onChange={(e) => setTerm(e.target.value)}
                             placeholder="Enter term"
                             required
                         ></textarea>
@@ -61,12 +71,14 @@ export default function EditFlashcardModal({
                             Term
                         </label>
                     </div>
+
                     {/* Definition input */}
                     <div className="mt-4 flex flex-col">
                         <textarea
                             name="definition"
                             id="definition"
-                            defaultValue={card.definition}
+                            value={definition}
+                            onChange={(e) => setDefinition(e.target.value)}
                             placeholder="Enter definition"
                             required
                         ></textarea>
@@ -74,6 +86,8 @@ export default function EditFlashcardModal({
                             Definition
                         </label>
                     </div>
+
+                    {/* Save/Cancel Buttons */}
                     <div className="mt-2 flex justify-end gap-2">
                         <button
                             type="button"
@@ -84,8 +98,8 @@ export default function EditFlashcardModal({
                         </button>
                         <button
                             type="submit"
-                            disabled={isPending}
-                            aria-disabled={isPending}
+                            disabled={isPending || isFormInvalid}
+                            aria-disabled={isPending || isFormInvalid}
                             className="btn btn-primary"
                         >
                             Save
