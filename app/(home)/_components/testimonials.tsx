@@ -7,30 +7,29 @@ interface Testimonial {
     author: string;
 }
 
-export default function Testimonials() {
-    const testimonials: Testimonial[] = [
-        {
-            id: 0,
-            stars: 5,
-            message:
-                "\"This is the best online flashcard application I've ever used!\"",
-            author: "Gordan Freeman",
-        },
-        {
-            id: 1,
-            stars: 5,
-            message:
-                "\"I love using the dark mode feature, it's easy on my eyes!\"",
-            author: "G-Man",
-        },
-        {
-            id: 2,
-            stars: 5,
-            message: "\"This app seems familiar...\"",
-            author: "Dr. Kleiner",
-        },
-    ];
+export const testimonials: Testimonial[] = [
+    {
+        id: 0,
+        stars: 5,
+        message:
+            '"This is the best online flashcard application I\'ve ever used!"',
+        author: "Gordan Freeman",
+    },
+    {
+        id: 1,
+        stars: 5,
+        message: '"I love using the dark mode feature. It\'s easy on my eyes!"',
+        author: "G-Man",
+    },
+    {
+        id: 2,
+        stars: 5,
+        message: '"This app seems familiar..."',
+        author: "Dr. Kleiner",
+    },
+];
 
+export default function Testimonials() {
     return (
         <section className="home-section">
             <h2 className="text-2xl font-semibold lg:text-3xl">Testimonials</h2>

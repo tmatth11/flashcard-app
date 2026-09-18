@@ -13,7 +13,7 @@ export default function Features() {
                             <title>Lock icon</title>
                         </Lock>
                     </div>
-                    <h2 className="text-lg">Private Sets</h2>
+                    <h3 className="text-lg">Private Sets</h3>
                     <p>
                         Make flashcard sets private so that only you can see
                         them
@@ -24,7 +24,7 @@ export default function Features() {
                     <div className="feature-icon">
                         <StarIcon />
                     </div>
-                    <h2 className="text-lg">Starred Terms</h2>
+                    <h3 className="text-lg">Starred Terms</h3>
                     <p>Study select flashcards in any set</p>
                 </div>
                 {/* Mobile-Friendly User Interface */}
@@ -34,7 +34,7 @@ export default function Features() {
                             <title>Tablet and smartphone icon</title>
                         </TabletSmartphone>
                     </div>
-                    <h2 className="text-lg">Mobile Friendly</h2>
+                    <h3 className="text-lg">Mobile Friendly</h3>
                     <p>Study your flashcards on the go</p>
                 </div>
             </div>

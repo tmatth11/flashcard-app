@@ -1,17 +1,19 @@
 import { deleteFlashcard } from "@/app/_actions/card-actions";
 import { Trash } from "lucide-react";
 
+export interface DeleteFlashcardButtonProps {
+    cardId: number;
+    setId: number;
+    totalCards: number;
+    currentCard: number;
+}
+
 export default function DeleteFlashcardButton({
     cardId,
     setId,
     totalCards,
     currentCard,
-}: {
-    cardId: number;
-    setId: number;
-    totalCards: number;
-    currentCard: number;
-}) {
+}: DeleteFlashcardButtonProps) {
     const deleteFlashcardWithId = deleteFlashcard.bind(
         null,
         cardId,
@@ -25,7 +27,7 @@ export default function DeleteFlashcardButton({
             <button
                 onClick={(e) => e.stopPropagation()}
                 type="submit"
-                aria-label="delete"
+                aria-label="Delete flashcard"
                 title="Delete flashcard"
                 className="red-icon"
                 disabled={isOnlyCard}

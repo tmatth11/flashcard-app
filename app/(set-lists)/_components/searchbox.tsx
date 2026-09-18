@@ -4,7 +4,11 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { Search } from "lucide-react";
 
-export default function Searchbox({ placeholder }: { placeholder: string }) {
+export interface SearchboxProps {
+    placeholder: string;
+}
+
+export default function Searchbox({ placeholder }: SearchboxProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -14,7 +18,8 @@ export default function Searchbox({ placeholder }: { placeholder: string }) {
         params.set("page", "1");
         if (term) {
             params.set("query", term);
-        } else {
+        } 
+        else {
             params.delete("query");
         }
         replace(`${pathname}?${params.toString()}`);

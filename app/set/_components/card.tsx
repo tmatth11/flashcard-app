@@ -6,18 +6,23 @@ import { Pencil } from "lucide-react";
 import DeleteFlashcardButton from "./delete-flashcard-button";
 import EditFlashcardModal from "./edit-flashcard-modal";
 import StarButton from "./star-button";
+import { useAuth } from "@clerk/nextjs";
+
+export interface CardProps {
+    flashcard: Flashcard;
+    isOwner: boolean;
+    totalCards: number;
+    currentCard: number;
+}
 
 export default function Card({
     flashcard,
     isOwner,
     totalCards,
     currentCard,
-}: {
-    flashcard: Flashcard;
-    isOwner: boolean;
-    totalCards: number;
-    currentCard: number;
-}) {
+}: CardProps) {
+    const { isSignedIn } = useAuth();
+
     const [termSide, setTermSide] = useState(true);
     const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -32,11 +37,13 @@ export default function Card({
         <>
             <div className="mt-2 flex h-90 w-full flex-col overflow-y-auto rounded-md bg-neutral-200 p-2 dark:bg-slate-700">
                 <div className="flex items-center justify-end">
-                    <StarButton
-                        flashcardId={flashcard.id}
-                        setId={flashcard.setId!}
-                        isStarred={flashcard.isStarred!}
-                    />
+                    {isSignedIn && (
+                        <StarButton
+                            flashcardId={flashcard.id}
+                            setId={flashcard.setId!}
+                            isStarred={flashcard.isStarred!}
+                        />
+                    )}
                     {isOwner && (
                         <div className="flex items-center">
                             <button
@@ -57,6 +64,7 @@ export default function Card({
                     )}
                 </div>
                 <button
+                    aria-label="Flip card"
                     role="button"
                     tabIndex={0}
                     onKeyDown={handleKeyDown}
