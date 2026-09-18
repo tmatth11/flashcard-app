@@ -5,6 +5,10 @@ import { mockClerkAuth } from "../helpers";
 import Card from "@/app/set/_components/card";
 import userEvent from "@testing-library/user-event";
 
+vi.mock("@/app/set/_components/edit-flashcard-modal", () => ({
+    default: () => <div data-testid="edit-modal">EditModal</div>,
+}));
+
 vi.mock("@/app/set/_components/star-button", () => ({
     default: () => <div data-testid="star-button">StarButton</div>,
 }));
@@ -12,11 +16,6 @@ vi.mock("@/app/set/_components/star-button", () => ({
 vi.mock("@/app/set/_components/delete-flashcard-button", () => ({
     default: () => <div data-testid="delete-button">DeleteButton</div>,
 }));
-
-vi.mock("@/app/set/_components/edit-flashcard-modal", () => ({
-    default: () => <div data-testid="edit-modal">EditModal</div>,
-}));
-
 
 describe("Card", () => {
     const mockFlashcard: Flashcard = {
