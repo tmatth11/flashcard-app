@@ -3,19 +3,21 @@ import Pagination from "../../_components/pagination";
 import Card from "./card";
 import StudyStarredCheckbox from "./study-starred-checkbox";
 
+export interface FlashcardDisplayProps {
+    flashcards: Flashcard[];
+    currentCard: number;
+    isOwner: boolean;
+    totalCards: number;
+    hasStarredCards: boolean;
+}
+
 export default function FlashcardDisplay({
     flashcards,
     currentCard,
     isOwner,
     totalCards,
     hasStarredCards,
-}: {
-    flashcards: Flashcard[];
-    currentCard: number;
-    isOwner: boolean;
-    totalCards: number;
-    hasStarredCards: boolean;
-}) {
+}: FlashcardDisplayProps) {
     const totalFlashcards = flashcards.length;
     const activeCard = flashcards[currentCard - 1];
 

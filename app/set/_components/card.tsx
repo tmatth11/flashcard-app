@@ -8,17 +8,19 @@ import EditFlashcardModal from "./edit-flashcard-modal";
 import StarButton from "./star-button";
 import { useAuth } from "@clerk/nextjs";
 
+export interface CardProps {
+    flashcard: Flashcard;
+    isOwner: boolean;
+    totalCards: number;
+    currentCard: number;
+}
+
 export default function Card({
     flashcard,
     isOwner,
     totalCards,
     currentCard,
-}: {
-    flashcard: Flashcard;
-    isOwner: boolean;
-    totalCards: number;
-    currentCard: number;
-}) {
+}: CardProps) {
     const { isSignedIn } = useAuth();
 
     const [termSide, setTermSide] = useState(true);
