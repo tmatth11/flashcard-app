@@ -10,5 +10,6 @@ export default defineConfig({
     alias: {
       'next/navigation': 'next/navigation.js',
     },
+    pool: 'vmThreads',
   },
 })
