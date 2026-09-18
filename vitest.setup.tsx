@@ -78,6 +78,6 @@ vi.mock("next/cache", () => ({
 vi.mock("next/navigation", () => ({
     useRouter: () => ({ push: mockPush, replace: mockReplace, prefetch: vi.fn() }),
     usePathname: () => "/",
-    useSearchParams: () => new URLSearchParams(),
+    useSearchParams: vi.fn(() => new URLSearchParams()),
     redirect: vi.fn(),
 }));
