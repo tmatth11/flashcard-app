@@ -4,6 +4,7 @@ import Navbar from "@/app/_components/navbar";
 import { ThemeProvider } from "./_components/theme-provider";
 import ClerkThemeProvider from "./_components/clerk-theme-provider";
 import { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
     subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                         <Navbar />
                         <main className="flex-1 dark:text-white">
                             {children}
+                            <Analytics />
                         </main>
                     </ClerkThemeProvider>
                 </ThemeProvider>
