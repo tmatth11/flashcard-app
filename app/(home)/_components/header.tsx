@@ -26,7 +26,7 @@ export default function Header() {
             <Image
                 width="500"
                 height="100"
-                src="/header-image.png"
+                src="/header-img.png"
                 fetchPriority="high"
                 priority
                 alt="Screenshot of flashcard set page"
