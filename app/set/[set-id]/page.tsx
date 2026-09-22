@@ -9,6 +9,7 @@ import { SetPageProps } from "@/app/types";
 import FlashcardDisplay from "../_components/flashcard-display";
 import FlashcardFilter from "../_components/flashcard-filter";
 import FlashcardItem from "../_components/flashcard-item";
+import { Lock } from "lucide-react";
 
 const IdParamSchema = z.coerce.number().int().positive();
 
@@ -139,7 +140,12 @@ export default async function Page({ params, searchParams }: SetPageProps) {
                     )}
                 </span>
                 <h1 className="mt-4 text-lg font-semibold break-all md:text-xl">
-                    {setData.title}
+                    {setData.title}{" "}
+                    {isOwner && !setData.public && (
+                        <span className="inline-block">
+                            <Lock size={16} />
+                        </span>
+                    )}
                 </h1>
                 <p className="mt-2 break-all">{setData.description}</p>
                 <FlashcardDisplay
