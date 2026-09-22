@@ -4,7 +4,7 @@ This is a full-stack web application that allows you to create and study online 
 
 You can try it [here](https://flashcard-app-eight-theta.vercel.app/).
 
-<img src="/public/header-img.png" alt="Header image" width="500" height="300">
+<img src="/public/header-img.png" alt="Header image" width="500" height="500">
 
 ## Features
 
